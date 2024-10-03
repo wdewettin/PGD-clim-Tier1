@@ -1,16 +1,12 @@
 #!/bin/bash
-#SBATCH --verbose
-#SBATCH --job-name=1climake
-#SBATCH --time=01:30:00
-#SBATCH --mem=62000
-#SBATCH --nodes=1
-#SBATCH --ntasks=1
-#SBATCH --cpus-per-task=1
-#SBATCH --partition=transfert
-#SBATCH --export=NONE
-#SBATCH --no-requeue
-#SBATCH --output=%x.o%j
-#SBATCH --error=%x.o%j 
+#PBS -V
+#PBS -N 1climake
+#PBS -l walltime=01:30:00
+#PBS -l mem=62GB
+#PBS -l nodes=1:ppn=1
+#PBS -o 1climake.o
+#PBS -e 1climake.e
+#PBS -A 2022_205
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #   
