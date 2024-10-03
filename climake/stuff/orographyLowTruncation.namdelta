@@ -1,0 +1,18 @@
+#this namelist delta will be applied only in the case of 2 orography steps
+
+ &NAMCLA
+   LNEWORO=.TRUE.,
+   LIPGD=__LPGD__,
+   LNLSM=__LPGD__,
+   LNORO=__LPGD__,
+   NLISSP=0,
+ /
+ &NAMCLI
+   RSTR=--,
+ /
+ &NAMDIM
+   NSMAX=__NSMAX__,
+   NMSMAX=__NMSMAX__,
+ /
+  
+ 

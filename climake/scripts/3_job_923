@@ -1,0 +1,382 @@
+#!/bin/bash
+#SBATCH -p normal256
+#SBATCH -n 1
+#SBATCH -c 1
+#SBATCH -N 1
+#SBATCH -t 00:50:00
+#SBATCH --mem=62000
+#SBATCH --exclusive
+#SBATCH --job-name=3climake
+#SBATCH --output=%x.o%j
+#SBATCH --error=%x.o%j 
+
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#
+#   Job #3
+#
+#   Building of the climatological files;
+#
+#   Script is the same for both model and telecom domains, it is driven by SPECTRALS_PARAMS string;
+#
+#
+#   Orography and land/sea mask are taken by default from a PGD file;
+
+#   Clim files created will have .fa suffix inside your clim file directory;
+#
+# 
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+set -ex 
+
+PGDGEO=$1
+CLIMGEO=$2
+CYCLE=$3
+PGDNAM=$4
+CLIMNAM=$5
+OROGRAPHY_TRUNCATION=$6
+OTHERFIELDS_TRUNCATION=$7
+CLIMAKEDIR=$8
+OUTPUTDIR=$9
+CUSTOM_MASTER=${10}
+CUSTOM_PGD=${11}
+SPECTRALS_PARAMS=${12}
+#without PGD CLIMAKEWORKDIR CAN BE UNDEFINED
+if [ -z ${13} ]; then
+  CLIMAKEWORKDIR=$TMPDIR
+else
+  CLIMAKEWORKDIR=${13} 
+fi
+
+
+
+#~~~~~~~~~~~~~~~~~~~~~~~PRELIMINARY CALCULATIONS~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+#__LPGD__ must be replace in the namelist... So if NOPGD --> set false else true
+if [ "$PGDGEO" == "NOPGD" ];then
+    LIPGD=".FALSE."
+else
+    LIPGD=".TRUE."
+fi
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+cd $CLIMAKEWORKDIR
+
+echo '---------------------------'
+echo '==========================='
+echo '******build_pgd   --->   Workdir is '$CLIMAKEWORKDIR'*****'
+echo '==========================='
+echo '***************************'
+echo '                           '
+
+echo '  ------------EXPORTING ENV VARIABLES  ------------ '
+source $CLIMAKEDIR'/stuff/environmentVariables'
+echo '  ------------------------------------------------- '
+
+
+# Input needed in this job
+NEEDED_INPUTS=(ARPREANALYSIS_SOIL_CLIM AVHRR_ESA_LAI AVHRR_ESA_VEGETATION AVHRR_ESA_SOIL_AND_VEG GIARDBAZILE2000_SOIL_AND_VEG GTOPO30_MISC_OROGRAPHY UGAMP_OZONE TEGEN_AEROSOLS MASTER_AROME GTOPO30_WATER_PERCENTAGE GTOPO30_URBANISATION USNAVY_SOIL_CLIM GIARDBAZILE2000_VEGETATION GIARDBAZILE2000_LAI ARPREANALYSIS_SURFGEOPOTENTIAL NAMELIST_AROME)
+# variables in gget
+VARIABLES=$(/home/mf/dp/marp/martinezs/public/bin/genv $CYCLE)
+# construct GENVDICT dictionnary
+declare -A GENVDICT
+for i in $VARIABLES
+do
+  key=$(echo $i | cut -d "=" -f1)
+  value=$(echo $i | cut -d "\"" -f2)
+  GENVDICT["$key"]=$value
+done
+
+
+#  DATABASES
+for i in ${NEEDED_INPUTS[@]}
+do
+  echo 'fake get'
+  /home/mf/dp/marp/martinezs/public/bin/gget ${GENVDICT[$i]}
+done
+
+#shortcut for xpnam tool
+XPNAM=$CLIMAKEDIR'/stuff/xpnam'
+
+#      ***************
+#      *  NAMELISTS  *
+#      ***************
+if [ "$CLIMNAM" == "GCO" ];then
+    cat ${GENVDICT[NAMELIST_AROME]}'/arome/namel_c923' > nam923
+elif [ "$CLIMNAM" == "GCO_POSTPRO" ];then
+    cat ${GENVDICT[NAMELIST_AROME]}'/bdap/namel_c923_orography' > nam923
+else
+  cat $CLIMNAM > nam923
+fi  
+#Remove geometry related blocks in this namelists 
+$XPNAM -i --rmblock=NAMDIM,NEMDIM,NEMGEO nam923
+#add geometry params
+$XPNAM -i --dfile=$CLIMGEO nam923
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#Read evaluate SPECTRALS_PARAMS
+#if SPECTRAL_PARAMS contains @ --> 2 orography steps
+if [[ $SPECTRALS_PARAMS == *"@"* ]]; then
+  tmp=$(echo $SPECTRALS_PARAMS | cut -d "@" -f1)
+  NSMAX=$(echo $tmp | cut -d "," -f1)  
+  NMSMAX=$(echo $tmp | cut -d "," -f2)
+  tmp=$(echo $SPECTRALS_PARAMS | cut -d "@" -f2)
+  NSMAX_ORO=$(echo $tmp | cut -d "," -f1)  
+  NMSMAX_ORO=$(echo $tmp | cut -d "," -f2)  
+  
+  #for oro step1
+  cp $CLIMAKEDIR'/stuff/orographyLowTruncation.namdelta' .
+  #replacing __NSMAX__ with $NSMAX_ORO
+  sed -i "s/NSMAX=__NSMAX__/NSMAX=$NSMAX_ORO/" orographyLowTruncation.namdelta
+  #replacing __NMSMAX__ with $NMSMAX_ORO
+  sed -i "s/NMSMAX=__NMSMAX__/NMSMAX=$NMSMAX_ORO/" orographyLowTruncation.namdelta  
+  #applying namelist delta
+  cp nam923 nam923_oro
+  $XPNAM -i --dfile=orographyLowTruncation.namdelta nam923_oro 
+  
+  #for oro step2
+  cp $CLIMAKEDIR'/stuff/orographyHighTruncation.namdelta' .
+  #replacing __NSMAX__ with $NSMAX
+  sed -i "s/NSMAX=__NSMAX__/NSMAX=$NSMAX/" orographyHighTruncation.namdelta
+  #replacing __NMSMAX__ with $NMSMAX_ORO
+  sed -i "s/NMSMAX=__NMSMAX__/NMSMAX=$NMSMAX/" orographyHighTruncation.namdelta    
+  #applying namelist delta
+  $XPNAM -i --dfile=orographyHighTruncation.namdelta nam923
+  #Replace    CNMEXP='CEXP'  by   CNMEXP='CLIM' in the namelist (this is done by olive in GMAP)
+  # idem for LIPGD
+  sed -i s/CEXP/CLIM/ nam923
+  sed -i s/CEXP/CLIM/ nam923_oro
+  sed -i "s/__LPGD__/$LIPGD/" nam923
+  sed -i "s/__LPGD__/$LIPGD/" nam923_oro
+
+else
+  #only one orography step
+  tmp=$(echo $SPECTRALS_PARAMS | cut -d "@" -f1)
+  NSMAX=$(echo $tmp | cut -d "," -f1)  
+  NMSMAX=$(echo $tmp | cut -d "," -f2)
+  if [ "$NSMAX" == "NONE" ] ;then
+# case of postprocessing lat lon domain
+    cp $CLIMAKEDIR'/stuff/orographyPostPro.namdelta' .
+    $XPNAM -i --dfile=orographyPostPro.namdelta nam923 
+  else
+  
+    #for oro step2
+    cp $CLIMAKEDIR'/stuff/orographyOnestep.namdelta' .
+    #replacing __NSMAX__ with $NSMAX
+    sed -i "s/NSMAX=__NSMAX__/NSMAX=$NSMAX/" orographyOnestep.namdelta
+    #replacing __NMSMAX__ with $NMSMAX
+    sed -i "s/NMSMAX=__NMSMAX__/NMSMAX=$NMSMAX/" orographyOnestep.namdelta 
+    #applying namelist delta
+    $XPNAM -i --dfile=orographyOnestep.namdelta nam923 
+    #Replace    CNMEXP='CEXP'  by   CNMEXP='CLIM' in the namelist (this is done by olive in GMAP)
+    # idem for LIPGD
+    sed -i s/CEXP/CLIM/ nam923
+    sed -i "s/__LPGD__/$LIPGD/" nam923
+  fi
+fi
+
+
+# construct DRIVER dictionary
+declare -A DRIVER1OROSTEP
+declare -A DRIVER2OROSTEP
+
+#LOCALDIRECTORYNAME;input1@localname1,input2@localname2,....;commmand1,command2,...
+
+STEPS_1A="orography;PGD@Neworog,GTOPO30_URBANISATION@Urbanisation,GTOPO30_WATER_PERCENTAGE@Water_Percentage,GTOPO30_MISC_OROGRAPHY@orography.gtopo30_misc.01.tgz,MASTER_AROME@MASTER"
+STEPS_1B="finalize_orography;../Const.Clim.step_1@Neworog,GTOPO30_URBANISATION@Urbanisation,GTOPO30_WATER_PERCENTAGE@Water_Percentage,GTOPO30_MISC_OROGRAPHY@orography.gtopo30_misc.01.tgz,MASTER_AROME@MASTER"
+STEPS_1="orography_singlestep;PGD@Neworog,GTOPO30_URBANISATION@Urbanisation,GTOPO30_WATER_PERCENTAGE@Water_Percentage,GTOPO30_MISC_OROGRAPHY@orography.gtopo30_misc.01.tgz,MASTER_AROME@MASTER"
+STEPS_2="const_physiography;../Const.Clim.step_1@Const.Clim,GIARDBAZILE2000_SOIL_AND_VEG@giardbazile2000.soil_and_veg.01.tgz,MASTER_AROME@MASTER"
+STEPS_3="monthly_tqs;USNAVY_SOIL_CLIM@N108_GL,../Const.Clim.step_2@Const.Clim,MASTER_AROME@MASTER"
+STEPS_4="loop_soilNveg_LR;MONTH_GIARDBAZILE2000_VEGETATION@veg_GL,MONTH_GIARDBAZILE2000_LAI@lai_GL,GIARDBAZILE2000_SOIL_AND_VEG@giardbazile2000.soil_and_veg.01.tgz,MASTER_AROME@MASTER"
+STEPS_5="loop_soilNveg_HR;MONTH_AVHRR_ESA_VEGETATION@veg_HR,MONTH_AVHRR_ESA_LAI@lai_HR,AVHRR_ESA_SOIL_AND_VEG@soil_and_veg.tgz,MASTER_AROME@MASTER"
+STEPS_6="loop_tqs_update;MONTH_ARPREANALYSIS_SOIL_CLIM@soil_clim.tgz,ARPREANALYSIS_SURFGEOPOTENTIAL@rel_GL,MASTER_AROME@MASTER"
+STEPS_8="loop_ozone;MONTH_UGAMP_OZONE@abc_coef,MASTER_AROME@MASTER"
+STEPS_9="loop_aerosols;MONTH_TEGEN_AEROSOLS@aero_GL,MASTER_AROME@MASTER"
+
+
+
+#---------------------------------------------------
+# ONE STEP FOR OROGRAPHY 
+DRIVER1OROSTEP[steps_index]='1 2 3 4 5 6 8 9'
+
+#---------------------------------------------------
+# WITHQUADRATIC DOMAIN   ---> TWO STEP FOR OROGRAPHY
+DRIVER2OROSTEP[steps_index]='1A 1B 2 3 4 5 6 8 9'
+
+
+if [[ $SPECTRALS_PARAMS == *"@"* ]]; then
+    DRIVER=${DRIVER2OROSTEP[@]}
+else
+    DRIVER=${DRIVER1OROSTEP[@]}
+fi
+
+for i in ${DRIVER[steps_index]}
+do
+  echo $i
+  
+  eval CURRENTSTEP='$'STEPS_"$i"
+  echo $CURRENTSTEP
+  TILDSPLIT=(${CURRENTSTEP//;/ })
+  DIRNAME=${TILDSPLIT[0]}
+  INPUTSTRINGLIST=${TILDSPLIT[1]}  # tmp variable to make the following
+  INPUTLIST=(${INPUTSTRINGLIST//,/ })
+  #create dir
+  [ ! -d  $DIRNAME ] && mkdir $DIRNAME
+  #copy base namelist
+  if [ "$i" == "1A" ]; then
+      echo 'copying oro namelist'
+      cp nam923_oro $DIRNAME'/nam923'
+  else 
+      cp nam923 $DIRNAME'/nam923'
+  fi 
+  
+  
+  #cd into dir
+  cd $DIRNAME
+  sed "s/N923=0/N923=${i:0:1}/" nam923 > fort.4
+  
+  #monthly input needed in some steps
+  MONTHLYINPUTS=()
+  
+  # make symlinks of files
+  for f in ${INPUTLIST[@]}
+  do 
+      echo $f
+      source=$(echo $f | cut -d "@" -f1)
+      dest=$(echo $f | cut -d "@" -f2)
+      #special threatment in case of PGD
+      if [ "$source" == "PGD" ]; then
+        source=$OUTPUTDIR'/PGD.fa'
+      elif [ "$source" == "Const.Clim" ]; then 
+        source=$OUTPUTDIR'/Const.Clim'
+      elif [ "$source" == "MASTER_AROME" ]; then 
+		if [ "$CUSTOM_MASTER" == "GENERIC" ]; then
+		  #default binary
+		  source='../'${GENVDICT[$source]}		  
+		else
+          source=$CUSTOM_MASTER
+		fi    
+	  elif [ "${source:0:3}" == "../" ]; then 	
+		echo 'clim case'             
+	  elif [ "${source:0:6}" == "MONTH_" ]; then 
+	    #monthly inputs
+	    genvsource=${source:6}
+	    source=${GENVDICT[$genvsource]}
+	    MONTHLYINPUTS=( "${MONTHLYINPUTS[@]}" "$source"@"$dest" )
+		echo $MONTHLYINPUTS
+		#skip the ln -s above
+		dest="skip"
+      else
+        source='../'${GENVDICT[$source]}
+      fi 
+
+      
+      if [ "${dest: -2}" == "gz" ] ; then
+	    echo "untaring..."
+	    tar -xvf $source
+	  elif [ "${dest: -4}" == "loop" ] || [ "$dest" == "skip" ] ; then
+	    echo "skiping"
+      else
+        ln -s $source $dest
+      fi  
+      
+  done
+  
+  #On step 3 you need to copy the clims --> One for each month 
+  if [ "$i" == "3" ] ; then 
+    for MM in 01 02 03 04 05 06 07 08 09 10 11 12
+	do
+	    cp "Const.Clim" "Const.Clim."$MM
+	done
+  fi 
+  
+  echo '  ------------------------------------------------- '
+  echo '  ------------------------------------------------- '
+  echo '  ------------------------------------------------- '
+  echo '  -------------ls -l on before exec----------------- '
+  ls -l
+  echo '  ------------------------------------------------- '
+  echo '  ------------------------------------------------- '
+  echo '  ------------------------------------------------- '  
+  
+  #if DIRNAME starts with 'loop_' --> this is a month loop 
+  if [ "${DIRNAME:0:5}" == "loop_" ]; then 
+    #for month loop clim.$MM is always an input
+	for MM in 01 02 03 04 05 06 07 08 09 10 11 12
+	do
+	  mv "../Const.Clim."$MM "Const.Clim"
+	  
+	  #monthly inputs
+	  for MINPUT in ${MONTHLYINPUTS[@]}
+	  do
+	      MINSOURCE=$(echo $MINPUT | cut -d "@" -f1)
+	      MINDEST=$(echo $MINPUT | cut -d "@" -f2)
+	      ln -sf "../"$MINSOURCE".m"$MM $MINDEST #force creation
+	      #in this case we need to untar the monthly file (useful for step_6)
+	      if [ "${MINDEST: -2}" == "gz" ]; then
+	          tar -xzf $MINDEST	          
+	      fi
+	      
+	  done
+      cat fort.4	  
+      time $MPIAUTO -np 1 -nnp 1 -- "./MASTER"
+      codrep=$?
+	  if [ $codrep -ne 0 ] ;then
+	    echo '  ------------------------------------------------- '
+	    echo '  3climake FAILED during step '$i' and month '$MM' return code is '$coderep
+	    exit $coderep
+	  fi
+	  mv "NODE.001_01" "../listing.step_"$i"_m."$MM
+	  mv "Const.Clim" "../Const.Clim."$MM
+    done
+     
+  else
+    cat fort.4
+    time $MPIAUTO -np 1 -nnp 1 -- "./MASTER"
+    #generic return code
+    codrep=$?
+    mv "NODE.001_01" "../listing.step_"$i
+  fi 
+
+  
+   
+  if [ "${DIRNAME:0:5}" == "loop_" ]; then 
+    echo 'yet copied'
+  elif [ "$DIRNAME" == "monthly_tqs" ]; then
+    for MM in 01 02 03 04 05 06 07 08 09 10 11 12
+	do
+	    mv "Const.Clim."$MM "../"
+	done
+  else
+    cp "Const.Clim" "../Const.Clim.step_"${i:0:1}
+  fi 
+  
+  if [ $codrep -ne 0 ] ;then
+    echo '  ------------------------------------------------- '
+    echo '  3climake FAILED during step '$i' return code is '$coderep
+    exit $coderep
+  else
+    echo '  3climake step '$i' was succesful!' 
+  fi 
+  cd ..
+  
+done
+
+###saving files
+
+for MM in 01 02 03 04 05 06 07 08 09 10 11 12
+do
+    cp "Const.Clim."$MM $OUTPUTDIR"/"
+done
+cp listing* $OUTPUTDIR'/listings'
+echo 'Job 3_job_923 ended correctly!'
+
+cd $CLIMAKEDIR
+
+sbatch scripts/4_finalize $CYCLE $CLIMAKEDIR $OUTPUTDIR
+exit $?
+
+
+

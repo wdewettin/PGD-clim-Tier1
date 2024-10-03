@@ -1,0 +1,14 @@
+# variables to be exported before run (you can add yours here)
+ulimit -s unlimited
+export OMP_STACKSIZE=1G
+export KMP_STACKSIZE=1G
+export KMP_MONITOR_STACKSIZE=1G
+export DR_HOOK=0
+export DR_HOOK_IGNORE_SIGNALS=-1
+export DR_HOOK_SILENT=1
+export DR_HOOK_OPT=prof
+export MPL_MBX_SIZE=2048000000
+export EC_PROFILE_HEAP=0
+export EC_MPI_ATEXIT=0
+MPIAUTO=/opt/softs/mpiauto/mpiauto
+

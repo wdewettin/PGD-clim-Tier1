@@ -1,0 +1,9 @@
+To view the summary results.html page, you can copy it to your computer and open it with a web browser.
+If you are connected with ssh+display you can also simply call 'firefox results.html' 
+(you must not have other firefox instances running on your session)
+
+In the 'plots' directory, all the fields (except spectral ones) of all the files have been produced.
+You can copy the whole directory to your computer to view them.
+If you are connected with ssh+display you can also simply call 'eog plots/*.png' 
+
+Hope this help!!

@@ -1,0 +1,67 @@
+#!/bin/bash
+#SBATCH -p normal256
+#SBATCH -n 1
+#SBATCH -c 1
+#SBATCH -N 1
+#SBATCH -t 02:00:00
+#SBATCH --mem=62000
+#SBATCH --exclusive
+#SBATCH --job-name=4climake
+#SBATCH --output=%x.o%j
+#SBATCH --error=%x.o%j 
+
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#
+#   Job #4 Finalize (if SURFEX is used)
+#
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#
+CYCLE=$1
+CLIMAKEDIR=$2
+OUTPUTDIR=$3
+EPY_ORO=$CLIMAKEDIR/scripts/epy_oro.py
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+set -ex
+
+module load python/3.7.6
+#   Script for final overwriting of orography from clim file to PGD file; 
+#   Used for getting a SURFEX compliant PGD file;
+# loop on the clim files
+#clean PYTHONPATH
+#export PYTHONPATH=""
+
+cd $OUTPUTDIR
+$(python $EPY_ORO -c Const.Clim.01 -p PGD.fa)
+
+
+echo 'Job 4_finalize ended correctly!'
+echo 'launching summary Job'
+
+#python script path
+EPY_VERIF=$CLIMAKEDIR"/scripts/epy_verifications.py"
+
+#copy results.html template file
+cp $CLIMAKEDIR'/stuff/CLIMAKE_VISU/results.html' .
+cp $CLIMAKEDIR'/stuff/CLIMAKE_VISU/README' .
+
+#create plot directory
+[ ! -d plots ] && mkdir plots
+
+#launch summary script
+$(python $EPY_VERIF) || :
+
+echo '---------------------------'
+echo '==========================='
+echo '******CLIMAKE ENDED SUCCESFULLY*****'
+echo 'you can now view your files, some plots and the results.html report there:'
+echo $OUTPUTDIR
+echo '******SEE YOU SOON*****'
+echo '==========================='
+echo '---------------------------'
+
+
+exit $?
+
+

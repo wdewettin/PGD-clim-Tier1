@@ -1,0 +1,21 @@
+#this namelist delta will be applied only in the case of 1 orography step (for example for telecom domains)
+ &NAMDIM
+   NSMAX=__NSMAX__,
+   NMSMAX=__NMSMAX__,
+ /
+ &NAMCLA
+   FENVN=0.,
+   NLISSP=0,
+   LNEWORO=.TRUE.,      
+   LNORO=.TRUE.,
+   LNLSM=.TRUE.,
+   LIPGD=__LPGD__,
+   
+ /
+ &NAMCLI
+   RSTR=0,
+ /
+
+  
+ 
+ 

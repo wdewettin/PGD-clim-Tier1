@@ -1,0 +1,81 @@
+#!/bin/bash
+#SBATCH --verbose
+#SBATCH --job-name=1climake
+#SBATCH --time=01:30:00
+#SBATCH --mem=62000
+#SBATCH --nodes=1
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=1
+#SBATCH --partition=transfert
+#SBATCH --export=NONE
+#SBATCH --no-requeue
+#SBATCH --output=%x.o%j
+#SBATCH --error=%x.o%j 
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#   
+#   Job #1
+#
+#   Prefetch files 
+#
+#   this script permit to prefetch the files needed for the next steps.
+#   In fact, on Meteo France supercomputer, FTP commands to the archive system (used by GENV/GGET in background) are only available
+#   on 'transfert' nodes (that's why here partition=transfert) and not in 'calculus' nodes. It download files in cache, to ensure
+#   that they will be available for the next steps. The GENV cycle must be given by argument 
+#   
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+set -ex
+
+PGDGEO=$1
+CLIMGEO=$2
+CYCLE=$3
+PGDNAM=$4
+CLIMNAM=$5
+OROGRAPHY_TRUNCATION=$6
+OTHERFIELDS_TRUNCATION=$7
+CLIMAKEDIR=$8
+OUTPUTDIR=$9
+CUSTOM_MASTER=${10}
+CUSTOM_PGD=${11}
+SPECTRALS_PARAMS=${12}
+CLIMAKEWORKDIR=${13}
+PGDHACK=${14}
+#get genv variables
+VARIABLES=$(/home/mf/dp/marp/martinezs/public/bin/genv $CYCLE)
+
+set -e
+#check if $CYCLE is a proper GENV CYCLE
+if [ "${VARIABLES[0]}" = "CYCLE_NAME=\"not found\"" ]; then
+  echo 'GENV Cycle seem wrong: you gave '$CYCLE
+  echo '/home/mf/dp/marp/martinezs/public/bin/gget '$CYCLE' must return key/value list. Aborting'
+  exit $?
+fi
+
+#looping on key/values and prefetch files (see above for the reason why we do that)
+for i in $VARIABLES
+do
+  if [ "$(echo $i | cut -d "=" -f1)" = "CYCLE_NAME" ]; then
+    continue
+  fi
+  j=$(echo $i | cut -d "\"" -f2)
+  echo 'calling gget on '$j
+  /home/mf/dp/marp/martinezs/public/bin/gget path --verbose $j || :
+done
+
+
+
+echo 'Job 1_fetch_files ended correctly!'
+
+if [ "$PGDGEO" == "NOPGD" ]; then
+  echo "RUN WITHOUT PGD, jump to climake third step"
+  sbatch script/3_job_923 $PGDGEO $CLIMGEO $CYCLE $PGDNAM $CLIMNAM $OROGRAPHY_TRUNCATION $OTHERFIELDS_TRUNCATION $CLIMAKEDIR $OUTPUTDIR $CUSTOM_MASTER $CUSTOM_PGD $SPECTRALS_PARAMS $CLIMAKEWORKDIR
+else
+  echo "RUN WITH PGD"
+  sbatch scripts/2_make_pgd $PGDGEO $CLIMGEO $CYCLE $PGDNAM $CLIMNAM $OROGRAPHY_TRUNCATION $OTHERFIELDS_TRUNCATION $CLIMAKEDIR $OUTPUTDIR $CUSTOM_MASTER $CUSTOM_PGD $SPECTRALS_PARAMS $CLIMAKEWORKDIR $PGDHACK
+fi
+
+
+exit $?
+
+ 

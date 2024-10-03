@@ -1,0 +1,474 @@
+#!/bin/bash
+CLIMAKE_VERSION=1.37
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#   
+#   CLIMAKE MAIN JOB  #1
+#   ARGS pgdGeometryNamelistsPath/climGeometryNamelistPath/genvCycle/pgdNamelistPath (or GCO)
+#        /923NamelistPath (or GCO)/orographyTuncation/otherfieldTrucation
+#   Calling step by step inside 'scripts' directory
+#     1_fetch_files
+#     2_make_pgd
+#     3_job_923
+#     4_finalize
+#
+#   Each one are 'self documented'
+#   
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+set -e
+
+Usage() {
+echo "please use either  \"climake -c config_file\" (automatic mode)  or \"climake -i\" (interactive mode)"
+exit 1
+}
+if [ $# -eq 0 ]
+then
+	Usage
+fi
+
+function interactive(){
+	echo "PGD GEOMETRY path?";
+	read PGDGEO
+	echo "CLIM GEOMETRY path?";
+	read CLIMGEO
+	echo "GCO GENV cycle?"
+	read CYCLE
+	echo "PGD NAMELIST path? (type GCO for GENERIC)"
+	read PGDNAM
+	echo "923 NAMELIST path? (type GCO for GENERIC)"
+        read CLIMNAM
+	echo "orography truncation (LINEAR,QUADRATIC,CUBIC)?"
+	read OROGRAPHY_TRUNCATION
+	echo "other fields truncation (LINEAR,QUADRATIC,CUBIC)?"
+	read OTHERFIELDS_TRUNCATION
+        echo "Do you want automatic or manual NSMAX/NMSMAX computation? type a for automatic, m for manual, default is a. (a/m)"
+        read AUTOTRUNC
+        echo "Choose a workdir(default is TMPDIR)"
+        read CLIMAKEWORKDIR
+
+
+}
+
+
+
+if [ "$1" == "-c" ]; then
+    echo "config file mode";
+    CONFIGFILE=$2;
+
+    if [ "$CONFIGFILE" == "" ]; then
+	    echo "No config file provided, aborting...";
+	    exit 1;
+    fi
+    if [ ! -f $2 ]; then
+        echo "CONFIGFILE not found!";
+        exit 1;
+
+    else
+        . $CONFIGFILE;
+    fi    
+elif [ "$1" == "-i" ]; then
+    echo "interactive mode";
+    interactive
+else
+    Usage;
+    exit 1;
+
+fi
+
+
+
+
+
+LAST_VERSION=$(head -n 2 ~suzat/SAVE/CLIMAKE/climake | grep CLIMAKE_VERSION | cut -d "=" -f2)
+
+if [ "$CLIMAKE_VERSION" != "$LAST_VERSION" ]; then
+  echo "warning: You are not using the last CLIMAKE VERSION!"
+  echo "last version is: "$LAST_VERSION
+  echo "your version is: "$CLIMAKE_VERSION
+  
+  echo "do you want to continue (y/n)? (not recommended)"
+  
+  read wrongversion
+  if [ "$wrongversion" != "y" ];then
+	   echo "Please call '~suzat/SAVE/cloneClimake' "
+	   exit 1
+  fi  
+
+fi
+
+
+
+
+if [ -z $PGDGEO ]; then
+  echo "PGD GEOMETRY must be passed by argument. Aborting"
+  exit 1
+else
+  if [ "$PGDGEO" != "NOPGD" ];then
+	  if [ ! -f $PGDGEO ]; then
+	    echo 'PGD GEOMETRY file not found!'
+	    echo 'path given was '$PWD$PGDGEO
+	    echo 'an example is  geometries/PGD/LACE.nam: ' 
+	    echo 'Aborting'
+	    echo 'If you do not want PDG put NOPGD in first argument'
+	    exit 1
+	  fi
+          #set it to absolute
+          PGDGEO=$(realpath $PGDGEO)
+
+  fi
+fi
+if [ -z $CLIMGEO ]; then
+  echo "CLIM GEOMETRY must be passed by argument. Aborting"
+  exit 1
+else
+  if [ ! -f $CLIMGEO ]; then
+    echo 'CLIM GEOMETRY file not found!'
+    echo 'path given was '$PWD$CLIMGEO
+    echo 'Aborting'
+    exit 1  
+  fi
+  #set it to absolute
+  CLIMGEO=$(realpath $CLIMGEO)
+fi
+if [ -z $CYCLE ]; then
+  echo "GENV Cycle must be passed by argument. Show README for more details. Aborting"
+  exit 1
+fi
+if [ -z $PGDNAM ]; then
+  echo "PGD namelist path must be present."
+  echo "In order to use the one from GENV cycle (GCO), put 'GCO' there. Aborting"
+  exit 1
+else
+  if [ "$PGDNAM" != "GCO" ] ;then
+	  if [ ! -f $PGDNAM ]; then
+	    echo 'PGD specific namelist file not found!'
+	    echo 'path given was '$PGDNAM
+	    echo 'Aborting'
+	    echo "In order to use the one from GENV cycle (GCO), put 'GCO' there"
+	    exit 1
+	  else
+              #convert to absolute
+              PGDNAM=$(realpath $PGDNAM)
+	  fi
+  fi  
+fi
+if [ -z $CLIMNAM ]; then
+  echo "CLIM namelist path must be present. In order to use the one from GENV cycle (GCO), "
+  echo "put 'GCO' there. Aborting"
+  exit 1
+else
+  if [ "$CLIMNAM" != "GCO" ] ;then
+	  if [ ! -f $CLIMNAM ]; then
+	    echo 'CLIM specific namelist file not found!'
+	    echo 'path given was '$CLIMNAM
+	    echo 'Aborting'
+	    echo "In order to use the one from GENV cycle (GCO), put 'GCO' there"
+	    exit 1
+	  else
+	      #is it relative or absolute path
+	      if [ -f "$PWD$CLIMNAM" ]; then
+	          #relative
+	          CLIMNAM="$PWD$CLIMNAM"
+	      elif [ -f "$PWD/$CLIMNAM" ]; then
+	          #relative
+	          CLIMNAM="$PWD/$CLIMNAM"		          
+	      else
+	          #absolute
+	          CLIMNAM=$CLIMNAM
+	      fi
+	  fi
+  fi  
+fi
+
+if [ -z $OROGRAPHY_TRUNCATION ]; then
+  echo "orography_truncation type argument is missing. 3 values are possibles, see README for more details"
+  echo "LINEAR, QUADRATIC or CUBIC" 
+  exit 1  
+else
+	if [ "$OROGRAPHY_TRUNCATION" != "LINEAR" ] && [ "$OROGRAPHY_TRUNCATION" != "QUADRATIC" ] && [ "$OROGRAPHY_TRUNCATION" != "CUBIC" ]; then
+	  echo "orography_truncation type argument is wrong. 3 values are possibles, LINEAR, QUADRATIC or CUBIC" 
+	  exit 1 
+	fi
+fi
+
+
+if [ -z $OTHERFIELDS_TRUNCATION ]; then
+  echo "otherfields_truncation type argument is missing. 3 values are possibles, see README for more details"
+  echo "LINEAR, QUADRATIC or CUBIC" 
+  exit 1
+else
+	if [ "$OTHERFIELDS_TRUNCATION" != "LINEAR" ] && [ "$OTHERFIELDS_TRUNCATION" != "QUADRATIC" ] && [ "$OTHERFIELDS_TRUNCATION" != "CUBIC" ]; then
+	  echo "otherfields_truncation type argument is wrong. 3 values are possibles, LINEAR, QUADRATIC or CUBIC" 
+	  exit 1 
+	fi
+fi
+
+
+
+
+#---------------------------
+CLIMAKEDIR=$PWD
+
+#clearing screen
+clear
+
+echo "-------*****-------" 
+echo "WELCOME TO CLIMAKE VERSION :"$CLIMAKE_VERSION 
+echo "-------*****-------" 
+
+#---------------------------
+
+
+
+
+
+#####checks for truncations
+#NDLON and NDGLG must be 2^i x 3^j x 5^k with i,j,k integers
+# at leat one of i,j,k must be >0
+
+NDLON=$(grep NDLON= $CLIMGEO | cut -d "=" -f2 | cut -d "," -f1)
+NDGLG=$(grep NDGLG= $CLIMGEO | cut -d "=" -f2 | cut -d "," -f1)
+
+
+if [ "$(((NDLON/2) * 2))" != "$NDLON" ] && [ "$(((NDLON/3) * 3))" != "$NDLON" ] && [ "$(((NDLON/5) * 5))" != "$NDLON" ]; then
+    echo 'NDLON must be divisible by 2, 3 or 5. Aborting...'
+    exit 1
+fi
+if [ "$(((NDGLG/2) * 2))" != "$NDGLG" ] && [ "$(((NDGLG/3) * 3))" != "$NDGLG" ] && [ "$(((NDGLG/5) * 5))" != "$NDGLG" ]; then
+    echo 'NDGLG must be divisible by 2, 3 or 5. Aborting...'
+    exit 1
+fi
+
+echo 'NDGLG is '$NDGLG
+echo 'NDLON is '$NDLON
+
+if [ "$AUTOTRUNC" == "m" ] ;then
+    echo 'manual NSMAX/NMSMAX choice. Warning, CLIMAKE will not make verifications in this case...'
+    if [ "$OROGRAPHY_TRUNCATION" == "$OTHERFIELDS_TRUNCATION" ]; then
+        echo 'there will be one orography step'
+        echo 'choose NSMAX'
+        read NSMAX
+        echo 'choose NMSMAX'
+        read NMSMAX
+        SPECTRALS_PARAMS=$NSMAX","$NMSMAX  
+    else
+        echo 'there will be 2 orography step'
+        echo 'choose NSMAX_ORO for orography'
+        read NSMAX_ORO
+        echo 'choose NMSMAX_ORO for orography'
+        read NMSMAX_ORO
+        echo 'choose NSMAX for other fields'
+        read NSMAX
+        echo 'choose NMSMAX for other fields'
+        read NMSMAX        
+        SPECTRALS_PARAMS=$NSMAX","$NMSMAX"@"$NSMAX_ORO","$NMSMAX_ORO           
+    fi
+    
+    
+    
+elif [ "$AUTOTRUNC" == "a" ];then
+    echo 'Computing NSMAX and NMSMAX automatically from NDGLG and NDLON'
+	#check if truncation parameters in input are valid
+	#and construct SPECTRAL_PARAMS
+	#when one orography step is asked 
+	# SPECTRAL_PARAMS contains $NSMAX,$NMSMAX
+	#when 2 orography step is asked 
+	#SPECTRALS_PARAMS=$NSMAX","$NMSMAX"@"$NSMAX_ORO","$NMSMAX_ORO 
+	
+	
+	if [ "$OROGRAPHY_TRUNCATION" == "$OTHERFIELDS_TRUNCATION" ]; then
+	    if [ "$OROGRAPHY_TRUNCATION" == "LINEAR" ]; then
+	        NSMAX=$(((NDGLG - 1) / 2 ))
+	        NMSMAX=$(((NDLON -1) /2))
+	        MESSAGE="WARNING: this setting may produce orography unstability (because of LINEAR orography)!"
+	        
+	        SPECTRALS_PARAMS=$NSMAX","$NMSMAX
+	        
+	    fi
+	    if [ "$OROGRAPHY_TRUNCATION" == "QUADRATIC" ]; then	
+	        NSMAX=$(((NDGLG - 1) / 3))
+	        NMSMAX=$(((NDLON -1 ) / 3))
+	        MESSAGE="This setting is adapted for TELECOM domain. There will be only one orography step in 923.\n"
+	        MESSAGE=$MESSAGE" NSMAX and NMSMAX have been calculated. NSMAX="$NSMAX" NMSMAX="$NMSMAX"\n"
+	        SPECTRALS_PARAMS=$NSMAX","$NMSMAX
+	        
+	    fi    
+	    if [ "$OROGRAPHY_TRUNCATION" == "CUBIC" ]; then	
+	        NSMAX=$(((NDGLG - 1) / 4))
+	        NMSMAX=$(((NDLON - 1) / 4))
+	        MESSAGE="This setting is adapted for LIGHTER TELECOM domain. There will be only one orography step in 923.\n"
+	        MESSAGE=$MESSAGE" NSMAX and NMSMAX have been calculated. NSMAX="$NSMAX" NMSMAX="$NMSMAX"\n"   
+	        SPECTRALS_PARAMS=$NSMAX","$NMSMAX     
+	    fi   
+	else
+	    #differents cases
+	    if [ "$OROGRAPHY_TRUNCATION" == "LINEAR" ] ; then
+			echo 'Wrong setting! OROGRAPHY_TRUCATION must be lower or equals than OTHERFIELDS_TRUNCATION'
+			echo 'with convention LINEAR > QUADRATIC > CUBIC'
+			exit 1
+	    fi  
+	    if [ "$OROGRAPHY_TRUNCATION" == "QUADRATIC" ] ; then
+		    if [ "$OTHERFIELDS_TRUNCATION" == "LINEAR" ] ; then
+		        #classic 923 clim setting
+		        NSMAX=$(((NDGLG - 1 ) / 2))
+		        NMSMAX=$(((NDLON -1) / 2))
+		        NSMAX_ORO=$(((NDGLG - 1) / 3))
+		        NMSMAX_ORO=$(((NDLON -1) / 3))       
+		        MESSAGE="This setting is adapted for usual model clim. There will be two orography step in 923.\n"
+		        MESSAGE=$MESSAGE"The first one in QUADRATIC resolution. NSMAX="$NSMAX_ORO" , NMSMAX="$NMSMAX_ORO"\n"   	        
+		        MESSAGE=$MESSAGE"Then for all others steps NSMAX="$NSMAX" , NMSMAX="$NMSMAX"\n"
+		        SPECTRALS_PARAMS=$NSMAX","$NMSMAX"@"$NSMAX_ORO","$NMSMAX_ORO
+			else
+			   #$OROGRAPHY_TRUNCATION == QUADRATIC and $OTHERFIELDS_TRUNCATION == CUBIC
+			   	echo 'Wrong setting! OROGRAPHY_TRUCATION must be lower or equals than OTHERFIELDS_TRUNCATION'
+				echo 'with convention LINEAR > QUADRATIC > CUBIC'
+				exit 1	  
+		    fi     
+	    fi      
+	    if [ "$OROGRAPHY_TRUNCATION" == "CUBIC" ] ; then
+		    if [ "$OTHERFIELDS_TRUNCATION" == "QUADRATIC" ] ; then
+		        #warning unusual but valid 923 setting
+		        NSMAX=$(((NDGLG - 1) / 3))
+		        NMSMAX=$(((NDLON - 1) / 3))
+		        NSMAX_ORO=$(((NDGLG - 1) / 4 ))
+		        NMSMAX_ORO=$(((NDLON - 1) / 4))	        
+		        MESSAGE="This setting is strange but may be valid. There will be two orography step in 923.\n"
+		        MESSAGE=$MESSAGE"The first one in QUADRATIC resolution. NSMAX="$NSMAX_ORO" , NMSMAX="$NMSMAX_ORO"\n"   	        
+		        MESSAGE=$MESSAGE"Then for all others steps NSMAX="$NSMAX" , NMSMAX="$NMSMAX"\n"	 
+		        SPECTRALS_PARAMS=$NSMAX","$NMSMAX"@"$NSMAX_ORO","$NMSMAX_ORO       
+	
+			else
+		        #warning unusual but valid 923 setting
+		        NSMAX=$(((NDGLG - 1) / 2))
+		        NMSMAX=$(((NDLON - 1) / 2))
+		        NSMAX_ORO=$(((NDGLG - 1) / 4))
+		        NMSMAX_ORO=$(((NDLON - 1 ) / 4))	        
+		        MESSAGE="This setting is strange but may be valid. There will be two orography step in 923.\n"
+		        MESSAGE=$MESSAGE"The first one in QUADRATIC resolution. NSMAX="$NSMAX_ORO" , NMSMAX="$NMSMAX_ORO"\n"   	        
+		        MESSAGE=$MESSAGE"Then for all others steps NSMAX="$NSMAX" , NMSMAX="$NMSMAX"\n"	 
+		        SPECTRALS_PARAMS=$NSMAX","$NMSMAX"@"$NSMAX_ORO","$NMSMAX_ORO       
+		    fi      
+	    fi
+	    
+	fi  
+else
+   echo 'Forbidden choice for AUTOTRUNC. Aborting...'
+   exit 1   
+fi  
+
+
+
+
+
+# generate an identifier for output directory 
+ 
+PGDGEOSHORT=(${PGDGEO//\// })
+PGDGEOSHORT=${PGDGEOSHORT[@]: -1}
+
+CLIMGEOSHORT=(${CLIMGEO//\// })
+CLIMGEOSHORT=${CLIMGEOSHORT[@]: -1}
+
+if [ "${PGDNAM:0:7}" == "GCO" ]; then
+	PGDNAMSHORT=$PGDNAM
+else
+	PGDNAMSHORT=(${PGDNAM//\// })
+	PGDNAMSHORT=${PGDNAMSHORT[@]: -1}
+fi 
+
+if [ "${CLIMNAM:0:7}" == "GCO" ]; then
+	CLIMNAMSHORT=$CLIMNAM
+else
+	CLIMNAMSHORT=(${CLIMNAM//\// })
+	CLIMNAMSHORT=${CLIMNAMSHORT[@]: -1}
+fi 
+
+#ability to customize output dir
+if [[ -z "${CUSTOM_OUT}" ]]; then
+    OUTPUTDIR=$CLIMAKEDIR'/outputFiles/pgddomain-'$PGDGEOSHORT'__climdomain-'$CLIMGEOSHORT'__cycle-'$CYCLE'__pgdnam-'$PGDNAMSHORT'__climnam-'$CLIMNAMSHORT'__orotrunc-'$OROGRAPHY_TRUNCATION'__othertrunc-'$OTHERFIELDS_TRUNCATION'__v-'$CLIMAKE_VERSION
+else
+    OUTPUTDIR=$CLIMAKEDIR'/outputFiles/'${CUSTOM_OUT}
+fi 
+
+#check if there is custom PGD or custom MASTER
+if [[ -z "${CUSTOM_MASTER}" ]]; then
+    CUSTOM_MASTER='GENERIC' 
+else
+   #test if it exists and if it is executable
+   if [ ! -f $CUSTOM_MASTER ]; then
+	  echo 'CUSTOM_MASTER environment variable is defined but the file is not there...'
+	  echo 'was checking:'$CUSTOM_MASTER
+      echo 'Aborting...'
+      exit 1
+   else
+      chmod +x "$CUSTOM_MASTER"
+   fi  
+fi 
+if [[ -z "${CUSTOM_PGD}" ]]; then
+    CUSTOM_PGD='GENERIC' 
+else
+   #test if it exists and if it is executable
+   if [ ! -f $CUSTOM_PGD ]; then
+	  echo 'CUSTOM_PGD environment variable is defined but the file is not there...'
+	  echo 'was checking:'$CUSTOM_PGD
+      echo 'Aborting...'
+      exit 1
+   else
+      chmod +x "$CUSTOM_PGD"
+   fi  
+fi 
+
+#check if workdir is defined
+
+if [[ -z "${CLIMAKEWORKDIR}" ]]; then
+    CLIMAKEWORKDIR=$(mktemp -d)
+fi
+
+if [[ -z "${PGDHACK}" ]]; then
+    PGDHACK=":" #nothing
+else
+    PGDHACK=$(realpath $PGDHACK)
+fi
+
+
+echo '---------------------------'
+echo '==========================='
+echo '******LAUCHING CLIMAKE*****'
+echo 'PGD GEOMETRY is '$PGDGEO
+echo 'CLIM GEOMETRY is '$CLIMGEO
+echo 'GENV CYCLE IS '$CYCLE
+echo 'PGDNAM IS '$PGDNAM
+echo 'CLIMNAM IS '$CLIMNAM
+echo 'OROGRAPHY_TRUNCATION IS '$OROGRAPHY_TRUNCATION
+echo 'OTHERFIELDS_TRUNCATION IS '$OTHERFIELDS_TRUNCATION
+echo 'CLIMAKEDIR IS '$CLIMAKEDIR
+echo 'OUTPUT DIR IS '$OUTPUTDIR
+echo 'MASTER BINARY IS '$CUSTOM_MASTER
+echo 'PGD BINARY IS '$CUSTOM_PGD
+echo 'CLIMAKEWORKDIR IS '$CLIMAKEWORKDIR
+echo 'PGDHACK IS '$PGDHACK
+echo '==========================='
+echo '***************************'
+echo '                           '
+echo -e $MESSAGE
+echo 'SPECTRALS_PARAMS IS '$SPECTRALS_PARAMS
+echo '                           '
+echo '***************************'
+
+
+echo '==========================='
+echo '---------------------------'
+
+
+echo 'Do you confirm? (y/n)'
+read answer
+if [ "$answer" != "y" ];then
+   echo 'Job canceled'
+   exit 1
+fi
+
+
+[ ! -d $OUTPUTDIR'/listings' ] && mkdir -p $OUTPUTDIR'/listings'
+cp -f $CONFIGFILE $OUTPUTDIR/.
+
+
+# start job
+sbatch scripts/1_fetch_files $PGDGEO $CLIMGEO $CYCLE $PGDNAM $CLIMNAM $OROGRAPHY_TRUNCATION $OTHERFIELDS_TRUNCATION $CLIMAKEDIR $OUTPUTDIR $CUSTOM_MASTER $CUSTOM_PGD $SPECTRALS_PARAMS $CLIMAKEWORKDIR $PGDHACK

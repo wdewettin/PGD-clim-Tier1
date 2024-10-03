@@ -1,0 +1,154 @@
+#!/bin/bash
+#SBATCH -p normal256
+#SBATCH -n 1
+#SBATCH -c 1
+#SBATCH -N 1
+#SBATCH -t 01:59:00
+#SBATCH --mem=62000
+#SBATCH --exclusive
+#SBATCH --job-name=2climake
+#SBATCH --output=%x.o%j
+#SBATCH --error=%x.o%j 
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#   
+#   Job #2
+#
+#   Building of the PGD for climatological files building;
+#
+#   This file has to be in FA format to be read by the 923 conf later;
+#
+#
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+set -ex
+
+
+PGDGEO=$1
+CLIMGEO=$2
+CYCLE=$3
+PGDNAM=$4
+CLIMNAM=$5
+OROGRAPHY_TRUNCATION=$6
+OTHERFIELDS_TRUNCATION=$7
+CLIMAKEDIR=$8
+OUTPUTDIR=$9
+CUSTOM_MASTER=${10}
+CUSTOM_PGD=${11}
+SPECTRALS_PARAMS=${12}
+CLIMAKEWORKDIR=${13}
+PGDHACK=${14}
+
+[ ! -d $CLIMAKEWORKDIR ] && mkdir -p $CLIMAKEWORKDIR
+
+
+cd $CLIMAKEWORKDIR
+[ ! -d build_pgd ] && mkdir build_pgd 
+cd build_pgd
+
+# Input needed in this job
+#If you want to change the orography input dabatase and take the GMTED 30s file replace 
+#GMTED2010_OROGRAPHY_07S5 with GMTED2010_OROGRAPHY_30S0 in the NEEDED_INPUTS variable above
+
+NEEDED_INPUTS=(HWSD_CLAY HWSD_SAND ECOCLIMAP_I_SURFACE_TYPE GMTED2010_OROGRAPHY_07S5 ECOCLIMAP_COVERS_PARAM MASTER_PGD NAMELIST_AROME)
+# variables in gget
+VARIABLES=$(/home/mf/dp/marp/martinezs/public/bin/genv $CYCLE)
+
+# construct GENVDICT dictionnary
+declare -A GENVDICT
+for i in $VARIABLES
+do
+  key=$(echo $i | cut -d "=" -f1)
+  value=$(echo $i | cut -d "\"" -f2)
+  GENVDICT["$key"]=$value
+done
+
+echo '---------------------------'
+echo '==========================='
+echo '******build_pgd   --->   Workdir is '$CLIMAKEWORKDIR'*****'
+echo '==========================='
+echo '***************************'
+echo '                           '
+
+
+
+#
+#     Databases searching
+#
+ 
+for i in ${NEEDED_INPUTS[@]}
+do
+  /home/mf/dp/marp/martinezs/public/bin/gget ${GENVDICT[$i]}
+  if [ "${GENVDICT[$i]: -2}" == "gz" ] ; then
+      echo "untaring..."
+      tar -xvf ${GENVDICT[$i]}
+  fi  
+done
+
+#
+#     Namelist
+#
+
+if [ "$PGDNAM" == "GCO" ];then
+  cat ${GENVDICT[NAMELIST_AROME]}'/arome/namel_buildpgd' > OPTIONS.nam
+elif [ "$PGDNAM" == "GCO_POSTPRO" ];then
+  cat ${GENVDICT[NAMELIST_BDAP]}'/bdap/namel_buildpgd' > OPTIONS.nam
+else
+  cat $PGDNAM > OPTIONS.nam
+fi  
+
+#shortcut for xpnam tool
+XPNAM=$CLIMAKEDIR'/stuff/xpnam'
+$XPNAM -i --dfile=$PGDGEO OPTIONS.nam
+
+if [ "$CUSTOM_PGD" == "GENERIC" ]; then
+  #default binary
+  cp ${GENVDICT[MASTER_PGD]} pgd.exe 
+else
+  cp $CUSTOM_PGD pgd.exe
+fi  
+
+echo '  ------------EXPORTING ENV VARIABLES  ------------ '
+export OMP_NUM_THREADS=1
+source $CLIMAKEDIR'/stuff/environmentVariables'
+echo '  ------------------------------------------------- '
+
+
+
+echo '  ------------EXPORTING NAMELIST  ----------------- '
+cat OPTIONS.nam
+echo '  ------------------------------------------------- '
+
+$PGDHACK
+
+
+time ./pgd.exe
+codrep=$?
+if [ $codrep -ne 0 ] ;then
+  echo '  ------------------------------------------------- '
+  echo '  2climake FAILED during PGD'
+  exit $coderep
+else
+  if [ ! -f "PGD.fa" ]; then
+    echo "PGD fa file has not been produced! error during PGD... Aborting"
+    exit 1
+  else 
+    echo '  2climake PGD was succesful!'
+  fi 
+fi   
+
+ls -l
+
+mv LISTING_PGD.txt ../listing.pgd
+
+PGDFA=$OUTPUTDIR'/PGD.fa'
+echo $PGDFA   
+
+cp PGD.fa $PGDFA
+
+cd $CLIMAKEDIR
+
+sbatch scripts/3_job_923 $PGDGEO $CLIMGEO $CYCLE $PGDNAM $CLIMNAM $OROGRAPHY_TRUNCATION $OTHERFIELDS_TRUNCATION $CLIMAKEDIR $OUTPUTDIR $CUSTOM_MASTER $CUSTOM_PGD $SPECTRALS_PARAMS $CLIMAKEWORKDIR
+
+

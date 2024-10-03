@@ -1,0 +1,20 @@
+#this namelist delta will be applied only in the case of 1 orography step for postprocession latlon domain
+ &NAMDIM
+   NSMAX=--,
+   NMSMAX=--,
+ /
+ &NAMCLA
+   NLISSP=--,
+   LNEWORO=.FALSE.,      
+   LNORO=.TRUE.,
+   LNLSM=.TRUE.,
+   LIPGD=.TRUE.,
+   
+ /
+ &NAMCLI
+   RSTR=--,
+ /
+
+  
+ 
+ 
