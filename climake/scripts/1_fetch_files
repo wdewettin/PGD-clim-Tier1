@@ -38,26 +38,27 @@ SPECTRALS_PARAMS=${12}
 CLIMAKEWORKDIR=${13}
 PGDHACK=${14}
 #get genv variables
-VARIABLES=$(/home/mf/dp/marp/martinezs/public/bin/genv $CYCLE)
+# VARIABLES=$(/home/mf/dp/marp/martinezs/public/bin/genv $CYCLE)
+VARIABLES=$(cat /dodrio/scratch/users/vsc45263/wout/PGD-clim-Tier1/climake/scripts/variables.txt)
 
 set -e
 #check if $CYCLE is a proper GENV CYCLE
-if [ "${VARIABLES[0]}" = "CYCLE_NAME=\"not found\"" ]; then
-  echo 'GENV Cycle seem wrong: you gave '$CYCLE
-  echo '/home/mf/dp/marp/martinezs/public/bin/gget '$CYCLE' must return key/value list. Aborting'
-  exit $?
-fi
+# if [ "${VARIABLES[0]}" = "CYCLE_NAME=\"not found\"" ]; then
+#   echo 'GENV Cycle seem wrong: you gave '$CYCLE
+#   echo '/home/mf/dp/marp/martinezs/public/bin/gget '$CYCLE' must return key/value list. Aborting'
+#   exit $?
+# fi
 
 #looping on key/values and prefetch files (see above for the reason why we do that)
-for i in $VARIABLES
-do
-  if [ "$(echo $i | cut -d "=" -f1)" = "CYCLE_NAME" ]; then
-    continue
-  fi
-  j=$(echo $i | cut -d "\"" -f2)
-  echo 'calling gget on '$j
-  /home/mf/dp/marp/martinezs/public/bin/gget path --verbose $j || :
-done
+# for i in $VARIABLES
+# do
+#   if [ "$(echo $i | cut -d "=" -f1)" = "CYCLE_NAME" ]; then
+#    continue
+#   fi
+#   j=$(echo $i | cut -d "\"" -f2)
+#   echo 'calling gget on '$j
+#   /home/mf/dp/marp/martinezs/public/bin/gget path --verbose $j || :
+# done
 
 
 
@@ -65,11 +66,11 @@ echo 'Job 1_fetch_files ended correctly!'
 
 if [ "$PGDGEO" == "NOPGD" ]; then
   echo "RUN WITHOUT PGD, jump to climake third step"
-  sbatch script/3_job_923 $PGDGEO $CLIMGEO $CYCLE $PGDNAM $CLIMNAM $OROGRAPHY_TRUNCATION $OTHERFIELDS_TRUNCATION $CLIMAKEDIR $OUTPUTDIR $CUSTOM_MASTER $CUSTOM_PGD $SPECTRALS_PARAMS $CLIMAKEWORKDIR
+  qsub script/3_job_923 $PGDGEO $CLIMGEO $CYCLE $PGDNAM $CLIMNAM $OROGRAPHY_TRUNCATION $OTHERFIELDS_TRUNCATION $CLIMAKEDIR $OUTPUTDIR $CUSTOM_MASTER $CUSTOM_PGD $SPECTRALS_PARAMS $CLIMAKEWORKDIR
 else
   echo "RUN WITH PGD"
-  sbatch scripts/2_make_pgd $PGDGEO $CLIMGEO $CYCLE $PGDNAM $CLIMNAM $OROGRAPHY_TRUNCATION $OTHERFIELDS_TRUNCATION $CLIMAKEDIR $OUTPUTDIR $CUSTOM_MASTER $CUSTOM_PGD $SPECTRALS_PARAMS $CLIMAKEWORKDIR $PGDHACK
-fi
+  qsub scripts/2_make_pgd $PGDGEO $CLIMGEO $CYCLE $PGDNAM $CLIMNAM $OROGRAPHY_TRUNCATION $OTHERFIELDS_TRUNCATION $CLIMAKEDIR $OUTPUTDIR $CUSTOM_MASTER $CUSTOM_PGD $SPECTRALS_PARAMS $CLIMAKEWORKDIR $PGDHACK
+  fi
 
 
 exit $?
