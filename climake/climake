@@ -418,9 +418,10 @@ fi
 
 #check if workdir is defined
 
-if [[ -z "${CLIMAKEWORKDIR}" ]]; then
-    CLIMAKEWORKDIR=$(mktemp -d)
-fi
+# if [[ -z "${CLIMAKEWORKDIR}" ]]; then
+#     CLIMAKEWORKDIR=$(mktemp -d)
+# fi
+CLIMAKEWORKDIR=/dodrio/scratch/users/vsc45263/wout/PGD-clim-Tier1/climake/work
 
 if [[ -z "${PGDHACK}" ]]; then
     PGDHACK=":" #nothing

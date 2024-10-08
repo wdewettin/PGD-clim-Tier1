@@ -1,5 +1,10 @@
-# variables to be exported before run (you can add yours here)
+NPROC=$((PBS_NP/OMP_NUM_THREADS))
+
+module swap cluster/dodrio/cpu_milan
+module load iimpi/2022a imkl/2022.1.0 vsc-mympirun
+export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/dodrio/scratch/projects/starting_2022_075/accord/software/iimpi2022a/lib64
 ulimit -s unlimited
+ulimit -c unlimited
 export OMP_STACKSIZE=1G
 export KMP_STACKSIZE=1G
 export KMP_MONITOR_STACKSIZE=1G
@@ -10,5 +15,6 @@ export DR_HOOK_OPT=prof
 export MPL_MBX_SIZE=2048000000
 export EC_PROFILE_HEAP=0
 export EC_MPI_ATEXIT=0
-MPIAUTO=/opt/softs/mpiauto/mpiauto
-
+export OMPI_MCA_btl='^uct,ofi'
+export OMPI_MCA_pml='ucx'
+export OMPI_MCA_mtl='^ofi'

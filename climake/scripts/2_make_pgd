@@ -1,14 +1,12 @@
 #!/bin/bash
-#SBATCH -p normal256
-#SBATCH -n 1
-#SBATCH -c 1
-#SBATCH -N 1
-#SBATCH -t 01:59:00
-#SBATCH --mem=62000
-#SBATCH --exclusive
-#SBATCH --job-name=2climake
-#SBATCH --output=%x.o%j
-#SBATCH --error=%x.o%j 
+#PBS -V
+#PBS -N 2climake
+#PBS -l walltime=01:59:00
+#PBS -l mem=62GB
+#PBS -l nodes=1:ppn=1
+#PBS -o 2climake.o
+#PBS -e 2climake.e
+#PBS -A 2022_205
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #   
@@ -53,7 +51,8 @@ cd build_pgd
 
 NEEDED_INPUTS=(HWSD_CLAY HWSD_SAND ECOCLIMAP_I_SURFACE_TYPE GMTED2010_OROGRAPHY_07S5 ECOCLIMAP_COVERS_PARAM MASTER_PGD NAMELIST_AROME)
 # variables in gget
-VARIABLES=$(/home/mf/dp/marp/martinezs/public/bin/genv $CYCLE)
+# VARIABLES=$(/home/mf/dp/marp/martinezs/public/bin/genv $CYCLE)
+VARIABLES=$(cat /dodrio/scratch/users/vsc45263/wout/PGD-clim-Tier1/climake/scripts/variables.txt)
 
 # construct GENVDICT dictionnary
 declare -A GENVDICT
@@ -76,14 +75,14 @@ echo '                           '
 #
 #     Databases searching
 #
- 
 for i in ${NEEDED_INPUTS[@]}
 do
-  /home/mf/dp/marp/martinezs/public/bin/gget ${GENVDICT[$i]}
-  if [ "${GENVDICT[$i]: -2}" == "gz" ] ; then
-      echo "untaring..."
-      tar -xvf ${GENVDICT[$i]}
-  fi  
+  # /home/mf/dp/marp/martinezs/public/bin/gget ${GENVDICT[$i]}
+  cp -rv /dodrio/scratch/projects/2022_200/project_input/RMIB-UGent/vsc41138_michiel/climake/climake_data/${GENVDICT[$i]} .
+  # if [ "${GENVDICT[$i]: -2}" == "gz" ] ; then
+  #     echo "untaring..."
+  #    tar -xvf ${GENVDICT[$i]}
+  # fi  
 done
 
 #
@@ -149,6 +148,6 @@ cp PGD.fa $PGDFA
 
 cd $CLIMAKEDIR
 
-sbatch scripts/3_job_923 $PGDGEO $CLIMGEO $CYCLE $PGDNAM $CLIMNAM $OROGRAPHY_TRUNCATION $OTHERFIELDS_TRUNCATION $CLIMAKEDIR $OUTPUTDIR $CUSTOM_MASTER $CUSTOM_PGD $SPECTRALS_PARAMS $CLIMAKEWORKDIR
+# sbatch scripts/3_job_923 $PGDGEO $CLIMGEO $CYCLE $PGDNAM $CLIMNAM $OROGRAPHY_TRUNCATION $OTHERFIELDS_TRUNCATION $CLIMAKEDIR $OUTPUTDIR $CUSTOM_MASTER $CUSTOM_PGD $SPECTRALS_PARAMS $CLIMAKEWORKDIR
 
 
