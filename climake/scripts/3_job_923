@@ -1,14 +1,12 @@
 #!/bin/bash
-#SBATCH -p normal256
-#SBATCH -n 1
-#SBATCH -c 1
-#SBATCH -N 1
-#SBATCH -t 00:50:00
-#SBATCH --mem=62000
-#SBATCH --exclusive
-#SBATCH --job-name=3climake
-#SBATCH --output=%x.o%j
-#SBATCH --error=%x.o%j 
+#PBS -V
+#PBS -N 3climake
+#PBS -l walltime=00:50:00
+#PBS -l mem=62GB
+#PBS -l nodes=1:ppn=1
+#PBS -o 3climake.o
+#PBS -e 3climake.e
+#PBS -A 2022_205
 
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -79,7 +77,8 @@ echo '  ------------------------------------------------- '
 # Input needed in this job
 NEEDED_INPUTS=(ARPREANALYSIS_SOIL_CLIM AVHRR_ESA_LAI AVHRR_ESA_VEGETATION AVHRR_ESA_SOIL_AND_VEG GIARDBAZILE2000_SOIL_AND_VEG GTOPO30_MISC_OROGRAPHY UGAMP_OZONE TEGEN_AEROSOLS MASTER_AROME GTOPO30_WATER_PERCENTAGE GTOPO30_URBANISATION USNAVY_SOIL_CLIM GIARDBAZILE2000_VEGETATION GIARDBAZILE2000_LAI ARPREANALYSIS_SURFGEOPOTENTIAL NAMELIST_AROME)
 # variables in gget
-VARIABLES=$(/home/mf/dp/marp/martinezs/public/bin/genv $CYCLE)
+# VARIABLES=$(/home/mf/dp/marp/martinezs/public/bin/genv $CYCLE)
+VARIABLES=$(cat /dodrio/scratch/users/vsc45263/wout/PGD-clim-Tier1/climake/scripts/variables.txt)
 # construct GENVDICT dictionnary
 declare -A GENVDICT
 for i in $VARIABLES
@@ -93,8 +92,10 @@ done
 #  DATABASES
 for i in ${NEEDED_INPUTS[@]}
 do
-  echo 'fake get'
-  /home/mf/dp/marp/martinezs/public/bin/gget ${GENVDICT[$i]}
+    cp -rv /dodrio/scratch/users/vsc45263/wout/PGD-clim-Tier1/climake/data/${GENVDICT[$i]} .
+    # cp -rv /dodrio/scratch/projects/2022_200/project_input/RMIB-UGent/vsc41138_michiel/climake/climake_data/${GENVDICT[$i]} .
+#   echo 'fake get'
+#   /home/mf/dp/marp/martinezs/public/bin/gget ${GENVDICT[$i]}
 done
 
 #shortcut for xpnam tool
@@ -243,44 +244,45 @@ do
   # make symlinks of files
   for f in ${INPUTLIST[@]}
   do 
-      echo $f
-      source=$(echo $f | cut -d "@" -f1)
-      dest=$(echo $f | cut -d "@" -f2)
-      #special threatment in case of PGD
-      if [ "$source" == "PGD" ]; then
-        source=$OUTPUTDIR'/PGD.fa'
-      elif [ "$source" == "Const.Clim" ]; then 
-        source=$OUTPUTDIR'/Const.Clim'
-      elif [ "$source" == "MASTER_AROME" ]; then 
-		if [ "$CUSTOM_MASTER" == "GENERIC" ]; then
-		  #default binary
-		  source='../'${GENVDICT[$source]}		  
-		else
-          source=$CUSTOM_MASTER
-		fi    
-	  elif [ "${source:0:3}" == "../" ]; then 	
-		echo 'clim case'             
-	  elif [ "${source:0:6}" == "MONTH_" ]; then 
-	    #monthly inputs
-	    genvsource=${source:6}
-	    source=${GENVDICT[$genvsource]}
-	    MONTHLYINPUTS=( "${MONTHLYINPUTS[@]}" "$source"@"$dest" )
-		echo $MONTHLYINPUTS
-		#skip the ln -s above
-		dest="skip"
+    echo $f
+    source=$(echo $f | cut -d "@" -f1)
+    dest=$(echo $f | cut -d "@" -f2)
+    #special threatment in case of PGD
+    if [ "$source" == "PGD" ]; then
+      source=$OUTPUTDIR'/PGD.fa'
+    elif [ "$source" == "Const.Clim" ]; then 
+      source=$OUTPUTDIR'/Const.Clim'
+    elif [ "$source" == "MASTER_AROME" ]; then 
+      if [ "$CUSTOM_MASTER" == "GENERIC" ]; then
+        #default binary
+        source='../'${GENVDICT[$source]}		  
       else
-        source='../'${GENVDICT[$source]}
-      fi 
+        source=$CUSTOM_MASTER
+      fi    
+    elif [ "${source:0:3}" == "../" ]; then 	
+      echo 'clim case'             
+    elif [ "${source:0:6}" == "MONTH_" ]; then 
+      #monthly inputs
+      genvsource=${source:6}
+      source=${GENVDICT[$genvsource]}
+      source=${source:0:-3} # To remove trailinh characters (.m*) # ${GENVDICT[$genvsource]}
+      MONTHLYINPUTS=( "${MONTHLYINPUTS[@]}" "$source"@"$dest" )
+      echo $MONTHLYINPUTS
+      #skip the ln -s below
+      dest="skip"
+    else
+      source='../'${GENVDICT[$source]}
+    fi 
 
-      
-      if [ "${dest: -2}" == "gz" ] ; then
-	    echo "untaring..."
-	    tar -xvf $source
-	  elif [ "${dest: -4}" == "loop" ] || [ "$dest" == "skip" ] ; then
-	    echo "skiping"
-      else
-        ln -s $source $dest
-      fi  
+
+    if [ "${dest: -2}" == "gz" ] ; then
+    echo "untaring..."
+    tar -xvf $source
+    elif [ "${dest: -4}" == "loop" ] || [ "$dest" == "skip" ] ; then
+    echo "skiping"
+    else
+    ln -s $source $dest
+    fi  
       
   done
   
@@ -321,7 +323,8 @@ do
 	      
 	  done
       cat fort.4	  
-      time $MPIAUTO -np 1 -nnp 1 -- "./MASTER"
+      # time $MPIAUTO -np 1 -nnp 1 -- "./MASTER"
+      time mympirun --variablesprefix DR -h $NPROC ./MASTER
       codrep=$?
 	  if [ $codrep -ne 0 ] ;then
 	    echo '  ------------------------------------------------- '
@@ -334,7 +337,8 @@ do
      
   else
     cat fort.4
-    time $MPIAUTO -np 1 -nnp 1 -- "./MASTER"
+    # time $MPIAUTO -np 1 -nnp 1 -- "./MASTER"
+    time mympirun --variablesprefix DR -h $NPROC ./MASTER
     #generic return code
     codrep=$?
     mv "NODE.001_01" "../listing.step_"$i
@@ -375,7 +379,7 @@ echo 'Job 3_job_923 ended correctly!'
 
 cd $CLIMAKEDIR
 
-sbatch scripts/4_finalize $CYCLE $CLIMAKEDIR $OUTPUTDIR
+# sbatch scripts/4_finalize $CYCLE $CLIMAKEDIR $OUTPUTDIR
 exit $?
 
 
