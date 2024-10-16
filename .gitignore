@@ -1,3 +1,9 @@
 climake/outputFiles/**
 climake/work/**
 climake/data/**
+climake/*.e
+climake/*.o
+**.pdf
+test_run/prep
+test_run/work
+test_run/output
