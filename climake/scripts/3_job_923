@@ -4,8 +4,6 @@
 #PBS -l walltime=00:50:00
 #PBS -l mem=62GB
 #PBS -l nodes=1:ppn=1
-#PBS -o 3climake.o
-#PBS -e 3climake.e
 #PBS -A 2022_205
 
 
@@ -378,8 +376,9 @@ cp listing* $OUTPUTDIR'/listings'
 echo 'Job 3_job_923 ended correctly!'
 
 cd $CLIMAKEDIR
+rm -rv $CLIMAKEWORKDIR
 
-# sbatch scripts/4_finalize $CYCLE $CLIMAKEDIR $OUTPUTDIR
+sbatch --output=$OUTPUTDIR/log/4climake.o --error=$OUTPUTDIR/log/4climake.e scripts/4_replace_orography $OUTPUTDIR
 exit $?
 
 

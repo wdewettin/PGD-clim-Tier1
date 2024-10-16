@@ -78,7 +78,7 @@ fi
 
 
 
-LAST_VERSION=$(head -n 2 ~suzat/SAVE/CLIMAKE/climake | grep CLIMAKE_VERSION | cut -d "=" -f2)
+LAST_VERSION=1.37 # $(head -n 2 ~suzat/SAVE/CLIMAKE/climake | grep CLIMAKE_VERSION | cut -d "=" -f2)
 
 if [ "$CLIMAKE_VERSION" != "$LAST_VERSION" ]; then
   echo "warning: You are not using the last CLIMAKE VERSION!"
@@ -468,8 +468,9 @@ fi
 
 
 [ ! -d $OUTPUTDIR'/listings' ] && mkdir -p $OUTPUTDIR'/listings'
+[ ! -d $OUTPUTDIR'/log' ] && mkdir -p $OUTPUTDIR'/log'
 cp -f $CONFIGFILE $OUTPUTDIR/.
 
 
 # start job
-sbatch scripts/1_fetch_files $PGDGEO $CLIMGEO $CYCLE $PGDNAM $CLIMNAM $OROGRAPHY_TRUNCATION $OTHERFIELDS_TRUNCATION $CLIMAKEDIR $OUTPUTDIR $CUSTOM_MASTER $CUSTOM_PGD $SPECTRALS_PARAMS $CLIMAKEWORKDIR $PGDHACK
+sbatch --output=$OUTPUTDIR/log/1climake.o --error=$OUTPUTDIR/log/1climake.e scripts/1_fetch_files $PGDGEO $CLIMGEO $CYCLE $PGDNAM $CLIMNAM $OROGRAPHY_TRUNCATION $OTHERFIELDS_TRUNCATION $CLIMAKEDIR $OUTPUTDIR $CUSTOM_MASTER $CUSTOM_PGD $SPECTRALS_PARAMS $CLIMAKEWORKDIR $PGDHACK

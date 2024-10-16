@@ -1,0 +1,36 @@
+#!/bin/bash
+#PBS -V
+#PBS -N 4climake
+#PBS -l walltime=00:50:00
+#PBS -l mem=62GB
+#PBS -l nodes=1:ppn=1
+#PBS -A 2022_205
+
+
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#
+#   Job #4
+#
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+set -ex 
+
+OUTPUTDIR=$1
+
+cd $OUTPUTDIR
+echo '&namelist_vars
+FNAME1="PGD.fa",
+FNAME2="Const.Clim.01",
+/' > fort.4
+
+module purge
+module swap cluster/dodrio/cpu_milan
+module load iimpi/2022a imkl/2022.1.0 vsc-mympirun
+module list
+export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/dodrio/scratch/projects/starting_2022_075/accord/software/iimpi2022a/lib64:/dodrio/scratch/projects/starting_2022_075/accord/software/iimpi2022a/auxlibs/lib
+ulimit -s unlimited
+ulimit -c unlimited
+
+/dodrio/scratch/users/vsc45263/wout/PGD-clim-Tier1/climake/scripts/replace_orography/replace_orography
+
+rm fort.4
