@@ -9,7 +9,7 @@ output_dir_2 <- "/dodrio/scratch/users/vsc45263/wout/PGD-clim-Tier1/climake/outp
 output_file_name_2 <- "Const.Clim."
 
 name_1 <- "l03_original"
-name_2 <- "l03_climake"
+name_2 <- "l03_climake_gmted30s0_ECOII_final"
 
 pgd <- TRUE
 pgd_file_name_1 <- "PGD.fa"
@@ -33,7 +33,10 @@ if (pgd) {
         y2 <- try(FAdec(xs_2, field_name), silent=TRUE)
         if (!inherits(y1, "try-error") & !inherits(y2, "try-error")) {
             y <- y2 - y1
-            if (max(abs(y)) > 0.0){
+            y1max = max(abs(y1))
+            y2max = max(abs(y2))
+            ymax = max(y1max, y2max)
+            if (max(abs(y)) / ymax > 0.001){
                 print("---------------------------------------------")
                 print(field_name)
                 print(abs(y))
@@ -66,7 +69,10 @@ for (month in seq(1, 12)) {
         y2 <- try(FAdec(xa_2, field_name), silent=TRUE)
         if (!inherits(y1, "try-error") & !inherits(y2, "try-error")) {
             y <- y2 - y1
-            if (max(abs(y)) > 0.0){
+            y1max = max(abs(y1))
+            y2max = max(abs(y2))
+            ymax = max(y1max, y2max)
+            if (max(abs(y)) / ymax > 0.001){
                 print("---------------------------------------------")
                 print(field_name)
                 print(abs(y))
