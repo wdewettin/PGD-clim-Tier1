@@ -1,0 +1,910 @@
++ NDAYS=1
++++ seq -f %2g, 1 1 46
+++ echo 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46,
++ LEVELS='1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46,'
++ YYYY=2019
++ MM=03
++ MASTER=/dodrio/scratch/projects/starting_2022_075/accord/pack/test43t2_iimpi/bin/MASTERODB
++ export PYTHONPATH=
++ PYTHONPATH=
++ export OMP_NUM_THREADS=1
++ OMP_NUM_THREADS=1
++ NPROC=128
++ module swap cluster/dodrio/cpu_milan
++ '[' -z '' ']'
++ case "$-" in
++ __lmod_sh_dbg=x
++ '[' -n x ']'
++ set +x
+Shell debugging temporarily silenced: export LMOD_SH_DBG_ON=1 for Lmod's output
+Shell debugging restarted
++ unset __lmod_sh_dbg
++ return 0
++ module load iimpi/2022a imkl/2022.1.0 vsc-mympirun
++ '[' -z '' ']'
++ case "$-" in
++ __lmod_sh_dbg=x
++ '[' -n x ']'
++ set +x
+Shell debugging temporarily silenced: export LMOD_SH_DBG_ON=1 for Lmod's output
+Shell debugging restarted
++ unset __lmod_sh_dbg
++ return 0
++ export LD_LIBRARY_PATH=/readonly/dodrio/apps/RHEL8/zen3-ib/software/imkl/2022.1.0/mkl/2022.1.0/lib/intel64:/readonly/dodrio/apps/RHEL8/zen3-ib/software/imkl/2022.1.0/compiler/2022.1.0/linux/compiler/lib/intel64_lin:/readonly/dodrio/apps/RHEL8/zen3-ib/software/impi/2021.6.0-intel-compilers-2022.1.0/mpi/2021.6.0/libfabric/lib:/readonly/dodrio/apps/RHEL8/zen3-ib/software/impi/2021.6.0-intel-compilers-2022.1.0/mpi/2021.6.0/lib/release:/readonly/dodrio/apps/RHEL8/zen3-ib/software/impi/2021.6.0-intel-compilers-2022.1.0/mpi/2021.6.0/lib:/readonly/dodrio/apps/RHEL8/zen3-ib/software/UCX/1.12.1-GCCcore-11.3.0/lib:/readonly/dodrio/apps/RHEL8/zen3-ib/software/numactl/2.0.14-GCCcore-11.3.0/lib:/readonly/dodrio/apps/RHEL8/zen3-ib/software/intel-compilers/2022.1.0/tbb/2021.6.0/lib/intel64/gcc4.8:/readonly/dodrio/apps/RHEL8/zen3-ib/software/intel-compilers/2022.1.0/compiler/2022.1.0/linux/compiler/lib/intel64_lin:/readonly/dodrio/apps/RHEL8/zen3-ib/software/intel-compilers/2022.1.0/compiler/2022.1.0/linux/lib/x64:/readonly/dodrio/apps/RHEL8/zen3-ib/software/intel-compilers/2022.1.0/compiler/2022.1.0/linux/lib:/readonly/dodrio/apps/RHEL8/zen3-ib/software/binutils/2.38-GCCcore-11.3.0/lib:/readonly/dodrio/apps/RHEL8/zen3-ib/software/zlib/1.2.12-GCCcore-11.3.0/lib:/readonly/dodrio/apps/RHEL8/zen3-ib/software/GCCcore/11.3.0/lib64:/dodrio/scratch/projects/starting_2022_075/accord/software/iimpi2022a/lib64
++ LD_LIBRARY_PATH=/readonly/dodrio/apps/RHEL8/zen3-ib/software/imkl/2022.1.0/mkl/2022.1.0/lib/intel64:/readonly/dodrio/apps/RHEL8/zen3-ib/software/imkl/2022.1.0/compiler/2022.1.0/linux/compiler/lib/intel64_lin:/readonly/dodrio/apps/RHEL8/zen3-ib/software/impi/2021.6.0-intel-compilers-2022.1.0/mpi/2021.6.0/libfabric/lib:/readonly/dodrio/apps/RHEL8/zen3-ib/software/impi/2021.6.0-intel-compilers-2022.1.0/mpi/2021.6.0/lib/release:/readonly/dodrio/apps/RHEL8/zen3-ib/software/impi/2021.6.0-intel-compilers-2022.1.0/mpi/2021.6.0/lib:/readonly/dodrio/apps/RHEL8/zen3-ib/software/UCX/1.12.1-GCCcore-11.3.0/lib:/readonly/dodrio/apps/RHEL8/zen3-ib/software/numactl/2.0.14-GCCcore-11.3.0/lib:/readonly/dodrio/apps/RHEL8/zen3-ib/software/intel-compilers/2022.1.0/tbb/2021.6.0/lib/intel64/gcc4.8:/readonly/dodrio/apps/RHEL8/zen3-ib/software/intel-compilers/2022.1.0/compiler/2022.1.0/linux/compiler/lib/intel64_lin:/readonly/dodrio/apps/RHEL8/zen3-ib/software/intel-compilers/2022.1.0/compiler/2022.1.0/linux/lib/x64:/readonly/dodrio/apps/RHEL8/zen3-ib/software/intel-compilers/2022.1.0/compiler/2022.1.0/linux/lib:/readonly/dodrio/apps/RHEL8/zen3-ib/software/binutils/2.38-GCCcore-11.3.0/lib:/readonly/dodrio/apps/RHEL8/zen3-ib/software/zlib/1.2.12-GCCcore-11.3.0/lib:/readonly/dodrio/apps/RHEL8/zen3-ib/software/GCCcore/11.3.0/lib64:/dodrio/scratch/projects/starting_2022_075/accord/software/iimpi2022a/lib64
++ ulimit -s unlimited
++ ulimit -c unlimited
++ export OMP_STACKSIZE=4G
++ OMP_STACKSIZE=4G
++ export KMP_STACKSIZE=4G
++ KMP_STACKSIZE=4G
++ export MPL_MBX_SIZE=2048000000
++ MPL_MBX_SIZE=2048000000
++ export I_MPI_ADJUST_GATHERV=3
++ I_MPI_ADJUST_GATHERV=3
++ export DR_HOOK=1
++ DR_HOOK=1
++ export DR_HOOK_IGNORE_SIGNALS=8
++ DR_HOOK_IGNORE_SIGNALS=8
++ export EC_PROFILE_HEAP=0
++ EC_PROFILE_HEAP=0
++ export EC_MPI_ATEXIT=0
++ EC_MPI_ATEXIT=0
++ BASEDIR=/dodrio/scratch/users/vsc45263/wout/PGD-clim-Tier1/test_run
++ COUPLINGDIR=/dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc45263_wout/DYDOCASE/runs/long/level02/run199101/output
++ NAMEDIR=/dodrio/scratch/users/vsc45263/wout/PGD-clim-Tier1/test_run/name
++ WORKDIR=/dodrio/scratch/users/vsc45263/wout/PGD-clim-Tier1/test_run/prep/work
++ SAVEDIR=/dodrio/scratch/users/vsc45263/wout/PGD-clim-Tier1/test_run/prep/coupling
++ NAM927=/dodrio/scratch/users/vsc45263/wout/PGD-clim-Tier1/test_run/name/name.e927
++ NAM927_SFX=/dodrio/scratch/users/vsc45263/wout/PGD-clim-Tier1/test_run/name/name.e927.sfx
++ NAM927_LVL=/dodrio/scratch/users/vsc45263/wout/PGD-clim-Tier1/test_run/name/BE40a_46l
++ CLIM_TRG=/dodrio/scratch/users/vsc45263/wout/PGD-clim-Tier1/climake/outputFiles/pgddomain-BE40a_l.nam__climdomain-BE40a_l.nam__cycle-cy43t2_clim-op8.01__pgdnam-GCO__climnam-GCO__orotrunc-QUADRATIC__othertrunc-LINEAR__v-1.37_gmted30s0_ECOII/Const.Clim.
++ CLIM_LBC=/dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc45263_wout/DYDOCASE/runs/long/level02/clim/Const.Clim.
++ PGDFILE=/dodrio/scratch/users/vsc45263/wout/PGD-clim-Tier1/climake/outputFiles/pgddomain-BE40a_l.nam__climdomain-BE40a_l.nam__cycle-cy43t2_clim-op8.01__pgdnam-GCO__climnam-GCO__orotrunc-QUADRATIC__othertrunc-LINEAR__v-1.37_gmted30s0_ECOII/PGD.fa
++ DATADIR_RRTM=/dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc45263_wout/DYDOCASE/runs/data/RRTM
++ DATADIR_ECOCLIMAP=/dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc45263_wout/DYDOCASE/runs/data/ECOCLIMAP
++ mkdir -p /dodrio/scratch/users/vsc45263/wout/PGD-clim-Tier1/test_run/prep/work
++ cd /dodrio/scratch/users/vsc45263/wout/PGD-clim-Tier1/test_run/prep/work
++ CPLNR=0
++ DAY=1
++ HOUR=0
++ ATTEMPT=1
++ let 'CPLNRSTOP=10#1*24'
++ '[' 0 -le 24 ']'
+++ printf %03d 0
++ CPLNR_FORMATTED=000
+++ printf %02d 0
++ HH=00
+++ printf %02d 1
++ DD=01
++ [[ ! -f /dodrio/scratch/users/vsc45263/wout/PGD-clim-Tier1/test_run/prep/work/ELSCFABOFALBC000 ]]
++ [[ 000 = 000 ]]
++ [[ ! -f /dodrio/scratch/users/vsc45263/wout/PGD-clim-Tier1/test_run/prep/work/ICMSHABOFINIT.sfx ]]
++ (( CPLNR++ ))
++ let HOUR=10#0+1
++ '[' 1 -ge 24 ']'
++ '[' 1 -le 24 ']'
+++ printf %03d 1
++ CPLNR_FORMATTED=001
+++ printf %02d 1
++ HH=01
+++ printf %02d 1
++ DD=01
++ [[ ! -f /dodrio/scratch/users/vsc45263/wout/PGD-clim-Tier1/test_run/prep/work/ELSCFABOFALBC001 ]]
++ [[ ! -f /dodrio/scratch/users/vsc45263/wout/PGD-clim-Tier1/test_run/prep/coupling/2019/03/ELSCFABOFALBC001 ]]
++ [[ ! -d prep ]]
++ rm prep/Const.Clim prep/const.clim.ABOF prep/fort.4 prep/ICMSHABOFINIT prep/ifs.stat prep/log.err prep/log.out prep/MASTER prep/MCICA prep/monitor.needs prep/ncf927 prep/NODE.001_01 prep/RADRRTM prep/RADSRTM
++ cd prep
++ [[ 01 -gt 1 ]]
++ scp /dodrio/scratch/users/vsc45263/wout/PGD-clim-Tier1/climake/outputFiles/pgddomain-BE40a_l.nam__climdomain-BE40a_l.nam__cycle-cy43t2_clim-op8.01__pgdnam-GCO__climnam-GCO__orotrunc-QUADRATIC__othertrunc-LINEAR__v-1.37_gmted30s0_ECOII/Const.Clim.03 const.clim.ABOF
++ scp /dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc45263_wout/DYDOCASE/runs/long/level02/clim/Const.Clim.03 Const.Clim
++ scp /dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc45263_wout/DYDOCASE/runs/data/RRTM/RADRRTM .
++ scp /dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc45263_wout/DYDOCASE/runs/data/RRTM/RADSRTM .
++ scp /dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc45263_wout/DYDOCASE/runs/data/RRTM/MCICA .
++ echo 'echo MONITOR: $* >&2'
++ chmod +x monitor.needs
++ echo 128
++ sed -e 's/!.*//' -e 's/{nproc}/128/g' -e 's/{domain}/ABOF/g' -e 's/{levels}/1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46,/g'
++ grep -v '^!'
++ cat /dodrio/scratch/users/vsc45263/wout/PGD-clim-Tier1/test_run/name/name.e927 /dodrio/scratch/users/vsc45263/wout/PGD-clim-Tier1/test_run/name/BE40a_46l
++ COUPLINGPATH=/dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc45263_wout/DYDOCASE/runs/long/level02/run199101/output/2019/03/ICMSHABOF+0001
++ ln -sf /dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc45263_wout/DYDOCASE/runs/long/level02/run199101/output/2019/03/ICMSHABOF+0001 ICMSHABOFINIT
++ ln -sf /dodrio/scratch/projects/starting_2022_075/accord/pack/test43t2_iimpi/bin/MASTERODB ./MASTER
++ mympirun -h 128 ./MASTER
++ mv PFABOFABOF+0000 ../ELSCFABOFALBC001
++ cd ..
++ [[ 001 = 000 ]]
++ (( CPLNR++ ))
++ let HOUR=10#1+1
++ '[' 2 -ge 24 ']'
++ '[' 2 -le 24 ']'
+++ printf %03d 2
++ CPLNR_FORMATTED=002
+++ printf %02d 2
++ HH=02
+++ printf %02d 1
++ DD=01
++ [[ ! -f /dodrio/scratch/users/vsc45263/wout/PGD-clim-Tier1/test_run/prep/work/ELSCFABOFALBC002 ]]
++ [[ ! -f /dodrio/scratch/users/vsc45263/wout/PGD-clim-Tier1/test_run/prep/coupling/2019/03/ELSCFABOFALBC002 ]]
++ [[ ! -d prep ]]
++ rm prep/Const.Clim prep/const.clim.ABOF prep/fort.4 prep/ICMSHABOFINIT prep/ifs.stat prep/log.err prep/log.out prep/MASTER prep/MCICA prep/monitor.needs prep/ncf927 prep/NODE.001_01 prep/RADRRTM prep/RADSRTM
++ cd prep
++ [[ 01 -gt 1 ]]
++ scp /dodrio/scratch/users/vsc45263/wout/PGD-clim-Tier1/climake/outputFiles/pgddomain-BE40a_l.nam__climdomain-BE40a_l.nam__cycle-cy43t2_clim-op8.01__pgdnam-GCO__climnam-GCO__orotrunc-QUADRATIC__othertrunc-LINEAR__v-1.37_gmted30s0_ECOII/Const.Clim.03 const.clim.ABOF
++ scp /dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc45263_wout/DYDOCASE/runs/long/level02/clim/Const.Clim.03 Const.Clim
++ scp /dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc45263_wout/DYDOCASE/runs/data/RRTM/RADRRTM .
++ scp /dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc45263_wout/DYDOCASE/runs/data/RRTM/RADSRTM .
++ scp /dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc45263_wout/DYDOCASE/runs/data/RRTM/MCICA .
++ echo 'echo MONITOR: $* >&2'
++ chmod +x monitor.needs
++ echo 128
++ cat /dodrio/scratch/users/vsc45263/wout/PGD-clim-Tier1/test_run/name/name.e927 /dodrio/scratch/users/vsc45263/wout/PGD-clim-Tier1/test_run/name/BE40a_46l
++ grep -v '^!'
++ sed -e 's/!.*//' -e 's/{nproc}/128/g' -e 's/{domain}/ABOF/g' -e 's/{levels}/1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46,/g'
++ COUPLINGPATH=/dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc45263_wout/DYDOCASE/runs/long/level02/run199101/output/2019/03/ICMSHABOF+0002
++ ln -sf /dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc45263_wout/DYDOCASE/runs/long/level02/run199101/output/2019/03/ICMSHABOF+0002 ICMSHABOFINIT
++ ln -sf /dodrio/scratch/projects/starting_2022_075/accord/pack/test43t2_iimpi/bin/MASTERODB ./MASTER
++ mympirun -h 128 ./MASTER
++ mv PFABOFABOF+0000 ../ELSCFABOFALBC002
++ cd ..
++ [[ 002 = 000 ]]
++ (( CPLNR++ ))
++ let HOUR=10#2+1
++ '[' 3 -ge 24 ']'
++ '[' 3 -le 24 ']'
+++ printf %03d 3
++ CPLNR_FORMATTED=003
+++ printf %02d 3
++ HH=03
+++ printf %02d 1
++ DD=01
++ [[ ! -f /dodrio/scratch/users/vsc45263/wout/PGD-clim-Tier1/test_run/prep/work/ELSCFABOFALBC003 ]]
++ [[ ! -f /dodrio/scratch/users/vsc45263/wout/PGD-clim-Tier1/test_run/prep/coupling/2019/03/ELSCFABOFALBC003 ]]
++ [[ ! -d prep ]]
++ rm prep/Const.Clim prep/const.clim.ABOF prep/fort.4 prep/ICMSHABOFINIT prep/ifs.stat prep/log.err prep/log.out prep/MASTER prep/MCICA prep/monitor.needs prep/ncf927 prep/NODE.001_01 prep/RADRRTM prep/RADSRTM
++ cd prep
++ [[ 01 -gt 1 ]]
++ scp /dodrio/scratch/users/vsc45263/wout/PGD-clim-Tier1/climake/outputFiles/pgddomain-BE40a_l.nam__climdomain-BE40a_l.nam__cycle-cy43t2_clim-op8.01__pgdnam-GCO__climnam-GCO__orotrunc-QUADRATIC__othertrunc-LINEAR__v-1.37_gmted30s0_ECOII/Const.Clim.03 const.clim.ABOF
++ scp /dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc45263_wout/DYDOCASE/runs/long/level02/clim/Const.Clim.03 Const.Clim
++ scp /dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc45263_wout/DYDOCASE/runs/data/RRTM/RADRRTM .
++ scp /dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc45263_wout/DYDOCASE/runs/data/RRTM/RADSRTM .
++ scp /dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc45263_wout/DYDOCASE/runs/data/RRTM/MCICA .
++ echo 'echo MONITOR: $* >&2'
++ chmod +x monitor.needs
++ echo 128
++ sed -e 's/!.*//' -e 's/{nproc}/128/g' -e 's/{domain}/ABOF/g' -e 's/{levels}/1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46,/g'
++ grep -v '^!'
++ cat /dodrio/scratch/users/vsc45263/wout/PGD-clim-Tier1/test_run/name/name.e927 /dodrio/scratch/users/vsc45263/wout/PGD-clim-Tier1/test_run/name/BE40a_46l
++ COUPLINGPATH=/dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc45263_wout/DYDOCASE/runs/long/level02/run199101/output/2019/03/ICMSHABOF+0003
++ ln -sf /dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc45263_wout/DYDOCASE/runs/long/level02/run199101/output/2019/03/ICMSHABOF+0003 ICMSHABOFINIT
++ ln -sf /dodrio/scratch/projects/starting_2022_075/accord/pack/test43t2_iimpi/bin/MASTERODB ./MASTER
++ mympirun -h 128 ./MASTER
++ mv PFABOFABOF+0000 ../ELSCFABOFALBC003
++ cd ..
++ [[ 003 = 000 ]]
++ (( CPLNR++ ))
++ let HOUR=10#3+1
++ '[' 4 -ge 24 ']'
++ '[' 4 -le 24 ']'
+++ printf %03d 4
++ CPLNR_FORMATTED=004
+++ printf %02d 4
++ HH=04
+++ printf %02d 1
++ DD=01
++ [[ ! -f /dodrio/scratch/users/vsc45263/wout/PGD-clim-Tier1/test_run/prep/work/ELSCFABOFALBC004 ]]
++ [[ ! -f /dodrio/scratch/users/vsc45263/wout/PGD-clim-Tier1/test_run/prep/coupling/2019/03/ELSCFABOFALBC004 ]]
++ [[ ! -d prep ]]
++ rm prep/Const.Clim prep/const.clim.ABOF prep/fort.4 prep/ICMSHABOFINIT prep/ifs.stat prep/log.err prep/log.out prep/MASTER prep/MCICA prep/monitor.needs prep/ncf927 prep/NODE.001_01 prep/RADRRTM prep/RADSRTM
++ cd prep
++ [[ 01 -gt 1 ]]
++ scp /dodrio/scratch/users/vsc45263/wout/PGD-clim-Tier1/climake/outputFiles/pgddomain-BE40a_l.nam__climdomain-BE40a_l.nam__cycle-cy43t2_clim-op8.01__pgdnam-GCO__climnam-GCO__orotrunc-QUADRATIC__othertrunc-LINEAR__v-1.37_gmted30s0_ECOII/Const.Clim.03 const.clim.ABOF
++ scp /dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc45263_wout/DYDOCASE/runs/long/level02/clim/Const.Clim.03 Const.Clim
++ scp /dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc45263_wout/DYDOCASE/runs/data/RRTM/RADRRTM .
++ scp /dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc45263_wout/DYDOCASE/runs/data/RRTM/RADSRTM .
++ scp /dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc45263_wout/DYDOCASE/runs/data/RRTM/MCICA .
++ echo 'echo MONITOR: $* >&2'
++ chmod +x monitor.needs
++ echo 128
++ sed -e 's/!.*//' -e 's/{nproc}/128/g' -e 's/{domain}/ABOF/g' -e 's/{levels}/1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46,/g'
++ grep -v '^!'
++ cat /dodrio/scratch/users/vsc45263/wout/PGD-clim-Tier1/test_run/name/name.e927 /dodrio/scratch/users/vsc45263/wout/PGD-clim-Tier1/test_run/name/BE40a_46l
++ COUPLINGPATH=/dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc45263_wout/DYDOCASE/runs/long/level02/run199101/output/2019/03/ICMSHABOF+0004
++ ln -sf /dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc45263_wout/DYDOCASE/runs/long/level02/run199101/output/2019/03/ICMSHABOF+0004 ICMSHABOFINIT
++ ln -sf /dodrio/scratch/projects/starting_2022_075/accord/pack/test43t2_iimpi/bin/MASTERODB ./MASTER
++ mympirun -h 128 ./MASTER
++ mv PFABOFABOF+0000 ../ELSCFABOFALBC004
++ cd ..
++ [[ 004 = 000 ]]
++ (( CPLNR++ ))
++ let HOUR=10#4+1
++ '[' 5 -ge 24 ']'
++ '[' 5 -le 24 ']'
+++ printf %03d 5
++ CPLNR_FORMATTED=005
+++ printf %02d 5
++ HH=05
+++ printf %02d 1
++ DD=01
++ [[ ! -f /dodrio/scratch/users/vsc45263/wout/PGD-clim-Tier1/test_run/prep/work/ELSCFABOFALBC005 ]]
++ [[ ! -f /dodrio/scratch/users/vsc45263/wout/PGD-clim-Tier1/test_run/prep/coupling/2019/03/ELSCFABOFALBC005 ]]
++ [[ ! -d prep ]]
++ rm prep/Const.Clim prep/const.clim.ABOF prep/fort.4 prep/ICMSHABOFINIT prep/ifs.stat prep/log.err prep/log.out prep/MASTER prep/MCICA prep/monitor.needs prep/ncf927 prep/NODE.001_01 prep/RADRRTM prep/RADSRTM
++ cd prep
++ [[ 01 -gt 1 ]]
++ scp /dodrio/scratch/users/vsc45263/wout/PGD-clim-Tier1/climake/outputFiles/pgddomain-BE40a_l.nam__climdomain-BE40a_l.nam__cycle-cy43t2_clim-op8.01__pgdnam-GCO__climnam-GCO__orotrunc-QUADRATIC__othertrunc-LINEAR__v-1.37_gmted30s0_ECOII/Const.Clim.03 const.clim.ABOF
++ scp /dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc45263_wout/DYDOCASE/runs/long/level02/clim/Const.Clim.03 Const.Clim
++ scp /dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc45263_wout/DYDOCASE/runs/data/RRTM/RADRRTM .
++ scp /dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc45263_wout/DYDOCASE/runs/data/RRTM/RADSRTM .
++ scp /dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc45263_wout/DYDOCASE/runs/data/RRTM/MCICA .
++ echo 'echo MONITOR: $* >&2'
++ chmod +x monitor.needs
++ echo 128
++ sed -e 's/!.*//' -e 's/{nproc}/128/g' -e 's/{domain}/ABOF/g' -e 's/{levels}/1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46,/g'
++ grep -v '^!'
++ cat /dodrio/scratch/users/vsc45263/wout/PGD-clim-Tier1/test_run/name/name.e927 /dodrio/scratch/users/vsc45263/wout/PGD-clim-Tier1/test_run/name/BE40a_46l
++ COUPLINGPATH=/dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc45263_wout/DYDOCASE/runs/long/level02/run199101/output/2019/03/ICMSHABOF+0005
++ ln -sf /dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc45263_wout/DYDOCASE/runs/long/level02/run199101/output/2019/03/ICMSHABOF+0005 ICMSHABOFINIT
++ ln -sf /dodrio/scratch/projects/starting_2022_075/accord/pack/test43t2_iimpi/bin/MASTERODB ./MASTER
++ mympirun -h 128 ./MASTER
++ mv PFABOFABOF+0000 ../ELSCFABOFALBC005
++ cd ..
++ [[ 005 = 000 ]]
++ (( CPLNR++ ))
++ let HOUR=10#5+1
++ '[' 6 -ge 24 ']'
++ '[' 6 -le 24 ']'
+++ printf %03d 6
++ CPLNR_FORMATTED=006
+++ printf %02d 6
++ HH=06
+++ printf %02d 1
++ DD=01
++ [[ ! -f /dodrio/scratch/users/vsc45263/wout/PGD-clim-Tier1/test_run/prep/work/ELSCFABOFALBC006 ]]
++ [[ ! -f /dodrio/scratch/users/vsc45263/wout/PGD-clim-Tier1/test_run/prep/coupling/2019/03/ELSCFABOFALBC006 ]]
++ [[ ! -d prep ]]
++ rm prep/Const.Clim prep/const.clim.ABOF prep/fort.4 prep/ICMSHABOFINIT prep/ifs.stat prep/log.err prep/log.out prep/MASTER prep/MCICA prep/monitor.needs prep/ncf927 prep/NODE.001_01 prep/RADRRTM prep/RADSRTM
++ cd prep
++ [[ 01 -gt 1 ]]
++ scp /dodrio/scratch/users/vsc45263/wout/PGD-clim-Tier1/climake/outputFiles/pgddomain-BE40a_l.nam__climdomain-BE40a_l.nam__cycle-cy43t2_clim-op8.01__pgdnam-GCO__climnam-GCO__orotrunc-QUADRATIC__othertrunc-LINEAR__v-1.37_gmted30s0_ECOII/Const.Clim.03 const.clim.ABOF
++ scp /dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc45263_wout/DYDOCASE/runs/long/level02/clim/Const.Clim.03 Const.Clim
++ scp /dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc45263_wout/DYDOCASE/runs/data/RRTM/RADRRTM .
++ scp /dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc45263_wout/DYDOCASE/runs/data/RRTM/RADSRTM .
++ scp /dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc45263_wout/DYDOCASE/runs/data/RRTM/MCICA .
++ echo 'echo MONITOR: $* >&2'
++ chmod +x monitor.needs
++ echo 128
++ sed -e 's/!.*//' -e 's/{nproc}/128/g' -e 's/{domain}/ABOF/g' -e 's/{levels}/1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46,/g'
++ grep -v '^!'
++ cat /dodrio/scratch/users/vsc45263/wout/PGD-clim-Tier1/test_run/name/name.e927 /dodrio/scratch/users/vsc45263/wout/PGD-clim-Tier1/test_run/name/BE40a_46l
++ COUPLINGPATH=/dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc45263_wout/DYDOCASE/runs/long/level02/run199101/output/2019/03/ICMSHABOF+0006
++ ln -sf /dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc45263_wout/DYDOCASE/runs/long/level02/run199101/output/2019/03/ICMSHABOF+0006 ICMSHABOFINIT
++ ln -sf /dodrio/scratch/projects/starting_2022_075/accord/pack/test43t2_iimpi/bin/MASTERODB ./MASTER
++ mympirun -h 128 ./MASTER
++ mv PFABOFABOF+0000 ../ELSCFABOFALBC006
++ cd ..
++ [[ 006 = 000 ]]
++ (( CPLNR++ ))
++ let HOUR=10#6+1
++ '[' 7 -ge 24 ']'
++ '[' 7 -le 24 ']'
+++ printf %03d 7
++ CPLNR_FORMATTED=007
+++ printf %02d 7
++ HH=07
+++ printf %02d 1
++ DD=01
++ [[ ! -f /dodrio/scratch/users/vsc45263/wout/PGD-clim-Tier1/test_run/prep/work/ELSCFABOFALBC007 ]]
++ [[ ! -f /dodrio/scratch/users/vsc45263/wout/PGD-clim-Tier1/test_run/prep/coupling/2019/03/ELSCFABOFALBC007 ]]
++ [[ ! -d prep ]]
++ rm prep/Const.Clim prep/const.clim.ABOF prep/fort.4 prep/ICMSHABOFINIT prep/ifs.stat prep/log.err prep/log.out prep/MASTER prep/MCICA prep/monitor.needs prep/ncf927 prep/NODE.001_01 prep/RADRRTM prep/RADSRTM
++ cd prep
++ [[ 01 -gt 1 ]]
++ scp /dodrio/scratch/users/vsc45263/wout/PGD-clim-Tier1/climake/outputFiles/pgddomain-BE40a_l.nam__climdomain-BE40a_l.nam__cycle-cy43t2_clim-op8.01__pgdnam-GCO__climnam-GCO__orotrunc-QUADRATIC__othertrunc-LINEAR__v-1.37_gmted30s0_ECOII/Const.Clim.03 const.clim.ABOF
++ scp /dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc45263_wout/DYDOCASE/runs/long/level02/clim/Const.Clim.03 Const.Clim
++ scp /dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc45263_wout/DYDOCASE/runs/data/RRTM/RADRRTM .
++ scp /dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc45263_wout/DYDOCASE/runs/data/RRTM/RADSRTM .
++ scp /dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc45263_wout/DYDOCASE/runs/data/RRTM/MCICA .
++ echo 'echo MONITOR: $* >&2'
++ chmod +x monitor.needs
++ echo 128
++ sed -e 's/!.*//' -e 's/{nproc}/128/g' -e 's/{domain}/ABOF/g' -e 's/{levels}/1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46,/g'
++ grep -v '^!'
++ cat /dodrio/scratch/users/vsc45263/wout/PGD-clim-Tier1/test_run/name/name.e927 /dodrio/scratch/users/vsc45263/wout/PGD-clim-Tier1/test_run/name/BE40a_46l
++ COUPLINGPATH=/dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc45263_wout/DYDOCASE/runs/long/level02/run199101/output/2019/03/ICMSHABOF+0007
++ ln -sf /dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc45263_wout/DYDOCASE/runs/long/level02/run199101/output/2019/03/ICMSHABOF+0007 ICMSHABOFINIT
++ ln -sf /dodrio/scratch/projects/starting_2022_075/accord/pack/test43t2_iimpi/bin/MASTERODB ./MASTER
++ mympirun -h 128 ./MASTER
++ mv PFABOFABOF+0000 ../ELSCFABOFALBC007
++ cd ..
++ [[ 007 = 000 ]]
++ (( CPLNR++ ))
++ let HOUR=10#7+1
++ '[' 8 -ge 24 ']'
++ '[' 8 -le 24 ']'
+++ printf %03d 8
++ CPLNR_FORMATTED=008
+++ printf %02d 8
++ HH=08
+++ printf %02d 1
++ DD=01
++ [[ ! -f /dodrio/scratch/users/vsc45263/wout/PGD-clim-Tier1/test_run/prep/work/ELSCFABOFALBC008 ]]
++ [[ ! -f /dodrio/scratch/users/vsc45263/wout/PGD-clim-Tier1/test_run/prep/coupling/2019/03/ELSCFABOFALBC008 ]]
++ [[ ! -d prep ]]
++ rm prep/Const.Clim prep/const.clim.ABOF prep/fort.4 prep/ICMSHABOFINIT prep/ifs.stat prep/log.err prep/log.out prep/MASTER prep/MCICA prep/monitor.needs prep/ncf927 prep/NODE.001_01 prep/RADRRTM prep/RADSRTM
++ cd prep
++ [[ 01 -gt 1 ]]
++ scp /dodrio/scratch/users/vsc45263/wout/PGD-clim-Tier1/climake/outputFiles/pgddomain-BE40a_l.nam__climdomain-BE40a_l.nam__cycle-cy43t2_clim-op8.01__pgdnam-GCO__climnam-GCO__orotrunc-QUADRATIC__othertrunc-LINEAR__v-1.37_gmted30s0_ECOII/Const.Clim.03 const.clim.ABOF
++ scp /dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc45263_wout/DYDOCASE/runs/long/level02/clim/Const.Clim.03 Const.Clim
++ scp /dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc45263_wout/DYDOCASE/runs/data/RRTM/RADRRTM .
++ scp /dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc45263_wout/DYDOCASE/runs/data/RRTM/RADSRTM .
++ scp /dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc45263_wout/DYDOCASE/runs/data/RRTM/MCICA .
++ echo 'echo MONITOR: $* >&2'
++ chmod +x monitor.needs
++ echo 128
++ sed -e 's/!.*//' -e 's/{nproc}/128/g' -e 's/{domain}/ABOF/g' -e 's/{levels}/1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46,/g'
++ grep -v '^!'
++ cat /dodrio/scratch/users/vsc45263/wout/PGD-clim-Tier1/test_run/name/name.e927 /dodrio/scratch/users/vsc45263/wout/PGD-clim-Tier1/test_run/name/BE40a_46l
++ COUPLINGPATH=/dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc45263_wout/DYDOCASE/runs/long/level02/run199101/output/2019/03/ICMSHABOF+0008
++ ln -sf /dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc45263_wout/DYDOCASE/runs/long/level02/run199101/output/2019/03/ICMSHABOF+0008 ICMSHABOFINIT
++ ln -sf /dodrio/scratch/projects/starting_2022_075/accord/pack/test43t2_iimpi/bin/MASTERODB ./MASTER
++ mympirun -h 128 ./MASTER
++ mv PFABOFABOF+0000 ../ELSCFABOFALBC008
++ cd ..
++ [[ 008 = 000 ]]
++ (( CPLNR++ ))
++ let HOUR=10#8+1
++ '[' 9 -ge 24 ']'
++ '[' 9 -le 24 ']'
+++ printf %03d 9
++ CPLNR_FORMATTED=009
+++ printf %02d 9
++ HH=09
+++ printf %02d 1
++ DD=01
++ [[ ! -f /dodrio/scratch/users/vsc45263/wout/PGD-clim-Tier1/test_run/prep/work/ELSCFABOFALBC009 ]]
++ [[ ! -f /dodrio/scratch/users/vsc45263/wout/PGD-clim-Tier1/test_run/prep/coupling/2019/03/ELSCFABOFALBC009 ]]
++ [[ ! -d prep ]]
++ rm prep/Const.Clim prep/const.clim.ABOF prep/fort.4 prep/ICMSHABOFINIT prep/ifs.stat prep/log.err prep/log.out prep/MASTER prep/MCICA prep/monitor.needs prep/ncf927 prep/NODE.001_01 prep/RADRRTM prep/RADSRTM
++ cd prep
++ [[ 01 -gt 1 ]]
++ scp /dodrio/scratch/users/vsc45263/wout/PGD-clim-Tier1/climake/outputFiles/pgddomain-BE40a_l.nam__climdomain-BE40a_l.nam__cycle-cy43t2_clim-op8.01__pgdnam-GCO__climnam-GCO__orotrunc-QUADRATIC__othertrunc-LINEAR__v-1.37_gmted30s0_ECOII/Const.Clim.03 const.clim.ABOF
++ scp /dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc45263_wout/DYDOCASE/runs/long/level02/clim/Const.Clim.03 Const.Clim
++ scp /dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc45263_wout/DYDOCASE/runs/data/RRTM/RADRRTM .
++ scp /dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc45263_wout/DYDOCASE/runs/data/RRTM/RADSRTM .
++ scp /dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc45263_wout/DYDOCASE/runs/data/RRTM/MCICA .
++ echo 'echo MONITOR: $* >&2'
++ chmod +x monitor.needs
++ echo 128
++ sed -e 's/!.*//' -e 's/{nproc}/128/g' -e 's/{domain}/ABOF/g' -e 's/{levels}/1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46,/g'
++ grep -v '^!'
++ cat /dodrio/scratch/users/vsc45263/wout/PGD-clim-Tier1/test_run/name/name.e927 /dodrio/scratch/users/vsc45263/wout/PGD-clim-Tier1/test_run/name/BE40a_46l
++ COUPLINGPATH=/dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc45263_wout/DYDOCASE/runs/long/level02/run199101/output/2019/03/ICMSHABOF+0009
++ ln -sf /dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc45263_wout/DYDOCASE/runs/long/level02/run199101/output/2019/03/ICMSHABOF+0009 ICMSHABOFINIT
++ ln -sf /dodrio/scratch/projects/starting_2022_075/accord/pack/test43t2_iimpi/bin/MASTERODB ./MASTER
++ mympirun -h 128 ./MASTER
++ mv PFABOFABOF+0000 ../ELSCFABOFALBC009
++ cd ..
++ [[ 009 = 000 ]]
++ (( CPLNR++ ))
++ let HOUR=10#9+1
++ '[' 10 -ge 24 ']'
++ '[' 10 -le 24 ']'
+++ printf %03d 10
++ CPLNR_FORMATTED=010
+++ printf %02d 10
++ HH=10
+++ printf %02d 1
++ DD=01
++ [[ ! -f /dodrio/scratch/users/vsc45263/wout/PGD-clim-Tier1/test_run/prep/work/ELSCFABOFALBC010 ]]
++ [[ ! -f /dodrio/scratch/users/vsc45263/wout/PGD-clim-Tier1/test_run/prep/coupling/2019/03/ELSCFABOFALBC010 ]]
++ [[ ! -d prep ]]
++ rm prep/Const.Clim prep/const.clim.ABOF prep/fort.4 prep/ICMSHABOFINIT prep/ifs.stat prep/log.err prep/log.out prep/MASTER prep/MCICA prep/monitor.needs prep/ncf927 prep/NODE.001_01 prep/RADRRTM prep/RADSRTM
++ cd prep
++ [[ 01 -gt 1 ]]
++ scp /dodrio/scratch/users/vsc45263/wout/PGD-clim-Tier1/climake/outputFiles/pgddomain-BE40a_l.nam__climdomain-BE40a_l.nam__cycle-cy43t2_clim-op8.01__pgdnam-GCO__climnam-GCO__orotrunc-QUADRATIC__othertrunc-LINEAR__v-1.37_gmted30s0_ECOII/Const.Clim.03 const.clim.ABOF
++ scp /dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc45263_wout/DYDOCASE/runs/long/level02/clim/Const.Clim.03 Const.Clim
++ scp /dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc45263_wout/DYDOCASE/runs/data/RRTM/RADRRTM .
++ scp /dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc45263_wout/DYDOCASE/runs/data/RRTM/RADSRTM .
++ scp /dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc45263_wout/DYDOCASE/runs/data/RRTM/MCICA .
++ echo 'echo MONITOR: $* >&2'
++ chmod +x monitor.needs
++ echo 128
++ sed -e 's/!.*//' -e 's/{nproc}/128/g' -e 's/{domain}/ABOF/g' -e 's/{levels}/1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46,/g'
++ grep -v '^!'
++ cat /dodrio/scratch/users/vsc45263/wout/PGD-clim-Tier1/test_run/name/name.e927 /dodrio/scratch/users/vsc45263/wout/PGD-clim-Tier1/test_run/name/BE40a_46l
++ COUPLINGPATH=/dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc45263_wout/DYDOCASE/runs/long/level02/run199101/output/2019/03/ICMSHABOF+0010
++ ln -sf /dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc45263_wout/DYDOCASE/runs/long/level02/run199101/output/2019/03/ICMSHABOF+0010 ICMSHABOFINIT
++ ln -sf /dodrio/scratch/projects/starting_2022_075/accord/pack/test43t2_iimpi/bin/MASTERODB ./MASTER
++ mympirun -h 128 ./MASTER
++ mv PFABOFABOF+0000 ../ELSCFABOFALBC010
++ cd ..
++ [[ 010 = 000 ]]
++ (( CPLNR++ ))
++ let HOUR=10#10+1
++ '[' 11 -ge 24 ']'
++ '[' 11 -le 24 ']'
+++ printf %03d 11
++ CPLNR_FORMATTED=011
+++ printf %02d 11
++ HH=11
+++ printf %02d 1
++ DD=01
++ [[ ! -f /dodrio/scratch/users/vsc45263/wout/PGD-clim-Tier1/test_run/prep/work/ELSCFABOFALBC011 ]]
++ [[ ! -f /dodrio/scratch/users/vsc45263/wout/PGD-clim-Tier1/test_run/prep/coupling/2019/03/ELSCFABOFALBC011 ]]
++ [[ ! -d prep ]]
++ rm prep/Const.Clim prep/const.clim.ABOF prep/fort.4 prep/ICMSHABOFINIT prep/ifs.stat prep/log.err prep/log.out prep/MASTER prep/MCICA prep/monitor.needs prep/ncf927 prep/NODE.001_01 prep/RADRRTM prep/RADSRTM
++ cd prep
++ [[ 01 -gt 1 ]]
++ scp /dodrio/scratch/users/vsc45263/wout/PGD-clim-Tier1/climake/outputFiles/pgddomain-BE40a_l.nam__climdomain-BE40a_l.nam__cycle-cy43t2_clim-op8.01__pgdnam-GCO__climnam-GCO__orotrunc-QUADRATIC__othertrunc-LINEAR__v-1.37_gmted30s0_ECOII/Const.Clim.03 const.clim.ABOF
++ scp /dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc45263_wout/DYDOCASE/runs/long/level02/clim/Const.Clim.03 Const.Clim
++ scp /dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc45263_wout/DYDOCASE/runs/data/RRTM/RADRRTM .
++ scp /dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc45263_wout/DYDOCASE/runs/data/RRTM/RADSRTM .
++ scp /dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc45263_wout/DYDOCASE/runs/data/RRTM/MCICA .
++ echo 'echo MONITOR: $* >&2'
++ chmod +x monitor.needs
++ echo 128
++ sed -e 's/!.*//' -e 's/{nproc}/128/g' -e 's/{domain}/ABOF/g' -e 's/{levels}/1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46,/g'
++ grep -v '^!'
++ cat /dodrio/scratch/users/vsc45263/wout/PGD-clim-Tier1/test_run/name/name.e927 /dodrio/scratch/users/vsc45263/wout/PGD-clim-Tier1/test_run/name/BE40a_46l
++ COUPLINGPATH=/dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc45263_wout/DYDOCASE/runs/long/level02/run199101/output/2019/03/ICMSHABOF+0011
++ ln -sf /dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc45263_wout/DYDOCASE/runs/long/level02/run199101/output/2019/03/ICMSHABOF+0011 ICMSHABOFINIT
++ ln -sf /dodrio/scratch/projects/starting_2022_075/accord/pack/test43t2_iimpi/bin/MASTERODB ./MASTER
++ mympirun -h 128 ./MASTER
++ mv PFABOFABOF+0000 ../ELSCFABOFALBC011
++ cd ..
++ [[ 011 = 000 ]]
++ (( CPLNR++ ))
++ let HOUR=10#11+1
++ '[' 12 -ge 24 ']'
++ '[' 12 -le 24 ']'
+++ printf %03d 12
++ CPLNR_FORMATTED=012
+++ printf %02d 12
++ HH=12
+++ printf %02d 1
++ DD=01
++ [[ ! -f /dodrio/scratch/users/vsc45263/wout/PGD-clim-Tier1/test_run/prep/work/ELSCFABOFALBC012 ]]
++ [[ ! -f /dodrio/scratch/users/vsc45263/wout/PGD-clim-Tier1/test_run/prep/coupling/2019/03/ELSCFABOFALBC012 ]]
++ [[ ! -d prep ]]
++ rm prep/Const.Clim prep/const.clim.ABOF prep/fort.4 prep/ICMSHABOFINIT prep/ifs.stat prep/log.err prep/log.out prep/MASTER prep/MCICA prep/monitor.needs prep/ncf927 prep/NODE.001_01 prep/RADRRTM prep/RADSRTM
++ cd prep
++ [[ 01 -gt 1 ]]
++ scp /dodrio/scratch/users/vsc45263/wout/PGD-clim-Tier1/climake/outputFiles/pgddomain-BE40a_l.nam__climdomain-BE40a_l.nam__cycle-cy43t2_clim-op8.01__pgdnam-GCO__climnam-GCO__orotrunc-QUADRATIC__othertrunc-LINEAR__v-1.37_gmted30s0_ECOII/Const.Clim.03 const.clim.ABOF
++ scp /dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc45263_wout/DYDOCASE/runs/long/level02/clim/Const.Clim.03 Const.Clim
++ scp /dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc45263_wout/DYDOCASE/runs/data/RRTM/RADRRTM .
++ scp /dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc45263_wout/DYDOCASE/runs/data/RRTM/RADSRTM .
++ scp /dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc45263_wout/DYDOCASE/runs/data/RRTM/MCICA .
++ echo 'echo MONITOR: $* >&2'
++ chmod +x monitor.needs
++ echo 128
++ sed -e 's/!.*//' -e 's/{nproc}/128/g' -e 's/{domain}/ABOF/g' -e 's/{levels}/1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46,/g'
++ grep -v '^!'
++ cat /dodrio/scratch/users/vsc45263/wout/PGD-clim-Tier1/test_run/name/name.e927 /dodrio/scratch/users/vsc45263/wout/PGD-clim-Tier1/test_run/name/BE40a_46l
++ COUPLINGPATH=/dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc45263_wout/DYDOCASE/runs/long/level02/run199101/output/2019/03/ICMSHABOF+0012
++ ln -sf /dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc45263_wout/DYDOCASE/runs/long/level02/run199101/output/2019/03/ICMSHABOF+0012 ICMSHABOFINIT
++ ln -sf /dodrio/scratch/projects/starting_2022_075/accord/pack/test43t2_iimpi/bin/MASTERODB ./MASTER
++ mympirun -h 128 ./MASTER
++ mv PFABOFABOF+0000 ../ELSCFABOFALBC012
++ cd ..
++ [[ 012 = 000 ]]
++ (( CPLNR++ ))
++ let HOUR=10#12+1
++ '[' 13 -ge 24 ']'
++ '[' 13 -le 24 ']'
+++ printf %03d 13
++ CPLNR_FORMATTED=013
+++ printf %02d 13
++ HH=13
+++ printf %02d 1
++ DD=01
++ [[ ! -f /dodrio/scratch/users/vsc45263/wout/PGD-clim-Tier1/test_run/prep/work/ELSCFABOFALBC013 ]]
++ [[ ! -f /dodrio/scratch/users/vsc45263/wout/PGD-clim-Tier1/test_run/prep/coupling/2019/03/ELSCFABOFALBC013 ]]
++ [[ ! -d prep ]]
++ rm prep/Const.Clim prep/const.clim.ABOF prep/fort.4 prep/ICMSHABOFINIT prep/ifs.stat prep/log.err prep/log.out prep/MASTER prep/MCICA prep/monitor.needs prep/ncf927 prep/NODE.001_01 prep/RADRRTM prep/RADSRTM
++ cd prep
++ [[ 01 -gt 1 ]]
++ scp /dodrio/scratch/users/vsc45263/wout/PGD-clim-Tier1/climake/outputFiles/pgddomain-BE40a_l.nam__climdomain-BE40a_l.nam__cycle-cy43t2_clim-op8.01__pgdnam-GCO__climnam-GCO__orotrunc-QUADRATIC__othertrunc-LINEAR__v-1.37_gmted30s0_ECOII/Const.Clim.03 const.clim.ABOF
++ scp /dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc45263_wout/DYDOCASE/runs/long/level02/clim/Const.Clim.03 Const.Clim
++ scp /dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc45263_wout/DYDOCASE/runs/data/RRTM/RADRRTM .
++ scp /dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc45263_wout/DYDOCASE/runs/data/RRTM/RADSRTM .
++ scp /dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc45263_wout/DYDOCASE/runs/data/RRTM/MCICA .
++ echo 'echo MONITOR: $* >&2'
++ chmod +x monitor.needs
++ echo 128
++ sed -e 's/!.*//' -e 's/{nproc}/128/g' -e 's/{domain}/ABOF/g' -e 's/{levels}/1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46,/g'
++ grep -v '^!'
++ cat /dodrio/scratch/users/vsc45263/wout/PGD-clim-Tier1/test_run/name/name.e927 /dodrio/scratch/users/vsc45263/wout/PGD-clim-Tier1/test_run/name/BE40a_46l
++ COUPLINGPATH=/dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc45263_wout/DYDOCASE/runs/long/level02/run199101/output/2019/03/ICMSHABOF+0013
++ ln -sf /dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc45263_wout/DYDOCASE/runs/long/level02/run199101/output/2019/03/ICMSHABOF+0013 ICMSHABOFINIT
++ ln -sf /dodrio/scratch/projects/starting_2022_075/accord/pack/test43t2_iimpi/bin/MASTERODB ./MASTER
++ mympirun -h 128 ./MASTER
++ mv PFABOFABOF+0000 ../ELSCFABOFALBC013
++ cd ..
++ [[ 013 = 000 ]]
++ (( CPLNR++ ))
++ let HOUR=10#13+1
++ '[' 14 -ge 24 ']'
++ '[' 14 -le 24 ']'
+++ printf %03d 14
++ CPLNR_FORMATTED=014
+++ printf %02d 14
++ HH=14
+++ printf %02d 1
++ DD=01
++ [[ ! -f /dodrio/scratch/users/vsc45263/wout/PGD-clim-Tier1/test_run/prep/work/ELSCFABOFALBC014 ]]
++ [[ ! -f /dodrio/scratch/users/vsc45263/wout/PGD-clim-Tier1/test_run/prep/coupling/2019/03/ELSCFABOFALBC014 ]]
++ [[ ! -d prep ]]
++ rm prep/Const.Clim prep/const.clim.ABOF prep/fort.4 prep/ICMSHABOFINIT prep/ifs.stat prep/log.err prep/log.out prep/MASTER prep/MCICA prep/monitor.needs prep/ncf927 prep/NODE.001_01 prep/RADRRTM prep/RADSRTM
++ cd prep
++ [[ 01 -gt 1 ]]
++ scp /dodrio/scratch/users/vsc45263/wout/PGD-clim-Tier1/climake/outputFiles/pgddomain-BE40a_l.nam__climdomain-BE40a_l.nam__cycle-cy43t2_clim-op8.01__pgdnam-GCO__climnam-GCO__orotrunc-QUADRATIC__othertrunc-LINEAR__v-1.37_gmted30s0_ECOII/Const.Clim.03 const.clim.ABOF
++ scp /dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc45263_wout/DYDOCASE/runs/long/level02/clim/Const.Clim.03 Const.Clim
++ scp /dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc45263_wout/DYDOCASE/runs/data/RRTM/RADRRTM .
++ scp /dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc45263_wout/DYDOCASE/runs/data/RRTM/RADSRTM .
++ scp /dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc45263_wout/DYDOCASE/runs/data/RRTM/MCICA .
++ echo 'echo MONITOR: $* >&2'
++ chmod +x monitor.needs
++ echo 128
++ sed -e 's/!.*//' -e 's/{nproc}/128/g' -e 's/{domain}/ABOF/g' -e 's/{levels}/1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46,/g'
++ grep -v '^!'
++ cat /dodrio/scratch/users/vsc45263/wout/PGD-clim-Tier1/test_run/name/name.e927 /dodrio/scratch/users/vsc45263/wout/PGD-clim-Tier1/test_run/name/BE40a_46l
++ COUPLINGPATH=/dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc45263_wout/DYDOCASE/runs/long/level02/run199101/output/2019/03/ICMSHABOF+0014
++ ln -sf /dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc45263_wout/DYDOCASE/runs/long/level02/run199101/output/2019/03/ICMSHABOF+0014 ICMSHABOFINIT
++ ln -sf /dodrio/scratch/projects/starting_2022_075/accord/pack/test43t2_iimpi/bin/MASTERODB ./MASTER
++ mympirun -h 128 ./MASTER
++ mv PFABOFABOF+0000 ../ELSCFABOFALBC014
++ cd ..
++ [[ 014 = 000 ]]
++ (( CPLNR++ ))
++ let HOUR=10#14+1
++ '[' 15 -ge 24 ']'
++ '[' 15 -le 24 ']'
+++ printf %03d 15
++ CPLNR_FORMATTED=015
+++ printf %02d 15
++ HH=15
+++ printf %02d 1
++ DD=01
++ [[ ! -f /dodrio/scratch/users/vsc45263/wout/PGD-clim-Tier1/test_run/prep/work/ELSCFABOFALBC015 ]]
++ [[ ! -f /dodrio/scratch/users/vsc45263/wout/PGD-clim-Tier1/test_run/prep/coupling/2019/03/ELSCFABOFALBC015 ]]
++ [[ ! -d prep ]]
++ rm prep/Const.Clim prep/const.clim.ABOF prep/fort.4 prep/ICMSHABOFINIT prep/ifs.stat prep/log.err prep/log.out prep/MASTER prep/MCICA prep/monitor.needs prep/ncf927 prep/NODE.001_01 prep/RADRRTM prep/RADSRTM
++ cd prep
++ [[ 01 -gt 1 ]]
++ scp /dodrio/scratch/users/vsc45263/wout/PGD-clim-Tier1/climake/outputFiles/pgddomain-BE40a_l.nam__climdomain-BE40a_l.nam__cycle-cy43t2_clim-op8.01__pgdnam-GCO__climnam-GCO__orotrunc-QUADRATIC__othertrunc-LINEAR__v-1.37_gmted30s0_ECOII/Const.Clim.03 const.clim.ABOF
++ scp /dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc45263_wout/DYDOCASE/runs/long/level02/clim/Const.Clim.03 Const.Clim
++ scp /dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc45263_wout/DYDOCASE/runs/data/RRTM/RADRRTM .
++ scp /dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc45263_wout/DYDOCASE/runs/data/RRTM/RADSRTM .
++ scp /dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc45263_wout/DYDOCASE/runs/data/RRTM/MCICA .
++ echo 'echo MONITOR: $* >&2'
++ chmod +x monitor.needs
++ echo 128
++ sed -e 's/!.*//' -e 's/{nproc}/128/g' -e 's/{domain}/ABOF/g' -e 's/{levels}/1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46,/g'
++ grep -v '^!'
++ cat /dodrio/scratch/users/vsc45263/wout/PGD-clim-Tier1/test_run/name/name.e927 /dodrio/scratch/users/vsc45263/wout/PGD-clim-Tier1/test_run/name/BE40a_46l
++ COUPLINGPATH=/dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc45263_wout/DYDOCASE/runs/long/level02/run199101/output/2019/03/ICMSHABOF+0015
++ ln -sf /dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc45263_wout/DYDOCASE/runs/long/level02/run199101/output/2019/03/ICMSHABOF+0015 ICMSHABOFINIT
++ ln -sf /dodrio/scratch/projects/starting_2022_075/accord/pack/test43t2_iimpi/bin/MASTERODB ./MASTER
++ mympirun -h 128 ./MASTER
++ mv PFABOFABOF+0000 ../ELSCFABOFALBC015
++ cd ..
++ [[ 015 = 000 ]]
++ (( CPLNR++ ))
++ let HOUR=10#15+1
++ '[' 16 -ge 24 ']'
++ '[' 16 -le 24 ']'
+++ printf %03d 16
++ CPLNR_FORMATTED=016
+++ printf %02d 16
++ HH=16
+++ printf %02d 1
++ DD=01
++ [[ ! -f /dodrio/scratch/users/vsc45263/wout/PGD-clim-Tier1/test_run/prep/work/ELSCFABOFALBC016 ]]
++ [[ ! -f /dodrio/scratch/users/vsc45263/wout/PGD-clim-Tier1/test_run/prep/coupling/2019/03/ELSCFABOFALBC016 ]]
++ [[ ! -d prep ]]
++ rm prep/Const.Clim prep/const.clim.ABOF prep/fort.4 prep/ICMSHABOFINIT prep/ifs.stat prep/log.err prep/log.out prep/MASTER prep/MCICA prep/monitor.needs prep/ncf927 prep/NODE.001_01 prep/RADRRTM prep/RADSRTM
++ cd prep
++ [[ 01 -gt 1 ]]
++ scp /dodrio/scratch/users/vsc45263/wout/PGD-clim-Tier1/climake/outputFiles/pgddomain-BE40a_l.nam__climdomain-BE40a_l.nam__cycle-cy43t2_clim-op8.01__pgdnam-GCO__climnam-GCO__orotrunc-QUADRATIC__othertrunc-LINEAR__v-1.37_gmted30s0_ECOII/Const.Clim.03 const.clim.ABOF
++ scp /dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc45263_wout/DYDOCASE/runs/long/level02/clim/Const.Clim.03 Const.Clim
++ scp /dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc45263_wout/DYDOCASE/runs/data/RRTM/RADRRTM .
++ scp /dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc45263_wout/DYDOCASE/runs/data/RRTM/RADSRTM .
++ scp /dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc45263_wout/DYDOCASE/runs/data/RRTM/MCICA .
++ echo 'echo MONITOR: $* >&2'
++ chmod +x monitor.needs
++ echo 128
++ sed -e 's/!.*//' -e 's/{nproc}/128/g' -e 's/{domain}/ABOF/g' -e 's/{levels}/1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46,/g'
++ grep -v '^!'
++ cat /dodrio/scratch/users/vsc45263/wout/PGD-clim-Tier1/test_run/name/name.e927 /dodrio/scratch/users/vsc45263/wout/PGD-clim-Tier1/test_run/name/BE40a_46l
++ COUPLINGPATH=/dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc45263_wout/DYDOCASE/runs/long/level02/run199101/output/2019/03/ICMSHABOF+0016
++ ln -sf /dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc45263_wout/DYDOCASE/runs/long/level02/run199101/output/2019/03/ICMSHABOF+0016 ICMSHABOFINIT
++ ln -sf /dodrio/scratch/projects/starting_2022_075/accord/pack/test43t2_iimpi/bin/MASTERODB ./MASTER
++ mympirun -h 128 ./MASTER
++ mv PFABOFABOF+0000 ../ELSCFABOFALBC016
++ cd ..
++ [[ 016 = 000 ]]
++ (( CPLNR++ ))
++ let HOUR=10#16+1
++ '[' 17 -ge 24 ']'
++ '[' 17 -le 24 ']'
+++ printf %03d 17
++ CPLNR_FORMATTED=017
+++ printf %02d 17
++ HH=17
+++ printf %02d 1
++ DD=01
++ [[ ! -f /dodrio/scratch/users/vsc45263/wout/PGD-clim-Tier1/test_run/prep/work/ELSCFABOFALBC017 ]]
++ [[ ! -f /dodrio/scratch/users/vsc45263/wout/PGD-clim-Tier1/test_run/prep/coupling/2019/03/ELSCFABOFALBC017 ]]
++ [[ ! -d prep ]]
++ rm prep/Const.Clim prep/const.clim.ABOF prep/fort.4 prep/ICMSHABOFINIT prep/ifs.stat prep/log.err prep/log.out prep/MASTER prep/MCICA prep/monitor.needs prep/ncf927 prep/NODE.001_01 prep/RADRRTM prep/RADSRTM
++ cd prep
++ [[ 01 -gt 1 ]]
++ scp /dodrio/scratch/users/vsc45263/wout/PGD-clim-Tier1/climake/outputFiles/pgddomain-BE40a_l.nam__climdomain-BE40a_l.nam__cycle-cy43t2_clim-op8.01__pgdnam-GCO__climnam-GCO__orotrunc-QUADRATIC__othertrunc-LINEAR__v-1.37_gmted30s0_ECOII/Const.Clim.03 const.clim.ABOF
++ scp /dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc45263_wout/DYDOCASE/runs/long/level02/clim/Const.Clim.03 Const.Clim
++ scp /dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc45263_wout/DYDOCASE/runs/data/RRTM/RADRRTM .
++ scp /dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc45263_wout/DYDOCASE/runs/data/RRTM/RADSRTM .
++ scp /dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc45263_wout/DYDOCASE/runs/data/RRTM/MCICA .
++ echo 'echo MONITOR: $* >&2'
++ chmod +x monitor.needs
++ echo 128
++ sed -e 's/!.*//' -e 's/{nproc}/128/g' -e 's/{domain}/ABOF/g' -e 's/{levels}/1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46,/g'
++ grep -v '^!'
++ cat /dodrio/scratch/users/vsc45263/wout/PGD-clim-Tier1/test_run/name/name.e927 /dodrio/scratch/users/vsc45263/wout/PGD-clim-Tier1/test_run/name/BE40a_46l
++ COUPLINGPATH=/dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc45263_wout/DYDOCASE/runs/long/level02/run199101/output/2019/03/ICMSHABOF+0017
++ ln -sf /dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc45263_wout/DYDOCASE/runs/long/level02/run199101/output/2019/03/ICMSHABOF+0017 ICMSHABOFINIT
++ ln -sf /dodrio/scratch/projects/starting_2022_075/accord/pack/test43t2_iimpi/bin/MASTERODB ./MASTER
++ mympirun -h 128 ./MASTER
++ mv PFABOFABOF+0000 ../ELSCFABOFALBC017
++ cd ..
++ [[ 017 = 000 ]]
++ (( CPLNR++ ))
++ let HOUR=10#17+1
++ '[' 18 -ge 24 ']'
++ '[' 18 -le 24 ']'
+++ printf %03d 18
++ CPLNR_FORMATTED=018
+++ printf %02d 18
++ HH=18
+++ printf %02d 1
++ DD=01
++ [[ ! -f /dodrio/scratch/users/vsc45263/wout/PGD-clim-Tier1/test_run/prep/work/ELSCFABOFALBC018 ]]
++ [[ ! -f /dodrio/scratch/users/vsc45263/wout/PGD-clim-Tier1/test_run/prep/coupling/2019/03/ELSCFABOFALBC018 ]]
++ [[ ! -d prep ]]
++ rm prep/Const.Clim prep/const.clim.ABOF prep/fort.4 prep/ICMSHABOFINIT prep/ifs.stat prep/log.err prep/log.out prep/MASTER prep/MCICA prep/monitor.needs prep/ncf927 prep/NODE.001_01 prep/RADRRTM prep/RADSRTM
++ cd prep
++ [[ 01 -gt 1 ]]
++ scp /dodrio/scratch/users/vsc45263/wout/PGD-clim-Tier1/climake/outputFiles/pgddomain-BE40a_l.nam__climdomain-BE40a_l.nam__cycle-cy43t2_clim-op8.01__pgdnam-GCO__climnam-GCO__orotrunc-QUADRATIC__othertrunc-LINEAR__v-1.37_gmted30s0_ECOII/Const.Clim.03 const.clim.ABOF
++ scp /dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc45263_wout/DYDOCASE/runs/long/level02/clim/Const.Clim.03 Const.Clim
++ scp /dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc45263_wout/DYDOCASE/runs/data/RRTM/RADRRTM .
++ scp /dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc45263_wout/DYDOCASE/runs/data/RRTM/RADSRTM .
++ scp /dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc45263_wout/DYDOCASE/runs/data/RRTM/MCICA .
++ echo 'echo MONITOR: $* >&2'
++ chmod +x monitor.needs
++ echo 128
++ sed -e 's/!.*//' -e 's/{nproc}/128/g' -e 's/{domain}/ABOF/g' -e 's/{levels}/1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46,/g'
++ grep -v '^!'
++ cat /dodrio/scratch/users/vsc45263/wout/PGD-clim-Tier1/test_run/name/name.e927 /dodrio/scratch/users/vsc45263/wout/PGD-clim-Tier1/test_run/name/BE40a_46l
++ COUPLINGPATH=/dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc45263_wout/DYDOCASE/runs/long/level02/run199101/output/2019/03/ICMSHABOF+0018
++ ln -sf /dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc45263_wout/DYDOCASE/runs/long/level02/run199101/output/2019/03/ICMSHABOF+0018 ICMSHABOFINIT
++ ln -sf /dodrio/scratch/projects/starting_2022_075/accord/pack/test43t2_iimpi/bin/MASTERODB ./MASTER
++ mympirun -h 128 ./MASTER
++ mv PFABOFABOF+0000 ../ELSCFABOFALBC018
++ cd ..
++ [[ 018 = 000 ]]
++ (( CPLNR++ ))
++ let HOUR=10#18+1
++ '[' 19 -ge 24 ']'
++ '[' 19 -le 24 ']'
+++ printf %03d 19
++ CPLNR_FORMATTED=019
+++ printf %02d 19
++ HH=19
+++ printf %02d 1
++ DD=01
++ [[ ! -f /dodrio/scratch/users/vsc45263/wout/PGD-clim-Tier1/test_run/prep/work/ELSCFABOFALBC019 ]]
++ [[ ! -f /dodrio/scratch/users/vsc45263/wout/PGD-clim-Tier1/test_run/prep/coupling/2019/03/ELSCFABOFALBC019 ]]
++ [[ ! -d prep ]]
++ rm prep/Const.Clim prep/const.clim.ABOF prep/fort.4 prep/ICMSHABOFINIT prep/ifs.stat prep/log.err prep/log.out prep/MASTER prep/MCICA prep/monitor.needs prep/ncf927 prep/NODE.001_01 prep/RADRRTM prep/RADSRTM
++ cd prep
++ [[ 01 -gt 1 ]]
++ scp /dodrio/scratch/users/vsc45263/wout/PGD-clim-Tier1/climake/outputFiles/pgddomain-BE40a_l.nam__climdomain-BE40a_l.nam__cycle-cy43t2_clim-op8.01__pgdnam-GCO__climnam-GCO__orotrunc-QUADRATIC__othertrunc-LINEAR__v-1.37_gmted30s0_ECOII/Const.Clim.03 const.clim.ABOF
++ scp /dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc45263_wout/DYDOCASE/runs/long/level02/clim/Const.Clim.03 Const.Clim
++ scp /dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc45263_wout/DYDOCASE/runs/data/RRTM/RADRRTM .
++ scp /dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc45263_wout/DYDOCASE/runs/data/RRTM/RADSRTM .
++ scp /dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc45263_wout/DYDOCASE/runs/data/RRTM/MCICA .
++ echo 'echo MONITOR: $* >&2'
++ chmod +x monitor.needs
++ echo 128
++ sed -e 's/!.*//' -e 's/{nproc}/128/g' -e 's/{domain}/ABOF/g' -e 's/{levels}/1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46,/g'
++ grep -v '^!'
++ cat /dodrio/scratch/users/vsc45263/wout/PGD-clim-Tier1/test_run/name/name.e927 /dodrio/scratch/users/vsc45263/wout/PGD-clim-Tier1/test_run/name/BE40a_46l
++ COUPLINGPATH=/dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc45263_wout/DYDOCASE/runs/long/level02/run199101/output/2019/03/ICMSHABOF+0019
++ ln -sf /dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc45263_wout/DYDOCASE/runs/long/level02/run199101/output/2019/03/ICMSHABOF+0019 ICMSHABOFINIT
++ ln -sf /dodrio/scratch/projects/starting_2022_075/accord/pack/test43t2_iimpi/bin/MASTERODB ./MASTER
++ mympirun -h 128 ./MASTER
++ mv PFABOFABOF+0000 ../ELSCFABOFALBC019
++ cd ..
++ [[ 019 = 000 ]]
++ (( CPLNR++ ))
++ let HOUR=10#19+1
++ '[' 20 -ge 24 ']'
++ '[' 20 -le 24 ']'
+++ printf %03d 20
++ CPLNR_FORMATTED=020
+++ printf %02d 20
++ HH=20
+++ printf %02d 1
++ DD=01
++ [[ ! -f /dodrio/scratch/users/vsc45263/wout/PGD-clim-Tier1/test_run/prep/work/ELSCFABOFALBC020 ]]
++ [[ ! -f /dodrio/scratch/users/vsc45263/wout/PGD-clim-Tier1/test_run/prep/coupling/2019/03/ELSCFABOFALBC020 ]]
++ [[ ! -d prep ]]
++ rm prep/Const.Clim prep/const.clim.ABOF prep/fort.4 prep/ICMSHABOFINIT prep/ifs.stat prep/log.err prep/log.out prep/MASTER prep/MCICA prep/monitor.needs prep/ncf927 prep/NODE.001_01 prep/RADRRTM prep/RADSRTM
++ cd prep
++ [[ 01 -gt 1 ]]
++ scp /dodrio/scratch/users/vsc45263/wout/PGD-clim-Tier1/climake/outputFiles/pgddomain-BE40a_l.nam__climdomain-BE40a_l.nam__cycle-cy43t2_clim-op8.01__pgdnam-GCO__climnam-GCO__orotrunc-QUADRATIC__othertrunc-LINEAR__v-1.37_gmted30s0_ECOII/Const.Clim.03 const.clim.ABOF
++ scp /dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc45263_wout/DYDOCASE/runs/long/level02/clim/Const.Clim.03 Const.Clim
++ scp /dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc45263_wout/DYDOCASE/runs/data/RRTM/RADRRTM .
++ scp /dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc45263_wout/DYDOCASE/runs/data/RRTM/RADSRTM .
++ scp /dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc45263_wout/DYDOCASE/runs/data/RRTM/MCICA .
++ echo 'echo MONITOR: $* >&2'
++ chmod +x monitor.needs
++ echo 128
++ sed -e 's/!.*//' -e 's/{nproc}/128/g' -e 's/{domain}/ABOF/g' -e 's/{levels}/1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46,/g'
++ grep -v '^!'
++ cat /dodrio/scratch/users/vsc45263/wout/PGD-clim-Tier1/test_run/name/name.e927 /dodrio/scratch/users/vsc45263/wout/PGD-clim-Tier1/test_run/name/BE40a_46l
++ COUPLINGPATH=/dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc45263_wout/DYDOCASE/runs/long/level02/run199101/output/2019/03/ICMSHABOF+0020
++ ln -sf /dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc45263_wout/DYDOCASE/runs/long/level02/run199101/output/2019/03/ICMSHABOF+0020 ICMSHABOFINIT
++ ln -sf /dodrio/scratch/projects/starting_2022_075/accord/pack/test43t2_iimpi/bin/MASTERODB ./MASTER
++ mympirun -h 128 ./MASTER
++ mv PFABOFABOF+0000 ../ELSCFABOFALBC020
++ cd ..
++ [[ 020 = 000 ]]
++ (( CPLNR++ ))
++ let HOUR=10#20+1
++ '[' 21 -ge 24 ']'
++ '[' 21 -le 24 ']'
+++ printf %03d 21
++ CPLNR_FORMATTED=021
+++ printf %02d 21
++ HH=21
+++ printf %02d 1
++ DD=01
++ [[ ! -f /dodrio/scratch/users/vsc45263/wout/PGD-clim-Tier1/test_run/prep/work/ELSCFABOFALBC021 ]]
++ [[ ! -f /dodrio/scratch/users/vsc45263/wout/PGD-clim-Tier1/test_run/prep/coupling/2019/03/ELSCFABOFALBC021 ]]
++ [[ ! -d prep ]]
++ rm prep/Const.Clim prep/const.clim.ABOF prep/fort.4 prep/ICMSHABOFINIT prep/ifs.stat prep/log.err prep/log.out prep/MASTER prep/MCICA prep/monitor.needs prep/ncf927 prep/NODE.001_01 prep/RADRRTM prep/RADSRTM
++ cd prep
++ [[ 01 -gt 1 ]]
++ scp /dodrio/scratch/users/vsc45263/wout/PGD-clim-Tier1/climake/outputFiles/pgddomain-BE40a_l.nam__climdomain-BE40a_l.nam__cycle-cy43t2_clim-op8.01__pgdnam-GCO__climnam-GCO__orotrunc-QUADRATIC__othertrunc-LINEAR__v-1.37_gmted30s0_ECOII/Const.Clim.03 const.clim.ABOF
++ scp /dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc45263_wout/DYDOCASE/runs/long/level02/clim/Const.Clim.03 Const.Clim
++ scp /dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc45263_wout/DYDOCASE/runs/data/RRTM/RADRRTM .
++ scp /dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc45263_wout/DYDOCASE/runs/data/RRTM/RADSRTM .
++ scp /dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc45263_wout/DYDOCASE/runs/data/RRTM/MCICA .
++ echo 'echo MONITOR: $* >&2'
++ chmod +x monitor.needs
++ echo 128
++ sed -e 's/!.*//' -e 's/{nproc}/128/g' -e 's/{domain}/ABOF/g' -e 's/{levels}/1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46,/g'
++ grep -v '^!'
++ cat /dodrio/scratch/users/vsc45263/wout/PGD-clim-Tier1/test_run/name/name.e927 /dodrio/scratch/users/vsc45263/wout/PGD-clim-Tier1/test_run/name/BE40a_46l
++ COUPLINGPATH=/dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc45263_wout/DYDOCASE/runs/long/level02/run199101/output/2019/03/ICMSHABOF+0021
++ ln -sf /dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc45263_wout/DYDOCASE/runs/long/level02/run199101/output/2019/03/ICMSHABOF+0021 ICMSHABOFINIT
++ ln -sf /dodrio/scratch/projects/starting_2022_075/accord/pack/test43t2_iimpi/bin/MASTERODB ./MASTER
++ mympirun -h 128 ./MASTER
++ mv PFABOFABOF+0000 ../ELSCFABOFALBC021
++ cd ..
++ [[ 021 = 000 ]]
++ (( CPLNR++ ))
++ let HOUR=10#21+1
++ '[' 22 -ge 24 ']'
++ '[' 22 -le 24 ']'
+++ printf %03d 22
++ CPLNR_FORMATTED=022
+++ printf %02d 22
++ HH=22
+++ printf %02d 1
++ DD=01
++ [[ ! -f /dodrio/scratch/users/vsc45263/wout/PGD-clim-Tier1/test_run/prep/work/ELSCFABOFALBC022 ]]
++ [[ ! -f /dodrio/scratch/users/vsc45263/wout/PGD-clim-Tier1/test_run/prep/coupling/2019/03/ELSCFABOFALBC022 ]]
++ [[ ! -d prep ]]
++ rm prep/Const.Clim prep/const.clim.ABOF prep/fort.4 prep/ICMSHABOFINIT prep/ifs.stat prep/log.err prep/log.out prep/MASTER prep/MCICA prep/monitor.needs prep/ncf927 prep/NODE.001_01 prep/RADRRTM prep/RADSRTM
++ cd prep
++ [[ 01 -gt 1 ]]
++ scp /dodrio/scratch/users/vsc45263/wout/PGD-clim-Tier1/climake/outputFiles/pgddomain-BE40a_l.nam__climdomain-BE40a_l.nam__cycle-cy43t2_clim-op8.01__pgdnam-GCO__climnam-GCO__orotrunc-QUADRATIC__othertrunc-LINEAR__v-1.37_gmted30s0_ECOII/Const.Clim.03 const.clim.ABOF
++ scp /dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc45263_wout/DYDOCASE/runs/long/level02/clim/Const.Clim.03 Const.Clim
++ scp /dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc45263_wout/DYDOCASE/runs/data/RRTM/RADRRTM .
++ scp /dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc45263_wout/DYDOCASE/runs/data/RRTM/RADSRTM .
++ scp /dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc45263_wout/DYDOCASE/runs/data/RRTM/MCICA .
++ echo 'echo MONITOR: $* >&2'
++ chmod +x monitor.needs
++ echo 128
++ grep -v '^!'
++ sed -e 's/!.*//' -e 's/{nproc}/128/g' -e 's/{domain}/ABOF/g' -e 's/{levels}/1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46,/g'
++ cat /dodrio/scratch/users/vsc45263/wout/PGD-clim-Tier1/test_run/name/name.e927 /dodrio/scratch/users/vsc45263/wout/PGD-clim-Tier1/test_run/name/BE40a_46l
++ COUPLINGPATH=/dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc45263_wout/DYDOCASE/runs/long/level02/run199101/output/2019/03/ICMSHABOF+0022
++ ln -sf /dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc45263_wout/DYDOCASE/runs/long/level02/run199101/output/2019/03/ICMSHABOF+0022 ICMSHABOFINIT
++ ln -sf /dodrio/scratch/projects/starting_2022_075/accord/pack/test43t2_iimpi/bin/MASTERODB ./MASTER
++ mympirun -h 128 ./MASTER
++ mv PFABOFABOF+0000 ../ELSCFABOFALBC022
++ cd ..
++ [[ 022 = 000 ]]
++ (( CPLNR++ ))
++ let HOUR=10#22+1
++ '[' 23 -ge 24 ']'
++ '[' 23 -le 24 ']'
+++ printf %03d 23
++ CPLNR_FORMATTED=023
+++ printf %02d 23
++ HH=23
+++ printf %02d 1
++ DD=01
++ [[ ! -f /dodrio/scratch/users/vsc45263/wout/PGD-clim-Tier1/test_run/prep/work/ELSCFABOFALBC023 ]]
++ [[ ! -f /dodrio/scratch/users/vsc45263/wout/PGD-clim-Tier1/test_run/prep/coupling/2019/03/ELSCFABOFALBC023 ]]
++ [[ ! -d prep ]]
++ rm prep/Const.Clim prep/const.clim.ABOF prep/fort.4 prep/ICMSHABOFINIT prep/ifs.stat prep/log.err prep/log.out prep/MASTER prep/MCICA prep/monitor.needs prep/ncf927 prep/NODE.001_01 prep/RADRRTM prep/RADSRTM
++ cd prep
++ [[ 01 -gt 1 ]]
++ scp /dodrio/scratch/users/vsc45263/wout/PGD-clim-Tier1/climake/outputFiles/pgddomain-BE40a_l.nam__climdomain-BE40a_l.nam__cycle-cy43t2_clim-op8.01__pgdnam-GCO__climnam-GCO__orotrunc-QUADRATIC__othertrunc-LINEAR__v-1.37_gmted30s0_ECOII/Const.Clim.03 const.clim.ABOF
++ scp /dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc45263_wout/DYDOCASE/runs/long/level02/clim/Const.Clim.03 Const.Clim
++ scp /dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc45263_wout/DYDOCASE/runs/data/RRTM/RADRRTM .
++ scp /dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc45263_wout/DYDOCASE/runs/data/RRTM/RADSRTM .
++ scp /dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc45263_wout/DYDOCASE/runs/data/RRTM/MCICA .
++ echo 'echo MONITOR: $* >&2'
++ chmod +x monitor.needs
++ echo 128
++ sed -e 's/!.*//' -e 's/{nproc}/128/g' -e 's/{domain}/ABOF/g' -e 's/{levels}/1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46,/g'
++ grep -v '^!'
++ cat /dodrio/scratch/users/vsc45263/wout/PGD-clim-Tier1/test_run/name/name.e927 /dodrio/scratch/users/vsc45263/wout/PGD-clim-Tier1/test_run/name/BE40a_46l
++ COUPLINGPATH=/dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc45263_wout/DYDOCASE/runs/long/level02/run199101/output/2019/03/ICMSHABOF+0023
++ ln -sf /dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc45263_wout/DYDOCASE/runs/long/level02/run199101/output/2019/03/ICMSHABOF+0023 ICMSHABOFINIT
++ ln -sf /dodrio/scratch/projects/starting_2022_075/accord/pack/test43t2_iimpi/bin/MASTERODB ./MASTER
++ mympirun -h 128 ./MASTER
++ mv PFABOFABOF+0000 ../ELSCFABOFALBC023
++ cd ..
++ [[ 023 = 000 ]]
++ (( CPLNR++ ))
++ let HOUR=10#23+1
++ '[' 24 -ge 24 ']'
++ HOUR=0
++ (( DAY++ ))
++ '[' 24 -le 24 ']'
+++ printf %03d 24
++ CPLNR_FORMATTED=024
+++ printf %02d 0
++ HH=00
+++ printf %02d 2
++ DD=02
++ [[ ! -f /dodrio/scratch/users/vsc45263/wout/PGD-clim-Tier1/test_run/prep/work/ELSCFABOFALBC024 ]]
++ [[ ! -f /dodrio/scratch/users/vsc45263/wout/PGD-clim-Tier1/test_run/prep/coupling/2019/03/ELSCFABOFALBC024 ]]
++ [[ ! -d prep ]]
++ rm prep/Const.Clim prep/const.clim.ABOF prep/fort.4 prep/ICMSHABOFINIT prep/ifs.stat prep/log.err prep/log.out prep/MASTER prep/MCICA prep/monitor.needs prep/ncf927 prep/NODE.001_01 prep/RADRRTM prep/RADSRTM
++ cd prep
++ [[ 02 -gt 1 ]]
++ scp /dodrio/scratch/users/vsc45263/wout/PGD-clim-Tier1/climake/outputFiles/pgddomain-BE40a_l.nam__climdomain-BE40a_l.nam__cycle-cy43t2_clim-op8.01__pgdnam-GCO__climnam-GCO__orotrunc-QUADRATIC__othertrunc-LINEAR__v-1.37_gmted30s0_ECOII/Const.Clim. const.clim.ABOF
+cp: cannot stat '/dodrio/scratch/users/vsc45263/wout/PGD-clim-Tier1/climake/outputFiles/pgddomain-BE40a_l.nam__climdomain-BE40a_l.nam__cycle-cy43t2_clim-op8.01__pgdnam-GCO__climnam-GCO__orotrunc-QUADRATIC__othertrunc-LINEAR__v-1.37_gmted30s0_ECOII/Const.Clim.': No such file or directory
++ scp /dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc45263_wout/DYDOCASE/runs/long/level02/clim/Const.Clim.03 Const.Clim
++ scp /dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc45263_wout/DYDOCASE/runs/data/RRTM/RADRRTM .
++ scp /dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc45263_wout/DYDOCASE/runs/data/RRTM/RADSRTM .
++ scp /dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc45263_wout/DYDOCASE/runs/data/RRTM/MCICA .
++ echo 'echo MONITOR: $* >&2'
++ chmod +x monitor.needs
++ echo 128
++ sed -e 's/!.*//' -e 's/{nproc}/128/g' -e 's/{domain}/ABOF/g' -e 's/{levels}/1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46,/g'
++ grep -v '^!'
++ cat /dodrio/scratch/users/vsc45263/wout/PGD-clim-Tier1/test_run/name/name.e927 /dodrio/scratch/users/vsc45263/wout/PGD-clim-Tier1/test_run/name/BE40a_46l
++ COUPLINGPATH=/dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc45263_wout/DYDOCASE/runs/long/level02/run199101/output/2019/03/ICMSHABOF+0024
++ ln -sf /dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc45263_wout/DYDOCASE/runs/long/level02/run199101/output/2019/03/ICMSHABOF+0024 ICMSHABOFINIT
++ ln -sf /dodrio/scratch/projects/starting_2022_075/accord/pack/test43t2_iimpi/bin/MASTERODB ./MASTER
++ mympirun -h 128 ./MASTER
++ mv PFABOFABOF+0000 ../ELSCFABOFALBC024
+mv: cannot stat 'PFABOFABOF+0000': No such file or directory
++ cd ..
++ [[ 024 = 000 ]]
++ (( CPLNR++ ))
++ let HOUR=10#0+1
++ '[' 1 -ge 24 ']'
++ '[' 25 -le 24 ']'
++ '[' '!' -d /dodrio/scratch/users/vsc45263/wout/PGD-clim-Tier1/test_run/prep/coupling/2019/03 ']'
++ mkdir -p /dodrio/scratch/users/vsc45263/wout/PGD-clim-Tier1/test_run/prep/coupling/2019/03
++ cp ELSCFABOFALBC000 ELSCFABOFALBC001 ELSCFABOFALBC002 ELSCFABOFALBC003 ELSCFABOFALBC004 ELSCFABOFALBC005 ELSCFABOFALBC006 ELSCFABOFALBC007 ELSCFABOFALBC008 ELSCFABOFALBC009 ELSCFABOFALBC010 ELSCFABOFALBC011 ELSCFABOFALBC012 ELSCFABOFALBC013 ELSCFABOFALBC014 ELSCFABOFALBC015 ELSCFABOFALBC016 ELSCFABOFALBC017 ELSCFABOFALBC018 ELSCFABOFALBC019 ELSCFABOFALBC020 ELSCFABOFALBC021 ELSCFABOFALBC022 ELSCFABOFALBC023 ICMSHABOFINIT.sfx Const.Clim.sfx ecoclimapI_covers_param.bin ecoclimapII_eu_covers_param.bin /dodrio/scratch/users/vsc45263/wout/PGD-clim-Tier1/test_run/prep/coupling/2019/03/
++ rm -rv /dodrio/scratch/users/vsc45263/wout/PGD-clim-Tier1/test_run/prep/work

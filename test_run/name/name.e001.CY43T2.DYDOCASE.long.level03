@@ -1,0 +1,934 @@
+&NACIETEO
+/
+&NACOBS
+/
+&NACTAN
+/
+&NACTEX
+/
+&NACVEG
+/
+&NADOCK
+/
+&NAEAEM7
+/
+&NAEAER
+/
+&NAECOAPHY
+/
+&NAEPHLI
+/
+&NAEPHY
+/
+&NAERAD
+  LRRTM=.F.,
+  LSRTM=.F.,
+!switch for surfex
+  NSW=1,
+/
+&NAERCLI
+/
+&NAEVOL
+/
+&NAIMPO
+/
+&NALORI
+/
+&NAMAFN
+   GFP_TCC%IBITS=8,
+   GFP_XTCC%IBITS=8,
+   GFP_10U%IBITS=12,
+   GFP_10V%IBITS=12,
+   GFP_X10U%IBITS=12,
+   GFP_X10V%IBITS=12,
+   GFP_2T%IBITS=12,
+   GFP_X2T%IBITS=12,
+   GFP_X2RH%IBITS=12,
+   GFP_XX2T%IBITS=12,
+   GFP_XN2T%IBITS=12,
+   GFP_XCAPE%IBITS=16,
+   GFP_CAPE%IBITS=16,
+   GFP_XCAPE%IBITS=16,
+   GFP_XMOCO%IBITS=16,
+   GFP_XCLPH%IBITS=12,
+   GFP_XUGST%IBITS=12,
+   GFP_XVGST%IBITS=12,
+   TFP_FGST%IBITS=12,
+   TFP_MSL%IBITS=12,
+   TFP_T%IBITS=12,
+   TFP_U%IBITS=12,
+   TFP_V%IBITS=12,
+   TFP_HU%IBITS=12,
+   TFP_VV%IBITS=16,
+   TFP_Z%IBITS=16,
+   TFP_THPW%IBITS=12,
+   GFP_CLSP%IBITS=16,
+   GFP_CCP%IBITS=16,
+   GFP_CLSS%IBITS=16,
+   GFP_CCSF%IBITS=16,
+   TFP_PV%IBITS=16,
+   GFP_CCC%IBITS=16,
+   GFP_XCCC%IBITS=16,
+   GFP_HCC%IBITS=8,
+   GFP_XHCC%IBITS=8,
+   GFP_MCC%IBITS=8,
+   GFP_XMCC%IBITS=8,
+   GFP_LCC%IBITS=8,
+   GFP_XLCC%IBITS=8,
+   TFP_ETH%IBITS=12,
+   TFP_U%CLNAME='WIND_U_COMPONENT',
+   TFP_V%CLNAME='WIND_V_COMPONENT',
+   TFP_T%CLNAME='TEMPERATURE',
+   TFP_HU%CLNAME='HUMI_RELATIVE',
+   TFP_VV%CLNAME='VITESSE_VERTICALE',
+   TFP_Z%CLNAME='GEOPOTENTIEL',
+   TFP_THPW%CLNAME='THETA_P_W',
+   TFP_MSL%CLNAME='MSLPRESSURE',
+   TFP_HCLP%CLNAME='CLPMHAUT.MOD.XFU',
+   GFP_XN2T%CLNAME='CLSMINI.H.TEMPER',
+   GFP_XX2T%CLNAME='CLSMAXI.H.TEMPER',
+/
+&NAMARPHY
+  CCOUPLING='I',   ! for runing surfex inline
+  LMSE=.TRUE.,     ! for runing surfex inline
+/
+&NAMCA
+/
+&NAMCAPE
+/
+&NAMCFU
+  LCUMFU=.T.,
+  LFPLC=.T.,
+  LFPLS=.T.,
+  LFR=.T.,
+  LFRRC=.T.,
+  LFSF=.T.,
+  LRAYD=.T.,
+  LRAYS=.T.,
+  LSTRD=.T.,
+  LSTRT=.T.,
+/
+&NAMCHEM
+/
+&NAMCHET
+/
+&NAMCHK
+/
+&NAMCLA
+/
+&NAMCLDP
+/
+&NAMCLI
+/
+&NAMCLOP15
+/
+&NAMCLTC
+/
+&NAMCOK
+/
+&NAMCOM
+/
+&NAMCOSJO
+/
+&NAMCT0
+  LFBDAP=.T.,
+  LSPRT=.T.,
+  LRPLANE=.T.,
+  LTWOTL=.T.,
+  LREGETA=.F.,          ! Regular ETA levels spacing off in SL interpolators
+  LVFE_REGETA=.F.,       ! Regular ETA levels in VFE operators
+  NFRHIS={nfrhis},      ! freq of History files, 2*180sec = 360sec, get output each ~ 5'
+  NHISTS=0,   ! zero value indicates that historic files will be produced each NFRHIS times TSTEP seconds
+!  NHISTS(0)=-73,-00,-01,-02,-03,-04,-05,-06,-07,-08,-09,-10,-11,-12,-13,-14,-15,-16,-17,-18,-19,-20,-21,-22,-23,-24,-25,-26,-27,-28,-29,-30,-31,-32,-33,-34,-35,-36,-37,-38,-39,-40,-41,-42,-43,-44,-45,-46,-47,-48,-49,-50,-51,-52,-53,-54,-55,-56,-57,-58,-59,-60,-61,-62,-63,-64,-65,-66,-67,-68,-69,-70,-71,-72,
+  NFRSDI=5,
+  NFRGDI=5,
+  NSPPR=0,
+
+!switch for surfex output
+  NSFXHISTS=0,
+  NFRSFXHIS={nfrhis},
+/
+&NAMCT1
+  LRFILAF=.F.,
+  N1RES=0,
+! N1POS=0, Post-processing outputs control switch. Set N1POS=1 to switch on, and N1POS=0 to switch off.
+! N1SFXHIS not present (= SURFEX output switch?)
+
+!switch for surfex output
+  N1SFXHIS=1,
+/
+&NAMCUMF
+/
+&NAMCUMFS
+/
+&NAMCVER
+! LVERTFE=.T.,               ! VFE main switch
+! NVSCH=3,                   ! Hermit cubic functions VFE basis
+/
+&NAMCVMNH
+/
+&NAMDDH
+/
+&NAMDFI
+/
+&NAMDIM
+  NPROMA=-27,
+/
+&NAMDIMO
+/
+&NAMDIM_TRAJ
+/
+&NAMDPHY
+/
+&NAMDYN
+   RDAMPQ=0.,         ! Spectral HD of water vapor put off,
+   RDAMPT=1.,         ! Spectral HD of temperature with the reference strength,
+   RDAMPVOR=1.,       ! Spectral HD of vorticity with the reference strength,
+   RDAMPVORS=10.,     ! Support Spectral HD of vort. 10 times weaker; to be used with SLHD,
+   RDAMPDIV=1.,       ! Spectral HD of divergence with the reference strength
+   RDAMPDIVS=10.,     ! Support Spectral HD of divg. 10 times weaker; to be used with SLHD,
+   SLEVDH=0.1,         ! SLHD parameter for vertical profile threshold of Spectral HD,
+   SLEVDHS=1.,         ! SLHD parameter for vertical profile threshold of Spectral HD,
+   ZSLHDP1=1.7,       ! SLHD parameter
+   SLHDA0=0.25,       ! SLHD parameter
+   SLHDB=4.,          ! SLHD parameter
+   SLHDD00=6.5E-05,   ! SLHD parameter
+   ZSLHDP3=0.6,       ! SLHD parameter
+   SDRED=1.,          ! SLHD parameter to control vertical profile of Spectral HD
+   NITMP=2,           ! Number of iterations computing SL trajectory
+   LQMHW=.F.,     ! Quasi-monotonous horizontal interpolators off for wind
+   LQMHT=.F.,     ! Quasi-monotonous horizontal interpolators off for temperature
+   LQMP=.F.,      ! Quasi-monotonous interpolators off for continuity eq
+   LADVF=.T.,      ! advection of Coriolis parameter in 2TL-SL
+   NTLAG=3,           ! SL discretization type for temperature
+   NVLAG=3,           ! SL discretization type for continuity eq
+   NWLAG=3,           ! SL discretization type for wind
+   REPS1=0.,          ! Asselin filtr coefficient for t-dt
+   REPS2=0.,          ! Asselin filtr coefficient for t+dt
+   REPSM1=0.,         ! Asselin filtr coefficient for t-dt - moisture variables
+   REPSM2=0.,         ! Asselin filtr coefficient for t+dt - moisture variables
+   REPSP1=0.,         ! Asselin filtr coefficient for t-dt - surface fields
+   REXPDH=2.,         ! Spectral HD order
+   SITR=300.,         ! SI reference temperature (question: What does this do?) ? statistical interpretation
+   VESL=0.,           ! SL decentering parameter
+   XIDT=0.0,          ! SL second order decentering parameter
+   VMAX2=280.,        ! Threshold for aborting SL when wind too strong
+/
+&NAMDYNA
+  LSLHD_GFL=.T.,      ! SLHD used for at least one GFL field
+  LSLHD_OLD=.F.,      ! SLHD "old" interpolators
+  LSLHD_T=.T.,        ! SLHD used for temperature
+  LSLHD_W=.T.,        ! SLHD used for wind
+  SLHDEPSH=0.016,     ! SLHD horizontal "smoother"
+  SLHDEPSV=0.0,       ! SLHD vertical "smoother" (removed both ALARO-0 and 1)
+  SLHDKMAX=6.,        ! SLHD parameter
+  SLHDKMIN=-0.6,      ! SLHD parameter
+  LAPRXPK=.T.,       ! algorithm to compute full level pressures
+  LSETTLS=.TRUE.,    ! Stable extrapolation algorithm in 2TL-SL for source terms (question: What does this do?) (2TL-SL = two-time level semi-Lagrangian scheme)
+  LSETTLST=.TRUE.,   ! Stable extrapolation algorithm in 2TL-SL for trajectory search in horizontal
+  LSETTLSV=.TRUE.,   ! Stable extrapolation algorithm in 2TL-SL for trajectory search in vertical
+  LNESC=.FALSE.,      ! (question: What does this do?) (Non-Extrapolating SCheme)?
+  LNESCT=.FALSE.,
+  LNESCV=.FALSE.,
+
+  ! LPC_CHEAP=.T.     ! (question: Why is this turned off?)
+  ! LPC_FULL=.T.      ! (question: Why is this turned off?)
+
+  ! (question: are these NH parameters?)
+  ! LGWADV=.T.        
+  ! LRDBBC=.F.
+/
+&NAMDYNCORE
+/
+&NAMEMIS_CONF
+/
+&NAMENKF
+/
+&NAMFA
+  NBITCS=-1,
+  NBITPG=-1,
+  NSTRON=-1,
+/
+&NAMFAINIT
+/
+&NAMFPC
+!upper air dynamic fields (question: Is this FullPos?)
+! CFP3DF(1)='HUMI.SPECIFI',
+! CFP3DF(2)='LIQUID_WATER',
+! CFP3DF(3)='SOLID_WATER',
+! CFP3DF(4)='VENT_ZONAL',
+! CFP3DF(5)='VENT_MERIDIEN',
+! CFP3DF(6)='GEOPOTENTIEL',
+! CFP3DF(7)='TEMPERATURE',
+
+! NRFP3S=-99,
+! RFP3H(1)=160,210,260,310,360,410,460,510,560,610,660,710,760,810,860,910,960,1010,1060,1110,1160,1210,1260,1310,1360,1410,1460,1510,1560,1610,1660,1710,1760,1810,1860,1910,1960,2010,2060,2110,2160,
+
+/
+&NAMFPD
+/
+&NAMFPDY2
+/
+&NAMFPDYF
+/
+&NAMFPDYH
+/
+&NAMFPDYI
+/
+&NAMFPDYP
+/
+&NAMFPDYS
+/
+&NAMFPDYT
+/
+&NAMFPDYV
+/
+&NAMFPF
+/
+&NAMFPG
+/
+&NAMFPIOS
+  NFPXFLD=200,    ! (question: What does this do?)
+/
+&NAMFPMOVE
+/
+&NAMFPPHY
+/
+&NAMFPSC2
+  NFPROMA=-50,    ! (question: What does this do?)
+/
+&NAMFPSC2_DEP
+  NFPROMA_DEP=-50, ! (question: What does this do?)
+/
+&NAMGEM
+/
+&NAMGFL
+  YQ_NL%LSP=.T.,
+  YQ_NL%LGP=.F.,
+  YQ_NL%LGPINGP=.F.,
+  YQ_NL%LADV=.T.,
+  YQ_NL%LREQOUT=.T.,
+  YQ_NL%LSLHD=.T.,
+  YQ_NL%LQM=.F.,
+  YQ_NL%LQMH=.F.,
+  YQ_NL%LHV=.F.,
+  YQ_NL%LVSPLIP=.F.,
+  YTKE_NL%LSP=.F.,      !ALARO-0: pTKE
+  YTKE_NL%LGP=.T.,       !ALARO-0: pTKE
+  YTKE_NL%LGPINGP=.F.,  !ALARO-0: pTKE
+  YTKE_NL%LADV=.T.,      !ALARO-0: pTKE
+!  YTKE_NL%NREQIN=1,         !ALARO-0: pTKE; to by cycled in assim
+  YTKE_NL%NREQIN=0,
+
+  YTKE_NL%LREQOUT=.F.,  !ALARO-0: pTKE; to by cycled in assim
+  YTKE_NL%NCOUPLING=0,      !ALARO-0: pTKE
+  YTKE_NL%LSLHD=.T.,     !ALARO-0: pTKE
+  YTKE_NL%LCDERS=.F.,   !ALARO-0: pTKE
+  YTKE_NL%LHV=.F.,      !ALARO-0: pTKE
+  YTKE_NL%LT5=.F.,      !ALARO-0: pTKE
+  YTKE_NL%LQM=.F.,      !ALARO-0: pTKE
+  YTKE_NL%LQMH=.F.,     !ALARO-0: pTKE
+  YTKE_NL%LVSPLIP=.F.,  !ALARO-0: pTKE
+  YL_NL%LSP=.F.,        !ALARO-0: liquid cloud water
+  YL_NL%LGP=.T.,         !ALARO-0: liquid cloud water
+  YL_NL%LGPINGP=.F.,    !ALARO-0: liquid cloud water
+  YL_NL%LADV=.T.,        !ALARO-0: liquid cloud water
+!  YL_NL%NREQIN=1,           !ALARO-0: liquid cloud water; to by cycled in assim
+  YL_NL%NREQIN=0, 
+
+
+  YL_NL%LREQOUT=.F.,    !ALARO-0: liquid cloud water; to by cycled in assim
+  YL_NL%NCOUPLING=0,        !ALARO-0: liquid cloud water
+  YL_NL%LSLHD=.T.,       !ALARO-0: liquid cloud water
+  YL_NL%LQM=.F.,        !ALARO-0: liquid cloud water
+  YL_NL%LQMH=.F.,       !ALARO-0: liquid cloud water
+  YI_NL%LSP=.F.,        !ALARO-0: solid cloud water
+  YI_NL%LGP=.T.,         !ALARO-0: solid cloud water
+  YI_NL%LGPINGP=.F.,    !ALARO-0: solid cloud water
+  YI_NL%LADV=.T.,        !ALARO-0: solid cloud water
+!  YI_NL%NREQIN=1,           !ALARO-0: solid cloud water; to by cycled in assim
+  YI_NL%NREQIN=0,
+
+
+
+  YI_NL%LREQOUT=.F.,    !ALARO-0: solid cloud water; to by cycled in assim
+  YI_NL%NCOUPLING=0,        !ALARO-0: solid cloud water
+  YI_NL%LSLHD=.T.,       !ALARO-0: solid cloud water
+  YI_NL%LQM=.F.,        !ALARO-0: solid cloud water
+  YI_NL%LQMH=.F.,       !ALARO-0: solid cloud water
+  YR_NL%LSP=.F.,        !ALARO-0: microphysics rain
+  YR_NL%LGP=.T.,         !ALARO-0: microphysics rain
+  YR_NL%LGPINGP=.F.,    !ALARO-0: microphysics rain
+  YR_NL%LADV=.T.,        !ALARO-0: microphysics rain
+!  YR_NL%NREQIN=1,           !ALARO-0: microphysics rain; to by cycled in assim
+  YR_NL%NREQIN=0,
+
+
+  YR_NL%LREQOUT=.T.,    !ALARO-0: microphysics rain; to by cycled in assim (question: What does this mean?)
+  YR_NL%NCOUPLING=0,        !ALARO-0: microphysics rain
+  YR_NL%LSLHD=.F.,      !ALARO-0: microphysics rain
+  YR_NL%LQM=.F.,        !ALARO-0: microphysics rain
+  YR_NL%LQMH=.F.,       !ALARO-0: microphysics rain
+  YS_NL%LSP=.F.,        !ALARO-0: microphysics snow
+  YS_NL%LGP=.T.,         !ALARO-0: microphysics snow
+  YS_NL%LGPINGP=.F.,    !ALARO-0: microphysics snow
+  YS_NL%LADV=.T.,        !ALARO-0: microphysics snow
+!  YS_NL%NREQIN=1,           !ALARO-0: microphysics snow; to by cycled in assim
+  YS_NL%NREQIN=0,
+
+
+  YS_NL%LREQOUT=.T.,    !ALARO-0: microphysics snow; to by cycled in assim
+  YS_NL%NCOUPLING=0,        !ALARO-0: microphysics snow
+  YS_NL%LSLHD=.F.,      !ALARO-0: microphysics snow
+  YS_NL%LQM=.F.,        !ALARO-0: microphysics snow
+  YS_NL%LQMH=.F.,       !ALARO-0: microphysics snow
+  YUOM_NL%LGP=.T.,       !ALARO-0: updraft velocity
+  YUOM_NL%LADV=.T.,      !ALARO-0: updraft velocity
+!  YUOM_NL%NREQIN=1,         !ALARO-0: updraft velocity; to be cycled in assim
+  YUOM_NL%NREQIN=0,
+
+
+  YUOM_NL%LREQOUT=.F.,  !ALARO-0: updraft velocity; to be cycled in assim
+  YUOM_NL%LSLHD=.F.,    !ALARO-0: updraft velocity
+  YUOM_NL%LQM=.F.,      !ALARO-0: updraft velocity
+  YUOM_NL%LQMH=.F.,     !ALARO-0: updraft velocity
+  YUAL_NL%LGP=.T.,       !ALARO-0: updraft mesh fraction
+  YUAL_NL%LADV=.T.,      !ALARO-0: updraft mesh fraction
+!  YUAL_NL%NREQIN=1,         !ALARO-0: updraft mesh fraction; to be cycled in assim
+  YUAL_NL%NREQIN=0,
+
+  YUAL_NL%LREQOUT=.F.,  !ALARO-0: updraft mesh fraction; to be cycled in assim
+  YUAL_NL%LSLHD=.F.,    !ALARO-0: updraft mesh fraction
+  YUAL_NL%LQM=.F.,      !ALARO-0: updraft mesh fraction
+  YUAL_NL%LQMH=.F.,     !ALARO-0: updraft mesh fraction
+  YDOM_NL%LGP=.T.,       !ALARO-0: downdraft velocity
+  YDOM_NL%LADV=.T.,      !ALARO-0: downdraft velocity
+!  YDOM_NL%NREQIN=1,         !ALARO-0: downdraft velocity; to be cycled in assim
+  YDOM_NL%NREQIN=0,
+
+  YDOM_NL%LREQOUT=.F.,  !ALARO-0: downdraft velocity; to be cycled in assim
+  YDOM_NL%LSLHD=.F.,    !ALARO-0: downdraft velocity
+  YDOM_NL%LQM=.F.,      !ALARO-0: downdraft velocity
+  YDOM_NL%LQMH=.F.,     !ALARO-0: downdraft velocity
+ YSHTUR_NL%LADV=.F.,        !ALARO-1 TOUCANS: shear source term
+ YSHTUR_NL%LGP=.T.,         !ALARO-1 TOUCANS: shear source term
+ YSHTUR_NL%LREQOUT=.F.,     !ALARO-1 TOUCANS: shear source term
+ YSHTUR_NL%NREQIN=0,        !ALARO-1 TOUCANS: shear source term
+ YFQTUR_NL%LADV=.F.,        !ALARO-1 TOUCANS: moisture flux source term
+ YFQTUR_NL%LGP=.T.,         !ALARO-1 TOUCANS: moisture flux source term
+ YFQTUR_NL%LREQOUT=.F.,     !ALARO-1 TOUCANS: moisture flux source term
+ YFQTUR_NL%NREQIN=0,        !ALARO-1 TOUCANS: moisture flux source term
+ YFSTUR_NL%LADV=.F.,        !ALARO-1 TOUCANS: heat flux source term
+ YFSTUR_NL%LGP=.T.,         !ALARO-1 TOUCANS: heat flux source term
+ YFSTUR_NL%LREQOUT=.F.,     !ALARO-1 TOUCANS: heat flux source term
+ YFSTUR_NL%NREQIN=0,        !ALARO-1 TOUCANS: heat flux source term
+  YDAL_NL%LGP=.T.,       !ALARO-0: downdraft mesh fraction
+  YDAL_NL%LADV=.T.,      !ALARO-0: downdraft mesh fraction
+!  YDAL_NL%NREQIN=1,         !ALARO-0: downdraft mesh fraction; to be cycled in assim
+  YDAL_NL%NREQIN=0,
+
+  YDAL_NL%LREQOUT=.F.,  !ALARO-0: downdraft mesh fraction; to be cycled in assim
+  YDAL_NL%LSLHD=.F.,    !ALARO-0: downdraft mesh fraction
+  YDAL_NL%LQM=.F.,      !ALARO-0: downdraft mesh fraction
+  YDAL_NL%LQMH=.F.,     !ALARO-0: downdraft mesh fraction
+  YSPF_NL%NREQIN=0,
+  YCPF_NL%NREQIN=0,
+  YUEN_NL%LADV=.F.,         !ALARO-0: Updraft entrainment
+  YUEN_NL%LGP=.T.,          !ALARO-0: Updraft entrainment
+  YUEN_NL%LREQOUT=.F.,      !ALARO-0: Updraft entrainment; to be cycled in assim
+!  YUEN_NL%NREQIN=1,         !ALARO-0: Updraft entrainment; to be cycled in assim
+  YUEN_NL%NREQIN=0,
+
+  YUNEBH_NL%LADV=.T.,       !ALARO-0: pseudohistoric nebul.
+  YUNEBH_NL%LGP=.T.,        !ALARO-0: pseudohistoric nebul.
+  YUNEBH_NL%LREQOUT=.F.,    !ALARO-0: pseudohistoric nebul.; to be cycled in assim
+!  YUNEBH_NL%NREQIN=1,       !ALARO-0: pseudohistoric nebul.; to be cycled in assim
+  YUNEBH_NL%NREQIN=0,
+
+
+ YTTE_NL%LADV=.T.,          !ALARO-1 TOUCANS: Total Turbulent Energy
+ YTTE_NL%LGP=.T.,           !ALARO-1 TOUCANS: Total Turbulent Energy
+ YTTE_NL%LREQOUT=.F.,       !ALARO-1 TOUCANS: Total Turbulent Energy; to be cycled in assim
+! YTTE_NL%NREQIN=1,          !ALARO-1 TOUCANS: Total Turbulent Energy; to be cycled in assim
+ YTTE_NL%NREQIN=0,
+
+
+ YRKTQC_NL%LGP=.T.
+ YRKTQC_NL%NREQIN=0,
+ YRKTQC_NL%LREQOUT=.T.,
+ YRKTQC_NL%LADV=.F.,
+
+! (question: What do these parameters do?)
+ ! YDAL_NL%LPC=.T.
+ ! YUAL_NL%LPC=.T.
+ ! YUNEBH_NL%LPC=.T.
+ ! YUOM_NL%LPC=.T.  
+ ! YDOM_NL%LPC=.TRUE.,  
+
+ ! YQ_NL%LPC=.T.,
+ ! YTKE_NL%LPC=.T.,
+ ! YL_NL%LPC=.T.,
+ ! YI_NL%LPC=.T., 
+ ! YR_NL%LPC=.T.,
+ ! YS_NL%LPC=.T.,
+ ! YSHTUR_NL%LPC=.T.,
+ ! YFQTUR_NL%LPC=.T.,
+ ! YFSTUR_NL%LPC=.T.,
+ ! YUEN_NL%LPC=.T.,
+ ! YTTE_NL%LPC=.T.,
+ ! YRKTQC_NL%LPC=.T.,
+/
+&NAMGRIB
+/
+&NAMGWD
+/
+&NAMGWDIAG
+/
+&NAMGWWMS
+/
+&NAMIAU
+/
+&NAMIAU
+/
+&NAMICE
+/
+&NAMINI
+  LDFI=.F.,
+/
+&NAMINTFLEX
+/
+&NAMIOMI
+/
+&NAMIOS
+/
+&NAMIO_SERV
+/
+&NAMJBCODES
+/
+&NAMJFH
+ N_VMASS=0
+/
+&NAMJG
+/
+&NAMLCZ
+/
+&NAMLSFORC
+/
+&NAMMARS
+/
+&NAMMCC
+/
+&NAMMCUF
+/
+&NAMMKODB
+/
+&NAMMODERR
+/
+&NAMMTS
+/
+&NAMMWAVE
+/
+&NAMNPROF
+/
+&NAMNUD
+/
+&NAMOBS
+/
+&NAMONEDVAR
+/
+&NAMOOPS
+/
+&NAMOPH
+  LINC={linc},
+  CFNHWF='ECHALAD',
+/
+&NAMOPTCMEM
+/
+&NAMPAR0
+  ! (question: What do these parameters do?)
+  MBX_SIZE=2048000000,
+   NOUTPUT=1,
+   NPROC={nproc},
+   ! NPRGPNS={nproca},    ! Numbers of processors used for the North-South gridpoint distributions.
+   ! NPRGPEW={nprocb},    ! Numbers of processors used for the East-West gridpoint distributions.
+   ! NPRTRV=1,
+   ! NPRTRW={nproc},
+   MP_TYPE=2,
+   LOPT_SCALAR=.TRUE.,
+   NPRINTLEV=0,
+/
+&NAMPAR1
+  ! (question: What do these parameters do?)
+  LEQ_REGIONS=.FALSE.,
+   LSPLIT=.FALSE.,
+   ! NSTRIN={nproc},     ! Numbers of processors used for unpacking input data from file and for packing output data to file.
+   ! NSTROUT={nproc},    ! Numbers of processors used for packing output data to file.
+   NCOMBFLEN=1800000,
+/
+&NAMPARAR
+!surfex switch
+  NSWB_MNH=1
+/
+&NAMPHMSE
+/
+&NAMPHY
+ CGMIXLEN='EL0',            !ALARO-1 TOUCANS: equivalent of 'AY' in ALARO-0
+ CGTURS='MD2',              !ALARO-1 TOUCANS: turbulence model II
+ L3MT=.T.,                  !ALARO-0: 3MT main switch
+ LCOMOD=.F.,                ! (question: What does this mean?) woutd: I changed this from commented out to .F.
+! LCOMOD: Modulation of moisture convergence used in moist deep convection closure by map factor. It replaces the previous GCOMOD parameter and in ALARO it should be .FALSE. for ascending compatibility
+ LA0MPS=.T.,                !ALARO-0: microphysics
+ LAB12=.T.,                 !ALARO-1 microphysics: Abel-Boutle 2012 (independed of ACRANEB2 and TOUCANS)
+ LACPANMX=.T.,              !ALARO-0: clouds combined overlap - diagnostics only
+ LAERODES=.T.,              !ALARO-0: aerosols desert
+ LAEROLAN=.T.,              !ALARO-0: aerosols land
+ LAEROSEA=.T.,              !ALARO-0: aerosols sea
+ LAEROSOO=.T.,              !ALARO-0: aerosols soot
+ LARPMPS=.F.,
+ LCDDPRO=.T.,               !ALARO-0: prognostic downdraft
+ LCLSATUR=.T.,              !ALARO-0: cloud optical depth saturation model
+
+!Rafiq test
+ LHLRADUPD=.F.          ! should be T for NES=NSWB_MNH=6
+
+LCOEFK_RIS=.FALSE.,        ! do not use the (shallow convection) cloudiness obtained from Ri*
+LCOEFK_MSC=.TRUE.          ! use the one from the mass-flux approach
+
+
+!Rafiq test
+ LCOEFKSURF=.T.,            !ALARO-1 TOUCANS: screen lev. params. computations; needed also in CANARI
+
+!Rafiq test
+ LCOEFKTKE=.T.,             !ALARO-1 TOUCANS: main switch
+
+!Rafiq test
+ LCOEFK_F1=.T.,             !ALARO-1 TOUCANS: stability functions at the surface
+ LCOEFK_FLX=.T.,            !ALARO-1 TOUCANS: flux form of source terms (e.g. GFLs)
+
+!Rafiq test
+ LCOEFK_PTTE=.T.,           !ALARO-1 TOUCANS: Prognostic Total Turbulent Energy (on top of TKE)
+
+!Rafiq test
+ LCOEFK_SCQ=.T.,            !ALARO-1 TOUCANS: Skewness influence in moist BVF computations
+
+!Rafiq test
+ LCOEFK_TOMS=.T.,           !ALARO-1 TOUCANS: Third order moments
+
+ LCONDWT=.T.,               !ALARO-0: prognostic condensed cloud water main switch
+ LCVGQM=.T.,                !ALARO-0: modulation of humidity convergence closure
+ LCVPPKF=.F.,
+ LCVPRO=.T.,                !ALARO-0: prognostic updraft
+ LCVRA=.F.,                 !ALARO-0: old moist deep convection off
+
+!Rafiq test
+ LDIFCONS=.T.,              !ALARO-1 TOUCANS: Activation of Betts transforms (as in ALARO-0, in combination with NDIFFNEB)
+
+ LENTCH=.T.,                !ALARO-0: memory in adaptive detrainment
+ LFPCOR=.T.,                !ALARO-0: switch with LCVRA, neutral for L3MT
+ LFSFIX=.F.,
+ LFSVAR=.T.,                !ALARO-0: variable fall speed of falling species
+ LGLT=.T.,                  !ALARO-0: mountain lift computation in GWD
+ LHUCN=.T.,                 !ALARO-0: critical RH profile computation
+ LNEBCV=.T.,                !ALARO-0: reevaporation of deep cloud water protection if L3MT=.T.
+ LNEBNXR=.T.,               !ALARO-0: Xu-Randall scheme
+ LNEB_FP=.F.,
+ LNEWD=.T.,                 !ALARO-0: new gravity wave drag scheme
+ LNEWSTAT=.T.,              !ALARO-0: ACRANEB1 use new stat. model for NER computations
+ LNOIAS=.T.,                !ALARO-0: stop convection in case of absolute dry instability
+ LO3ABC=.T.,                !ALARO-0: climatological O3 profiles
+ LPHSPSH=.T.,               !ALARO-0: peudohist. surface precip. heat
+ LPRGML=.T.,                !ALARO-0: situation-dependent mixing length
+ LPTKE=.T.,                 !ALARO-1 TOUCANS: common computations with pTKE scheme
+ LQXRTGH=.T.,               !ALARI-0: RH computations using TANH curve
+ LRAY=.T.,                  !ALARO-0: main ACRANEB1 switch
+ LRAYFM=.F.,
+ LRAYLU=.F.,                !ALARO-0: moonlight off
+ LRNUMX=.T.,                !ALARO-0: cloud geometry maximum random overlap
+ LRPROX=.F.,                !NER computations; used for previous ACRANEB in ALARO-0
+ LRRGUST=.T.,               !ALARO-0: moist gustiness
+ LRSTAER=.F.,               !ALARO-0: standard aerosols off
+
+ LRTPP=.T.,                 !ALARO-1: ACRANEB2 assumes isothermal layers due to LRPROX=.F., but with LRTPP=.T. lowest model layer is nonisothermal when exchanging with surface
+
+ LSCMF=.T.,                 !ALARO-0: mesh fraction's influence on the entrainment rate
+ LSEDCL=.T.,                !ALARO-0: sedimentation of claude water and ice
+ LSEDLAG=.F.,
+ LSEDSTA=.T.,               !ALARO-0: statistical sedimentation
+ LSTRA=.F.,                 !ALARO-0: old stratiform prec. off
+ LSTRAPRO=.F.,              !ALARO: stratiform prognostic microphysics off needed when L3MT
+ LVFULL=.F.,
+ LVGSN=.T.,                 !ALARO-0: vegetation+snow in ISBA, irrelevant for SURFEX
+ LVOIGT=.T.,                !ALARO-0: ACRANEB1 Voight profile activated
+ LXRCDEV=.T.,               !ALARO-0: Xu-Randall used in adjustment
+
+ NDIFFNEB=1,                !ALARO-1 TOUCANS: option to diffuse cloud water
+
+ NIMELIT=2,                 !ALARO-0: no/ of iterations of microphysics call within updraft
+ NPHYREP=1,                 !physics reproducibility; 1 for validation, -4 recommended for CPU savings, both A:ARO-0 & 1
+ NRAUTOEV=3,                !ALARO-1 ACRANEB2: freq. of exact NER comp=3h (NRAUTOEV*NTHRAYFR)
+ NRAY=2,                    !ALARO-1 ACRANEB2: main switch
+ NSORAYFR=-1,               !ALARO-1 ACRANEB2: solar band transm. intermittency (in hours)
+ NTHRAYFR=-1,               !ALARO-1 ACRANEB2: therm band transm. intermittency (in hours)
+/
+&NAMPHY0
+ ALMAV=200.,                !ALARO-0: mixing length of wind
+ BEDIFV=0.1,                !ALARO-0: vert.diff. profile form coeff.
+
+ C3TKEFREE=1.183,           !ALARO-1 TOUCANS
+ C_EPSILON=0.871,           !ALARO-1 TOUCANS
+ EDD=1.,                    !ALARO-0: asymptotic stable regime coeff.
+ ETKE_BETA_EPS=0.05,        !ALARO-1 TOUCANS
+ ETKE_LAM0=0.29,    !0.29,            !ALARO-1 TOUCANS
+ ETKE_OLAM=0.29,            !ALARO-1 TOUCANS
+
+ ! (question: What do these parameters do?)
+ 
+ ETKE_CG01=1.,
+ ETKE_CG02=1.,
+ ETKE_CG03=1.,
+ ETKE_RIFC_MAF=0.5,
+ ETKE_GAMMA_EPS=0.03,
+
+
+ GCISMIN=5.5E-04,           !ALARO-0: min. value of shear in turbulence
+ !GCOMOD=0.,                 !ALARO-0: mandatory with L3MT=.T.
+ GCVACHI=20.,               !ALARO-0: minimum updraft w to cross stable layer
+ GCVALFA=4.5E-05,           !ALARO-0: coeff for buoyancy-modulation of entrainment
+ GCVNU=1.E-05,              !ALARO-0: coeff for convective cloud profile when LENTCH
+ GCVPSI=1.,
+ GCVPSIE=1.,
+ GCVTAUDE=900.,             !ALARO-0: convective cloud decay
+ GDDEVF=0.12,               !ALARO-0: efficiency coef of downdraft
+ GENVSRH=1.,                !ALARO-0: coeff driving use of RH integral in entrainment
+ GPEFDC=0.18,               !ALARO-0: coeff of cold pool effect with LENTCH
+ GWDCD=5.4,                 !ALARO-0: GWD mean envelope
+ GWDLT=1.,                  !ALARO-0: GWD mean envelope
+ GWDSE=0.02,                !ALARO-0: GWD mean envelope
+ GWDVALI=0.5,               !ALARO-0: GWD mean envelope
+ HUCOE=1.4,                 !ALARO-0: LHUCN tuning
+ HUCRED=1.,                 !ALARO-0: critical RH profile parameter
+ NUPTKE=0.5265,             !ALARO-1 TOUCANS
+ QSMODC=4.,                 !ALARO-1 tuning: strat.clouds opacity (Xu-Randall)
+ QSSC=400.,                 !ALARO-0: cloud scheme tuning
+ QSSUSC=0.75,               !ALARO-0: cloud scheme tuning
+ QSSUSS=0.4,                !ALARO-0: cloud scheme tuning
+ QSSUSV=250.,               !ALARO-0: cloud scheme tuning
+ QSUSXC=0.0002,             !ALARO-0: cloud scheme tuning
+ QSUSXS=0.0003,             !ALARO-0: cloud scheme tuning
+ QXRAL=150.,                !ALARO-1 tuning (Xu-Randall)
+ QXRAL_ADJ=150.,            !ALARO-1 tuning (Xu-Randall)
+ QXRDEL=0.5,                !ALARO-0: Xu-Randall tuning
+ QXRR=0.25,                 !ALARO-0: Xu-Randall tuning
+ QXRTGH=1.6,                !ALARO-0: Xu-Randall tuning (for 87levs, 2be tuned according to vertical levels!)
+ RAUTEFR=0.5E-03,           !ALARO-1 tuning: autoconversion to rain
+ RAUTEFS=2.E-03,            !ALARO-1 tuning: autoconversion to snow
+ RCIN=1.,                   !ALARO-0: coeff of cloud profile computation
+ RCVEVAP=0.25,
+ REVASX=2.E-07,
+ REVGSL=15.,
+ RMULACVG=-25.,             !both ALARO-0 and ALARO-1 tuning (automatic setup since ALARO-1 patch in CY38T1_bf3 & CY40T1 ownwards)
+ RPHI0=1250.,               !ALARO-0: cloud scheme tuning
+ RQICRMAX=5.E-05,           !ALARO-0 tuning: max critical ice content for ice autoconversion
+ RQICRMIN=8.E-07,           !ALARO-0 tuning: min critical ice content for ice autoconversion
+ RQLCR=3.E-04,              !ALARO-0 tuning: critical liquid w.c. for liquid cloud w. autoconv.
+ RWBF1=1600.,               !ALARO-0 tuning: WBF process param.
+ TDDFR=0.0012,              !ALARO-0: downdraft friction coeff.
+ TDDGP=0.8,
+ TENTR=5.E-06,              !ALARO-0: minimum updraft entrainment coeff
+ TENTRD=1.6E-04,            !ALARO-0: downdraft entrainment coeff
+ TENTRX=1.6E-04,            !ALARO-0: maximum updraft entrainment coeff
+ TFVI=0.08,                 !ALARO-0 tuning: sedimentation speed of cloud ice
+ TFVL=0.02,                 !ALARO-0 tuning: sedimentation speed of cloud water
+ TKEMULT=1.,                !ALARO-1 TOUCANS: TKE length scale multiplier
+ USURIC=1.,                 !ALARO-0: inverse of Ric
+ USURICE=0.5,               !ALARO-0: height exponent in Ri computation
+ USURICL=4.,                !ALARO-0: coeff relating Ri comp. with the height
+ USURID=0.048,              !ALARO-0: inverse Ri transition number (Ri->Ric)
+ USURIDE=0.25,              !ALARO-0: exponent to compute Rid local
+ VZ0CM=1.0E-04,             !ALARO-0: Z0 on sea for gustiness
+ VZIUSTAR0=12.,             !ALARO-0: scaling inverse roughness velocity for moist gust.
+ WMXOV=0.8,                 !ALARO-0: scaling coeff. for maximum random overlap clouds comp. (2be tuned!)
+ REFLKUO=5000.,
+/
+&NAMPHY1
+  RCTVEG(3)=1.1E-05,        !ISBA tuning: thermal resistence of low vegetation; both ALARO-0 and ALARO-1; also in CANARI
+  LCLS_HS=.TRUE.,
+/
+&NAMPHY2
+  FACRAF=10.,               !ALARO-0: wind gust diagnostics coeff. (2be tuned!)
+  XDAMP=1.,                 !ALARO-1 TOUCANS: anti-fibrillations as in pTKE
+  LMULAF=.T.,            !ALARO-0: anti-fibrillation scheme
+  XMULAF=-1.85,             !ALARO-0: anti-fibrillation coeff.
+/
+&NAMPHY3
+ FCM_NU_DI=0.,              !ALARO-1 ACRANEB2: scattering saturation for ice clouds
+ FCM_NU_DL=0.,              !ALARO-1 ACRANEB2: scattering saturation for liquid clouds
+ RLAMB_SOLID=0.6,           !ALARO-1 ACRANEB2: prop of Lambertian reflection for solid surf.
+/
+&NAMPHYDS
+/
+&NAMPONG
+/
+&NAMPPC
+/
+&NAMPPVI
+/
+&NAMPRE
+/
+&NAMRAD15
+/
+&NAMRADCMEM
+/
+&NAMRCF
+/
+&NAMRCOEF
+/
+&NAMRES
+/
+&NAMRGRI
+/
+&NAMRINC
+/
+&NAMRIP
+/
+&NAMRIP0
+/
+&NAMRLX
+/
+&NAMSATS
+/
+&NAMSCC
+/
+&NAMSCEN
+/
+&NAMSCM
+/
+&NAMSEKF
+/
+&NAMSENS
+/
+&NAMSIMPHL
+/
+&NAMSPNG
+/
+&NAMSPSDT
+/
+&NAMSTA
+/
+&NAMSTOPH
+/
+&NAMSWE
+/
+&NAMTESTVAR
+/
+&NAMTHLIM
+/
+&NAMTOPH
+  ETCVIM=0.,
+  ETNEBU=0.,
+  ETPLUI=0.,
+  XDRMTK=6.E-08,
+  XDRMTP=800.,
+  XDRMUK=3.E-07,
+  XDRMUP=800.,
+/
+&NAMTRAJP
+/
+&NAMTRANS
+/
+&NAMTRANS0
+RDISTR_E=0.1,
+/
+&NAMTS
+/
+&NAMVAR
+/
+&NAMVARBC
+/
+&NAMVARBC_AIREP
+/
+&NAMVARBC_ALLSKY
+/
+&NAMVARBC_GBRAD
+/
+&NAMVARBC_RAD
+/
+&NAMVARBC_SFCOBS
+/
+&NAMVARBC_TCWV
+/
+&NAMVARBC_TO3
+/
+&NAMVAREPS
+/
+&NAMVDF
+/
+&NAMVDOZ
+/
+&NAMVOLCANO
+/
+&NAMVRTL
+/
+&NAMVV0
+/
+&NAMVV1
+/
+&NAMVWRK
+/
+&NAMWAVELETJB
+/
+&NAMXFU
+  LXFU=.T.,
+  LXCLS=.T.,
+  LXNEBTT=.T.,
+  LXNEBPA=.T.,
+  LXICV=.T.,
+  LXTGST=.T.,
+  LXCLP=.T.,
+  LXQCLS=.T.,
+  LXTTCLS=.T.,
+  NFRRAZ=1,
+  NRAZTS=-73,-00,-01,-02,-03,-04,-05,-06,-07,-08,-09,-10,-11,-12,-13,-14,-15,-16,-17,-18,-19,-20,-21,-22,-23,-24,-25,-26,-27,-28,-29,-30,-31,-32,-33,-34,-35,-36,-37,-38,-39,-40,-41,-42,-43,-44,-45,-46,-47,-48,-49,-50,-51,-52,-53,-54,-55,-56,-57,-58,-59,-60,-61,-62,-63,-64,-65,-66,-67,-68,-69,-70,-71,-72,
+/
+&NAM_CANAPE
+/
+&NAM_DISTRIBUTED_VECTORS
+/
+&NAPHLC
+/
+&NEMCT0
+/
+&NEMDIM
+/
+&NEMDYN
+/
+&NEMELBC0A
+  LQCPL=.F.,
+  NBICOP=2,
+  NBICOT=2,
+  NBICOU=2,
+  NECRIPL=1,
+/
+&NEMELBC0B
+  TEFRCL=3600,
+/
+&NEMFPEZO
+/
+&NEMGEO
+/
+&NEMJK
+/
+&NEMVAR
+/
+&NEMWAVELET
+/
+&NAMARG
+   CNMEXP='ABOF',
+   NCONF=1,
+   LELAM=.TRUE.,
+   LECMWF=.FALSE.,
+   CUSTOP='t{nstop}',
+   UTSTEP={timestep}.,
+   LSLAG=.TRUE.,
+   NSUPERSEDE=1,
+/

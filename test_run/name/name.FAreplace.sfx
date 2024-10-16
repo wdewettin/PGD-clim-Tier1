@@ -1,0 +1,5 @@
+&namblend
+I_NGRID=1,
+CL_CGRID(:)='SFX.SST'
+REP_TYPE=2
+/

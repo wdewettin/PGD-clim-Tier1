@@ -1,0 +1,47 @@
+&NAM_SURF_ATM
+  XRIMAX=0.2,             ! limitation of Richardson number in drag computation
+  LNOSOF=.TRUE.,          ! no parameterization of subgrid orography effects on atmospheric forcing
+  LDRAG_COEF_ARP=.TRUE.,  ! to use drag coefficient computed like in Arpege/Aladin models
+  LALDTHRES=.TRUE.,       ! flag to set a minimum wind and shear like done in Aladin model
+  XCISMIN=0.5500E-03,     ! minimum wind shear to compute turbulent exchange coefficient (used only if LALDTHRES)
+  XVMODMIN=0.,            ! minimum wind speed to compute turbulent exchange coefficient (used only if LALDTHRES)
+  LALDZ0H=.TRUE.,         ! to take into account orography in heat roughness length
+  LVZIUSTAR0_ARP=.TRUE.   ! flag to activate aladin formulation for zoh over sea
+  LRRGUST_ARP=.TRUE.,     ! flag to activate the correction of CD, CH, CDN due to moist gustiness
+  LCPL_ARP=.TRUE.         ! activate aladin formulation for Cp and L
+/
+&NAM_WRITE_SURF_ATM
+   LNOWRITE_TEXFILE=.TRUE., ! if T, do not fill class_cover_data.tex file during the model setup
+/
+&NAM_ISBAn
+   CROUGH  = "Z01D",      ! type of orographic roughness length; "Z01D" : orographic roughness length does not depend on wind direction
+   CCPSURF = "HUM",       ! type of specific heat at surface; "HUM" : specific heat depends on humidity at surface
+/
+&NAM_TEBn
+   CZ0H="MASC95",         ! TEB option for z0h roof & road; 'MASC95' : Mascart et al 1995
+/
+&NAM_DIAG_ISBAn
+  LSURF_EVAP_BUDGET=.TRUE., ! flag to save in the output file the detailed terms of the water vapor fluxes, on each patch of the vegetation scheme if existing, and aggregated for the natural surface
+  LSURF_MISC_BUDGET=.TRUE., !  flag to save in the output file miscelleaneous fields.
+  LPGD=.TRUE.,              ! flag to save in the output file the physiographic fields of ISBA scheme that are computed from ecoclimap data from the ecosystem fractions.
+/
+&NAM_DIAG_SURFn
+  N2M=2,                    ! flag to compute surface boundary layer characteristics: N2M=2 : computes temperature at 2 m, specific humidity at 2 m, relative humidity, zonal and meridian wind at 10 m, and Richardson number. 2m and 10m quantities are calculated interpolating between atmospheric forcing variables and surface temperature and humidity.
+  LSURF_BUDGET=.TRUE.,      ! flag to save in the output file the terms of the surface energy balance (net radiation, sensible heat flux, latent heat flux, ground flux)
+  LCOEF=.TRUE.,             ! flag to save in the output file the transfer coefficients used in the computation of the surface energy fluxes
+  LSURF_VARS=.TRUE.,        ! flag to save in the output file the surface specific humidity for each scheme
+  LRAD_BUDGET=.TRUE.,
+/
+&NAM_SEAFLUXn
+  CSEA_FLUX='DIRECT'        ! type of flux computation physics; "DIRECT" : direct Charnock computation. No effect of convection in the boundary layer on the fluxes formulae.
+  LPRECIP=.FALSE.,          ! correction of fluxes due to precipitation
+  LPWEBB=.FALSE.,           ! correction of fluxes due to convection (Webb effect)
+  LPWG=.FALSE.,             ! correction of fluxes due to gustiness
+/
+&NAM_SSOn
+   CROUGH="Z01D",           ! type of orographic roughness length; "Z01D" : orographic roughness length does not depend on wind direction
+   XFRACZ0=10.,             ! XFRACZ0 : Z0=Min(Z0, Href/XFRACZ0) (???)
+!   LDSV=.FALSE.,
+!   LDSH=.TRUE.,
+!   LDSL=.TRUE.,
+/
