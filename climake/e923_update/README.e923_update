@@ -1,0 +1,130 @@
+07-Feb-2023, J. Masek
+
+------------------------------
+e923_update utility on belenos
+------------------------------
+
+PURPOSE:
+--------
+
+Utility e923_update serves for updating roughness fields in e923 clim
+files from SURFEX, i.e. using GMTED2010 topography and ECOCLIMAP
+physiography. As a preparatory step, climake for target domain must be
+run, delivering PGD file and preliminary clim files.
+
+Update of subgrid-scale orographic characteristics (variance, anisotropy,
+orientation of the main axis) from PGD file is also possible, but it must
+be done on the level of climake, using modified e923 step and ALADIN
+executable with modified subroutine EINCLI1. It is not needed if you
+do not want to use parameterization of gravity wave drag (LGWD=F).
+
+USAGE:
+------
+
+1) Run climake for your target domain, including the PGD step. By default,
+climake uses ECOCLIMAP I physiography, but small modification of PGD step
+can replace ECOCLIMAP I .dir and .hdr files by ECOCLIMAP II files.
+
+2) Under your user, create root directory for utility e923_update, typically:
+
+  mkdir $HOME/e923_update
+
+3) Enter root directory and do the following:
+
+  cd $HOME/e923_update
+
+  mkdir script template
+
+  cp ~masekj/e923_update/script/run script/
+  cp ~masekj/e923_update/template/* template/
+
+  cd script
+
+4) Rename script "run" to "run.<id>", where <id> is a string identifying your
+setup that will be used in paths (e.g. HR_1800m_0.53_1.00_lis3-3_1.5h)
+
+5) Edit perl script "run.<id>", part "manual settings" including
+"roughness configuration". You can leave default value for $DATA
+(note that data will be stored on /scratch filesystem in order to
+avoid problem with rather strict disk quota for home; symbolic link
+to data directory will be created from root directory). It is crucial
+that variables $conf and $CLIMAKEOUT point to underlying climake
+configuration file and output directory, containing PGD.fa file and
+preliminary Const.Clim.?? files.
+
+In "roughness configuration" section, you can adjust scaling factors for
+orographic and vegetation roughness lengths, scaling factors for the
+broadleaf and coniferous tree heights, and numbers of smoothings for
+both roughness lengths.
+
+6) Run the edited script:
+
+  ./run.<id>
+
+It will substitude templates and create the chain of 4 slurm scripts:
+
+  <id>_1_lbc
+  <id>_2_initsfx
+  <id>_3_sfx
+  <id>_4_clim
+
+It will also start the chain by submitting the first slurm script.
+If everything goes well, updated climate files will finally appear
+in directory:
+
+  $DATA/clim/<id>/
+
+Messages from the scripts will appear in files *.out.
+
+TROUBLESHOOTING:
+----------------
+
+Step 3 (SURFEX integrations) runs on 8 full nodes, using 16 MPI x 8 OMP
+processes on each. If your target domain is too small, this can cause
+segmentation violation in transformations. In such case, please decrease
+number of nodes in template:
+
+  template/3_sfx.template
+
+by modifying SLURM header line:
+
+  #SBATCH --nodes=8
+
+If your domain is very small, you can ask for 1 node. Please keep in mind
+that for larger domains multiple nodes are needed because of memory
+requirements.
+
+REMARKS:
+--------
+
+Resulting clim files are created with option LZ0THER=F, so they must
+be used with integration option LZ0HSREL=T.
+
+If particular slurm script fails, after fixing the problem it is not
+necessary to rerun everyting, but only to submit the failed script.
+
+Procedure first creates LBC files and init .sfx files for target domain
+for 15th day of each month. Then it runs single timestep integrations
+of ALARO with SURFEX. Finally, it extracts roughness fields from produced
+.sfx files, and replaces them in the clim files taken from climake.
+
+Procedure will not work if your target domain does not fit in LACE telecom
+domain. In such case it is necessary to provide your source LBC files for
+00 and 03 UTC of 15th day of each month, togehter with corresponding clim
+files. It is then sufficient to adjust variables clim_i and lbc_i in the
+template "1_lbc.template".
+
+USED EXECUTABLES:
+-----------------
+
+  /home/gmap/mrpm/masekj/pack/cy43t2_bf.11_suborog/bin/MASTERODB
+  /home/gmap/mrpm/masekj/bin/fa_sfx2clim
+
+USED DATA:
+----------
+
+  climake output files Const.Clim.?? and PGD.fa
+  /home/gmap/mrpm/masekj/m3d/lbc/lace/e923_update/COUPL0000.m??
+  /home/gmap/mrpm/masekj/m3d/lbc/lace/e923_update/COUPL0003.m??
+  /home/gmap/mrpm/masekj/m3d/clim/lace_8000m/lace_i??
+

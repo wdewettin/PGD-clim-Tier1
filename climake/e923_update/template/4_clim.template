@@ -1,0 +1,96 @@
+#!/bin/bash
+#SBATCH --partition=normal256
+#SBATCH --time=00:30:00
+#SBATCH --nodes=1
+#SBATCH --ntasks=1
+#SBATCH --cpus-per-task=1
+#SBATCH --exclusive
+#SBATCH --job-name=__ID___4_clim
+#SBATCH --output=%x.out
+#SBATCH --error=%x.out
+#SBATCH --export=NONE
+
+#####
+# variables
+#####
+
+# domain identifier in paths
+id=__ID__
+
+#####
+# paths
+#####
+
+# root directory
+ROOT=__ROOT__
+
+# directory with .sfx files
+SFX=$ROOT/data/sfx/$id
+
+# directories with input/output clim files
+CLIM_I=__CLIMAKEOUT__
+CLIM_O=$ROOT/data/clim/$id
+
+# PGD file
+pgd=__CLIMAKEOUT__/PGD.fa
+
+# basename of .sfx files
+sfx=$SFX/ICMSHALAD+0000.sfx.m
+
+# basenames of clim files
+clim_i=$CLIM_I/Const.Clim.
+clim_o=$CLIM_O/Const.Clim.
+
+# fa_sfx2clim executable
+fa_sfx2clim=/home/gmap/mrpm/masekj/bin/fa_sfx2clim
+
+#####
+# preparations
+#####
+
+set -e
+set -x
+
+# create destination directory if it does not exist
+if [[ ! -d $CLIM_O ]]; then
+  mkdir -p $CLIM_O
+fi
+
+# enter temporary directory
+cd $TMPDIR
+
+# create namelist for fa_sfx2clim
+cat > nam <<EOF
+&NAM
+  L_Z0=.T.,
+  LZ0THER=.F.,
+  FACZ0=__FACZ0__,
+  FACZ0_VEG=__FACZ0_VEG__,
+  NLISSZ=__NLISSZ__,
+  NLISSZ_VEG=__NLISSZ_VEG__,
+/
+EOF
+
+#####
+# update e923 clim files produced by climake
+#####
+
+# loop through months
+for mm in 01 02 03 04 05 06 07 08 09 10 11 12; do
+
+  # write info
+  echo "===> month: $mm <==="
+
+  # take e923 clim file from climake
+  cp $clim_i$mm $clim_o$mm
+
+  # update e923 clim file
+  $fa_sfx2clim nam $pgd $sfx$mm $clim_o$mm
+
+done
+
+# write info
+echo "Climate files in directory $CLIM_O have been updated."
+
+# show job statistics
+/opt/softs/bin/ja
