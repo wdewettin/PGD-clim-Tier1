@@ -50,7 +50,7 @@ cd 0_build_pgd
 NEEDED_INPUTS=(HWSD_CLAY HWSD_SAND ECOCLIMAP_I_SURFACE_TYPE GMTED2010_OROGRAPHY_30S0 ECOCLIMAP_COVERS_PARAM MASTER_PGD NAMELIST_AROME)
 # variables in gget
 # VARIABLES=$(/home/mf/dp/marp/martinezs/public/bin/genv $CYCLE)
-VARIABLES=$(cat /dodrio/scratch/users/vsc45263/wout/PGD-clim-Tier1/climake/scripts/variables.txt)
+VARIABLES=$(cat ${CLIMAKEDIR}/scripts/variables_${CYCLE}.txt)
 
 # construct GENVDICT dictionnary
 declare -A GENVDICT
@@ -96,9 +96,9 @@ else
   cat $PGDNAM > OPTIONS.nam
 fi  
 
-#shortcut for xpnam tool
+#shortcut for xpnam tool, which is a namelist editing tool
 XPNAM=$CLIMAKEDIR'/stuff/xpnam'
-$XPNAM -i --dfile=$PGDGEO OPTIONS.nam
+$XPNAM -i --dfile=$PGDGEO OPTIONS.nam # Modifications from $PGDGEO are added to OPTIONS.nam in place
 
 if [ "$CUSTOM_PGD" == "GENERIC" ]; then
   #default binary
@@ -108,7 +108,6 @@ else
 fi  
 
 echo '  ------------EXPORTING ENV VARIABLES  ------------ '
-export OMP_NUM_THREADS=1
 source $CLIMAKEDIR'/stuff/environmentVariables'
 echo '  ------------------------------------------------- '
 
