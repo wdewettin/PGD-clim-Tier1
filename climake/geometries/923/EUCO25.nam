@@ -1,0 +1,23 @@
+ &NAMDIM
+   NDGLG=270,
+   NDGUXG=251,
+   NDLON=270,
+   NDLUXG=251,
+   NFLEVG=1,
+   NMSMAX=134,
+   NSMAX=134,
+ /
+ &NEMDIM
+   NBZONG=8,
+   NBZONL=8,
+ /
+ &NEMGEO
+   EDELX=25000.,
+   EDELY=25000.,
+   ELON0=9.9,
+   ELAT0=49.,
+   ELONC=9.9,
+   ELATC=49.,
+ /
+
+
