@@ -1,0 +1,21 @@
+
+module swap cluster/dodrio/cpu_milan # cpu_rome_all
+module load iimpi/2022a vsc-mympirun
+module load imkl/2022.1.0
+module load CMake/3.24.3-GCCcore-11.3.0
+
+					
+export FC90=mpiifort
+export FC=mpiifort
+export CC=mpiicc
+export CXX=mpiicx
+
+export GMKFILE=INTEL.HORTENSE
+GMKROOT=/dodrio/scratch/projects/starting_2022_075/accord/software/gmkpack/gmkpack
+export PATH=$GMKROOT/util:$PATH
+export MANPATH=$GMKROOT/man:$MANPATH
+export ROOTPACK=/dodrio/scratch/projects/starting_2022_075/accord/rootpack
+export HOMEPACK=/dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc45263_wout/ALARO-SURFEX/pack
+export ROOTBIN=${ROOTPACK}
+export HOMEBIN=${HOMEPACK}
+

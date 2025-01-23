@@ -1,0 +1,98 @@
+#!/bin/bash
+#SBATCH --time=01:00:00
+#SBATCH --nodes=1            # Request 1 node
+#SBATCH --ntasks=1           # Request 1 task (process)
+#SBATCH --cpus-per-task=1    # Request 1 CPU core for the task
+#SBATCH --exclusive
+#SBATCH --job-name=BE40a_l_z0sfx_0.53-1.5h_lis3-3.II_4_clim
+#SBATCH --output=%x.out
+#SBATCH --error=%x.out
+#SBATCH --export=NONE
+#PBS -A 2022_205
+
+#####
+# variables
+#####
+
+# domain identifier in paths
+id=BE40a_l_z0sfx_0.53-1.5h_lis3-3.II
+
+#####
+# paths
+#####
+
+# root directory
+ROOT=/dodrio/scratch/users/vsc45263/wout/PGD-clim-Tier1/climake/e923_update
+
+# directory with .sfx files
+SFX=$ROOT/data/sfx/$id
+
+# directories with input/output clim files
+CLIM_I=/dodrio/scratch/users/vsc45263/wout/PGD-clim-Tier1/climake/outputFiles/pgddomain-BE40a_l.nam__climdomain-BE40a_l.nam__cycle-cy43t2_clim-op8.01__pgdnam-GCO__climnam-GCO__orotrunc-QUADRATIC__othertrunc-LINEAR__v-1.37
+CLIM_O=$ROOT/data/clim/$id
+
+# PGD file
+pgd=/dodrio/scratch/users/vsc45263/wout/PGD-clim-Tier1/climake/outputFiles/pgddomain-BE40a_l.nam__climdomain-BE40a_l.nam__cycle-cy43t2_clim-op8.01__pgdnam-GCO__climnam-GCO__orotrunc-QUADRATIC__othertrunc-LINEAR__v-1.37/PGD.fa
+
+# basename of .sfx files
+sfx=$SFX/ICMSHABOF+0000.sfx.m
+
+# basenames of clim files
+clim_i=$CLIM_I/Const.Clim.
+clim_o=$CLIM_O/Const.Clim.
+
+# fa_sfx2clim executable
+fa_sfx2clim=/dodrio/scratch/users/vsc45263/wout/PGD-clim-Tier1/climake/e923_update/fa_sfx2clim/fa_sfx2clim
+
+#####
+# preparations
+#####
+
+set -e
+set -x
+
+module load iimpi/2022a vsc-mympirun
+module load imkl/2022.1.0
+export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/dodrio/scratch/projects/starting_2022_075/accord/software/iimpi2022a/lib64
+export OMP_NUM_THREADS=1
+
+# create destination directory if it does not exist
+if [[ ! -d $CLIM_O ]]; then
+  mkdir -p $CLIM_O
+fi
+
+# enter temporary directory
+cd $TMPDIR
+
+# create namelist for fa_sfx2clim
+cat > nam <<EOF
+&NAM
+  L_Z0=.T.,
+  LZ0THER=.F.,
+  FACZ0=0.53,
+  FACZ0_VEG=1.00,
+  NLISSZ=3,
+  NLISSZ_VEG=3,
+/
+EOF
+
+#####
+# update e923 clim files produced by climake
+#####
+
+# loop through months
+for mm in 01 02 03 04 05 06 07 08 09 10 11 12; do
+
+  # write info
+  echo "===> month: $mm <==="
+
+  # take e923 clim file from climake
+  cp $clim_i$mm $clim_o$mm
+
+  # update e923 clim file
+  mympirun -h 1 $fa_sfx2clim nam $pgd $sfx$mm $clim_o$mm
+
+done
+
+# write info
+echo "Climate files in directory $CLIM_O have been updated."

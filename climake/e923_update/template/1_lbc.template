@@ -45,7 +45,7 @@ lbc_i=$LBC_I/COUPL
 lbc_o=$LBC_O/PF$exp$dom0+
 
 # ALADIN executable
-MASTER=/dodrio/scratch/users/vsc45263/wout/ALARO-SURFEX/pack/suborog/bin/MASTERODB
+MASTER=/dodrio/scratch/users/vsc45263/wout/ALARO-SURFEX/pack/suborog2/bin/MASTERODB
 
 TMPDIR=/dodrio/scratch/users/vsc45263/wout/PGD-clim-Tier1/climake/e923_update/work___ID__
 
@@ -686,5 +686,6 @@ done
 
 # submit next job in the chain
 cd $ROOT/script
+rm -rv $TMPDIR
 sbatch __ID___2_initsfx
 

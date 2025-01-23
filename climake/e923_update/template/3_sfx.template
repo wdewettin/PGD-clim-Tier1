@@ -1,12 +1,12 @@
 #!/bin/bash
-#SBATCH --partition=normal256
 #SBATCH --time=01:00:00
-#SBATCH --nodes=8
+#SBATCH --nodes=1
 #SBATCH --exclusive
 #SBATCH --job-name=__ID___3_sfx
 #SBATCH --output=%x.out
 #SBATCH --error=%x.out
 #SBATCH --export=NONE
+#PBS -A 2022_205
 
 #####
 # variables
@@ -16,7 +16,7 @@
 id=__ID__
 
 # experiment name
-exp=ALAD
+exp=ABOF
 
 #####
 # paths
@@ -26,7 +26,7 @@ exp=ALAD
 ROOT=__ROOT__
 
 # path to ECOCLIMAP files
-ECLI=/home/gmap/mrpm/masekj/data/ecoclimap
+ECLI=/dodrio/scratch/users/vsc45263/wout/PGD-clim-Tier1/climake/data/ecoclimap.covers.param.05
 
 # directory with PGD files
 PGD=__CLIMAKEOUT__
@@ -38,7 +38,7 @@ LBC=$ROOT/data/lbc/$id
 SFX=$ROOT/data/sfx/$id
 
 # basenames of LBC files
-lbc=$LBC/PFE927UCLI+
+lbc=$LBC/PFABOFABOF+
 
 # basenames of init files
 init=${lbc}0000.m
@@ -48,39 +48,44 @@ init_sfx=${lbc}0000.sfx.m
 pgd=$PGD/PGD.fa
 
 # ALADIN executable
-MASTER=/home/gmap/mrpm/masekj/pack/cy43t2_bf.11_suborog/bin/MASTERODB
+MASTER=/dodrio/scratch/users/vsc45263/wout/ALARO-SURFEX/pack/suborog2/bin/MASTERODB
+
+TMPDIR=/dodrio/scratch/users/vsc45263/wout/PGD-clim-Tier1/climake/e923_update/work___ID__
 
 #####
 # environment
 #####
 
+module purge
+module swap cluster/dodrio/cpu_milan
+module load iimpi/2022a imkl/2022.1.0 vsc-mympirun
+export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/dodrio/scratch/projects/starting_2022_075/accord/software/iimpi2022a/lib64
+
 NNODES=$SLURM_JOB_NUM_NODES
-MPITASKS_PER_NODE=16
-OMP_NUM_THREADS=8
+MPITASKS_PER_NODE=128
 NPROC=$(( $NNODES*$MPITASKS_PER_NODE ))
-export I_MPI_JOB_RESPECT_PROCESS_PLACEMENT=1
-export OMP_NUM_THREADS
+export OMP_NUM_THREADS=1
 
 echo NNODES=$NNODES
 echo MPI_TASKS=NPROC=$NPROC
 echo MPITASKS_PER_NODE=$MPITASKS_PER_NODE
 echo OMP_NUM_THREADS=$OMP_NUM_THREADS
 
-export OMP_STACKSIZE=4G
-export KMP_STACKSIZE=4G
-export KMP_MONITOR_STACKSIZE=1G
+export OMP_STACKSIZE="$((4/OMP_NUM_THREADS))G"
+export KMP_STACKSIZE="$((4/OMP_NUM_THREADS))G"
 ulimit -s unlimited
 
-export DR_HOOK=0
+export DR_HOOK=1
 export DR_HOOK_IGNORE_SIGNALS=-1
-export DR_HOOK_SILENT=1
+export DR_HOOK_SILENT=0
 export DR_HOOK_OPT=prof
 
-##export MPL_MBX_SIZE=2048000000
+export MPL_MBX_SIZE=2048000000
+export I_MPI_ADJUST_GATHERV=3
 export EC_PROFILE_HEAP=0
 export EC_MPI_ATEXIT=0
 
-NPROMA=-16
+NPROMA=-128
 
 #####
 # preparations
@@ -95,6 +100,14 @@ if [[ ! -d $SFX ]]; then
 fi
 
 # enter temporary directory
+if [[ ! -d $TMPDIR ]]
+then
+  mkdir -p $TMPDIR
+else
+  rm -rv $TMPDIR
+  mkdir -p $TMPDIR
+fi
+
 cd $TMPDIR
 
 #####
@@ -122,8 +135,8 @@ for mm in 01 02 03 04 05 06 07 08 09 10 11 12; do
   ln -s ${lbc}0006.m$mm ELSCF${exp}ALBC001
 
   # create symbolic links to ECOCLIMAP files
-  ln -s $ECLI/ecoclimapI_covers_param_V8.bin ecoclimapI_covers_param.bin
-  ln -s $ECLI/ecoclimapII_eu_covers_param_V8.bin ecoclimapII_eu_covers_param.bin
+  ln -s $ECLI/ecoclimapI_covers_param.bin ecoclimapI_covers_param.bin
+  ln -s $ECLI/ecoclimapII_eu_covers_param.bin ecoclimapII_eu_covers_param.bin
 
   # create symbolic link to PGD file
   ln -s $pgd Const.Clim.sfx
@@ -1057,10 +1070,11 @@ EOF
   set +e
 
   # execute master
-  /opt/softs/mpiauto/mpiauto --verbose --wrap --wrap-stdeo \
-    --prefix-mpirun '/usr/bin/time -f "real=%e"' \
-    --nn $NNODES --nnp $MPITASKS_PER_NODE --nn $NNODES \
-    --openmp $OMP_NUM_THREADS -- $MASTER > lola 2>&1
+  # /opt/softs/mpiauto/mpiauto --verbose --wrap --wrap-stdeo \
+  #   --prefix-mpirun '/usr/bin/time -f "real=%e"' \
+  #   --nn $NNODES --nnp $MPITASKS_PER_NODE --nn $NNODES \
+  #   --openmp $OMP_NUM_THREADS -- $MASTER > lola 2>&1
+  mympirun --variablesprefix DR -h $NPROC $MASTER > lola 2>&1
   err=$?
   if [[ $err -ne 0 ]]; then
     echo "Error: Configuration 001 failed!"
@@ -1105,7 +1119,5 @@ done
 
 # submit next job in the chain
 cd $ROOT/script
+rm -rv $TMPDIR
 sbatch __ID___4_clim
-
-# show job statistics
-/opt/softs/bin/ja

@@ -1,0 +1,38 @@
+FAreplace_new and FAreplace_new_sfx
+
+
+Sources
+=======
+
+Source files taken from hpca-login:/home/hamdi/aladin/pack/cy36/src/local/mse/programs/
+
+
+Compilation
+===========
+
+module swap cluster/dodrio/cpu_milan
+module load iimpi/2022a imkl/2022.1.0 vsc-mympirun
+export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/dodrio/scratch/projects/starting_2022_075/accord/software/iimpi2022a/lib64
+ulimit -s unlimited
+make
+
+Usage
+=====
+
+module swap cluster/dodrio/cpu_milan
+module load iimpi/2022a imkl/2022.1.0 vsc-mympirun
+export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:${HOME}/accord/software/iimpi2022a/lib64
+ulimit -s unlimited
+
+[create fort.4]
+
+./FAreplace_new <args>
+
+
+
+Caveat
+======
+
+Personally, I think FAreplace should be replaced by a python script using Epygram.
+
+
