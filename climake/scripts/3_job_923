@@ -380,7 +380,7 @@ cd $CLIMAKEDIR
 rm -rv $CLIMAKEWORKDIR
 
 if [ "$PGDGEO" != "NOPGD" ]; then
-sbatch --output=$OUTPUTDIR/log/4climake.o --error=$OUTPUTDIR/log/4climake.e scripts/4_replace_orography $OUTPUTDIR
+sbatch --output=$OUTPUTDIR/log/4climake.o --error=$OUTPUTDIR/log/4climake.e scripts/4_replace_orography $OUTPUTDIR $CLIMAKEDIR
 fi
 
 exit $?

@@ -62,4 +62,24 @@ Before running the executable, we first overwrite the ECOCLIMAP I files with our
 
 ### 3_climake
 
+This scripts builds the climatological files.
 
+First the namelist variable `LPGD` is defined based on the previous creation of a PGD or not. Next, we go the working directory. We load in the environment variables from `/stuff/environmentVariables`. The needed inputs are defined as a list and converted to a dictionary `GENVDICT`, similarly to the `2_make_pgd`-script (see above). Subsequently, the relevant databases are copied to the working directory. 
+
+Next, the namelist is loaded from `CLIMNAM`, which is `${GENVDICT[NAMELIST_AROME]}'/arome/namel_c923'` if `CLIMNAM` is `GCO` with `GENVDICT[NAMELIST_AROME]="cy43t2_clim-bf.01.nam"`. This namelist is modified with the domain-specific variables from `CLIMGEO`. Based on the spectral parameters, we need one or two orography steps. The namelists for this/these step(s) are constructed and added to our previous namelist.
+
+Now, we arrive at the actual core of the script. The clim-files are constructed through a series of steps, which are performed subsequently. These steps are defined with the following string: 
+```
+LOCALDIRECTORYNAME;input1@localname1,input2@localname2,....;commmand1,command2,...
+```
+Each of these steps are performed in a different subdirectory. At the end of each step the current version of the clim file(s) is moved to the main working directory. For more detailed information, I refer to the script itself.
+
+After all these steps, the monthly clim files are copied to the output directory. The final step, `4_replace_orography`, is submitted.
+
+**Expand explanation?**
+
+### 4_replace_orography
+
+This script replaces the orography field (SFX.ZS) in the PGD file with the (modified) geopotential from the clim file(s). This is performed in the output directory. 
+
+**Add a step 5 with e927_update?**

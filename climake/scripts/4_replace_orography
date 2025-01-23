@@ -16,6 +16,7 @@
 set -ex 
 
 OUTPUTDIR=$1
+CLIMAKEDIR=$2
 
 cd $OUTPUTDIR
 echo '&namelist_vars
@@ -31,6 +32,6 @@ export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/dodrio/scratch/projects/starting_2022
 ulimit -s unlimited
 ulimit -c unlimited
 
-/dodrio/scratch/users/vsc45263/wout/PGD-clim-Tier1/climake/scripts/replace_orography/replace_orography
+${CLIMAKEDIR}/scripts/replace_orography/replace_orography
 
 rm fort.4
