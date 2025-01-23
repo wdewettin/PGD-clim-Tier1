@@ -34,7 +34,7 @@ CUSTOM_MASTER=${10}
 CUSTOM_PGD=${11}
 SPECTRALS_PARAMS=${12}
 CLIMAKEWORKDIR=${13}
-PGDHACK=${14}
+PGDHACK="${14}"
 
 [ -d $CLIMAKEWORKDIR ] && rm -r $CLIMAKEWORKDIR
 mkdir -p $CLIMAKEWORKDIR
@@ -123,7 +123,8 @@ chmod 644 ecoclimap.dir ecoclimap.hdr
 cp /dodrio/scratch/users/vsc45263/wout/PGD-clim-Tier1/climake/data/ECOCLIMAP_II_EUROP_V2.5.dir ecoclimap.dir
 cp /dodrio/scratch/users/vsc45263/wout/PGD-clim-Tier1/climake/data/ECOCLIMAP_II_EUROP_V2.5.hdr ecoclimap.hdr
 
-$PGDHACK
+echo "$PGDHACK"
+eval "$PGDHACK"
 
 
 time ./pgd.exe

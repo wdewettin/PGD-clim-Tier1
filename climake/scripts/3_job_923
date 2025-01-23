@@ -58,6 +58,7 @@ fi
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
+[ ! -d $CLIMAKEWORKDIR ] && mkdir -p $CLIMAKEWORKDIR
 cd $CLIMAKEWORKDIR
 
 echo '---------------------------'
@@ -183,8 +184,8 @@ declare -A DRIVER2OROSTEP
 
 #LOCALDIRECTORYNAME;input1@localname1,input2@localname2,....;commmand1,command2,...
 
-STEPS_1A="orography;PGD@Neworog,GTOPO30_URBANISATION@Urbanisation,GTOPO30_WATER_PERCENTAGE@Water_Percentage,GTOPO30_MISC_OROGRAPHY@orography.gtopo30_misc.01.tgz,MASTER_AROME@MASTER"
-STEPS_1B="finalize_orography;../Const.Clim.step_1@Neworog,GTOPO30_URBANISATION@Urbanisation,GTOPO30_WATER_PERCENTAGE@Water_Percentage,GTOPO30_MISC_OROGRAPHY@orography.gtopo30_misc.01.tgz,MASTER_AROME@MASTER"
+STEPS_1A="orography;PGD@Neworog,PGD@Newsuborog,GTOPO30_URBANISATION@Urbanisation,GTOPO30_WATER_PERCENTAGE@Water_Percentage,GTOPO30_MISC_OROGRAPHY@orography.gtopo30_misc.01.tgz,MASTER_AROME@MASTER"
+STEPS_1B="finalize_orography;../Const.Clim.step_1@Neworog,PGD@Newsuborog,GTOPO30_URBANISATION@Urbanisation,GTOPO30_WATER_PERCENTAGE@Water_Percentage,GTOPO30_MISC_OROGRAPHY@orography.gtopo30_misc.01.tgz,MASTER_AROME@MASTER"
 STEPS_1="orography_singlestep;PGD@Neworog,GTOPO30_URBANISATION@Urbanisation,GTOPO30_WATER_PERCENTAGE@Water_Percentage,GTOPO30_MISC_OROGRAPHY@orography.gtopo30_misc.01.tgz,MASTER_AROME@MASTER"
 STEPS_2="const_physiography;../Const.Clim.step_1@Const.Clim,GIARDBAZILE2000_SOIL_AND_VEG@giardbazile2000.soil_and_veg.01.tgz,MASTER_AROME@MASTER"
 STEPS_3="monthly_tqs;USNAVY_SOIL_CLIM@N108_GL,../Const.Clim.step_2@Const.Clim,MASTER_AROME@MASTER"
@@ -378,7 +379,10 @@ echo 'Job 3_job_923 ended correctly!'
 cd $CLIMAKEDIR
 rm -rv $CLIMAKEWORKDIR
 
+if [ "$PGDGEO" != "NOPGD" ]; then
 sbatch --output=$OUTPUTDIR/log/4climake.o --error=$OUTPUTDIR/log/4climake.e scripts/4_replace_orography $OUTPUTDIR
+fi
+
 exit $?
 
 
