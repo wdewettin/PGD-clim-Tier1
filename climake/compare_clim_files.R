@@ -2,16 +2,16 @@ library(Rfa)
 
 # File locations
 
-output_dir_1 <- "/dodrio/scratch/users/vsc45263/DYDOCASE/runs/long/level03/clim"
+output_dir_1 <- "/dodrio/scratch/users/vsc45263/wout/DYDOCASE/runs/long/level03/clim"
 output_file_name_1 <- "Const.Clim."
 
-output_dir_2 <- "/dodrio/scratch/users/vsc45263/wout/PGD-clim-Tier1/climake/outputFiles/pgddomain-BE40a_l.nam__climdomain-BE40a_l.nam__cycle-cy43t2_clim-op8.01__pgdnam-GCO__climnam-GCO__orotrunc-QUADRATIC__othertrunc-LINEAR__v-1.37"
+output_dir_2 <- "/dodrio/scratch/users/vsc45263/wout/PGD-clim-Tier1/climake/e923_update/data/clim/BE40a_l_z0sfx_0.53-1.5h_lis3-3.II" 
 output_file_name_2 <- "Const.Clim."
 
 name_1 <- "l03_original"
-name_2 <- "l03_climake_gmted30s0_ECOII_final"
+name_2 <- "l03_e923_update"
 
-pgd <- TRUE
+pgd <- FALSE
 pgd_file_name_1 <- "PGD.fa"
 pgd_file_name_2 <- "PGD.fa"
 

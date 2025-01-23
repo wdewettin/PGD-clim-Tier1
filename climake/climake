@@ -421,12 +421,12 @@ fi
 # if [[ -z "${CLIMAKEWORKDIR}" ]]; then
 #     CLIMAKEWORKDIR=$(mktemp -d)
 # fi
-CLIMAKEWORKDIR=/dodrio/scratch/users/vsc45263/wout/PGD-clim-Tier1/climake/work
+CLIMAKEWORKDIR=/dodrio/scratch/users/vsc45263/wout/PGD-clim-Tier1/climake/work_$CONFIGFILE
 
 if [[ -z "${PGDHACK}" ]]; then
     PGDHACK=":" #nothing
-else
-    PGDHACK=$(realpath $PGDHACK)
+# else
+#     PGDHACK=$(realpath $PGDHACK)
 fi
 
 
@@ -473,4 +473,4 @@ cp -f $CONFIGFILE $OUTPUTDIR/.
 
 
 # start job
-sbatch --output=$OUTPUTDIR/log/1climake.o --error=$OUTPUTDIR/log/1climake.e scripts/1_fetch_files $PGDGEO $CLIMGEO $CYCLE $PGDNAM $CLIMNAM $OROGRAPHY_TRUNCATION $OTHERFIELDS_TRUNCATION $CLIMAKEDIR $OUTPUTDIR $CUSTOM_MASTER $CUSTOM_PGD $SPECTRALS_PARAMS $CLIMAKEWORKDIR $PGDHACK
+sbatch --output=$OUTPUTDIR/log/1climake.o --error=$OUTPUTDIR/log/1climake.e scripts/1_fetch_files $PGDGEO $CLIMGEO $CYCLE $PGDNAM $CLIMNAM $OROGRAPHY_TRUNCATION $OTHERFIELDS_TRUNCATION $CLIMAKEDIR $OUTPUTDIR $CUSTOM_MASTER $CUSTOM_PGD $SPECTRALS_PARAMS $CLIMAKEWORKDIR "$PGDHACK"
