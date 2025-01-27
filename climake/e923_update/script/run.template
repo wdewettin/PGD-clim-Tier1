@@ -1,0 +1,217 @@
+#!/usr/bin/perl -w
+
+#####
+# Utility for updating roughness fields in e923 clim files from PGD.
+# It relies on climake output, which must be produced first for
+# the domain of interest.
+#
+# created:
+#   28-Jul-2021, J. Masek
+#
+# modified:
+#####
+
+#####
+# automatic settings
+#####
+
+# username
+$user = $ENV{USER};
+
+# home directory
+$HOME = $ENV{HOME};
+
+# identifier to be used in paths (name of this script must be run.<id>)
+$id =  $0;
+$id =~ s/^.*\///;
+if ( $id =~ /^run\.(\S+)/ ) {
+  $id = $1;
+}
+else {
+  die "Script name must have format run.<id>!\n";
+}
+
+#####
+# manual settings
+#####
+
+# root directory for e923 update
+$ROOT = {root};
+
+# data directory on scratch file system
+$DATA = {data};
+
+# root directory for climake
+$CLIMAKE = {climake};
+
+# climake configuration file for desired domain
+$conf = {conf};
+
+# directory with climake outputs for desired domain
+$CLIMAKEOUT = {climakeout};
+
+#####
+
+# roughness configuration
+$facz0       = {facz0};  # scaling factor for orographic roughness
+$facz0_veg   = {facz0_veg};  # scaling factor for vegetation roughness
+$xmul_h_tree = {xmul_h_tree};   # scaling factor for tree height
+$nlissz      = {nlissz};      # number of smoothings for orographic roughness
+$nlissz_veg  = {nlissz_veg};      # number of smoothings for vegetation roughness
+
+#####
+# NO NEED TO MODIFY BELOW THIS LINE.
+#####
+
+#####
+# preparations
+#####
+
+# enter script directory
+chdir("$ROOT/script") or
+  die "Cannot enter directory $ROOT/script! ($!)";
+
+# write info
+print <<EOF;
+Entered directory:
+
+  $ROOT/script/
+
+EOF
+
+# create symbolic link to data directory
+if ( ! -l "data" ) {
+  symlink($DATA, "data") or
+    die "Cannot create symbolic link data -> $DATA! ($!)";
+}
+
+#####
+# get geometry info
+#####
+
+# namelist with e923 geometry
+$nam =  qx(grep CLIMGEO= $conf);
+$nam =~ /^\s*CLIMGEO\s*=\s*(\S+)\s*$/;
+$nam =  "$CLIMAKE/$1";
+
+# parse geometry namelist
+open(NAM, $nam) or
+  die "Cannot open file $nam! ($!)\n";
+while ( defined($line = <NAM>) ) {
+  $line =~ s/,?\s*$//;  # remove trailing whitespaces and comma
+  if ( $line =~ /^\s*(\S+)\s*=\s*(\S+)$/ ) {
+    $params{$1} = $2;
+  }
+}
+close(NAM);
+
+# get parameters
+$ndlon  = $params{NDLON };
+$ndgl   = $params{NDGLG };
+$ndlux  = $params{NDLUXG};
+$ndgux  = $params{NDGUXG};
+$nmsmax = $params{NMSMAX};
+$nsmax  = $params{NSMAX };
+$nbzonl = $params{NBZONL};
+$nbzong = $params{NBZONG};
+$lon0   = $params{ELON0 };
+$lat0   = $params{ELAT0 };
+$lonc   = $params{ELONC };
+$latc   = $params{ELATC };
+$delx   = $params{EDELX };
+$dely   = $params{EDELY };
+
+# write info
+print <<EOF;
+Geometry read from file:
+
+  $nam
+
+  NDLON =$ndlon
+  NDGL  =$ndgl
+  NDLUX =$ndlux
+  NDGUX =$ndgux
+  NMSMAX=$nmsmax
+  NSMAX =$nsmax
+  NBZONL=$nbzonl
+  NBZONG=$nbzong
+  ELON0 =$lon0
+  ELAT0 =$lat0
+  ELONC =$lonc
+  ELATC =$latc
+  EDELX =$delx
+  EDELY =$dely
+
+EOF
+
+#####
+# prepare scripts
+#####
+
+# loop through tasks
+for $task (qw(1_lbc 2_initsfx 3_sfx 4_clim)) {
+
+  # read template
+  $file = "$ROOT/template/$task.template";
+  $size = -s $file;
+  open(FILE, $file) or
+    die "Cannot open file $file! ($!)";
+  if ( read(FILE, $str, $size) != $size ) {
+    die "Cannot read file $file!";
+  }
+  close(FILE);
+
+  # substitute variables
+  $str =~ s/__ID__/$id/g;
+  $str =~ s/__ROOT__/$ROOT/g;
+  $str =~ s/__CLIMAKEOUT__/$CLIMAKEOUT/g;
+  $str =~ s/__NDLON__/$ndlon/g;
+  $str =~ s/__NDGL__/$ndgl/g;
+  $str =~ s/__NDLUX__/$ndlux/g;
+  $str =~ s/__NDGUX__/$ndgux/g;
+  $str =~ s/__NMSMAX__/$nmsmax/g;
+  $str =~ s/__NSMAX__/$nsmax/g;
+  $str =~ s/__NBZONL__/$nbzonl/g;
+  $str =~ s/__NBZONG__/$nbzong/g;
+  $str =~ s/__LON0__/$lon0/g;
+  $str =~ s/__LAT0__/$lat0/g;
+  $str =~ s/__LONC__/$lonc/g;
+  $str =~ s/__LATC__/$latc/g;
+  $str =~ s/__DELX__/$delx/g;
+  $str =~ s/__DELY__/$dely/g;
+  $str =~ s/__FACZ0__/$facz0/g;
+  $str =~ s/__FACZ0_VEG__/$facz0_veg/g;
+  $str =~ s/__XMUL_H_TREE__/$xmul_h_tree/g;
+  $str =~ s/__NLISSZ__/$nlissz/g;
+  $str =~ s/__NLISSZ_VEG__/$nlissz_veg/g;
+
+  # write script
+  $file = "$ROOT/script/${id}_$task";
+  open(FILE, ">$file") or
+    die "Cannot open file $file! ($!)";
+  print FILE $str;
+  close(FILE);
+}
+
+#####
+# update e923 clim files
+#####
+
+# start the job chain
+$err = system("sbatch ${id}_1_lbc");
+if ( $err ) {
+      die "Submission of job chain failed!\n";
+}
+
+# write info
+print <<EOF;
+Job chain has been submitted. Updated clim files should appear in directory:
+
+  $ROOT/data/clim/$id
+
+EOF
+
+#####
+
+# successful end
+exit(0);

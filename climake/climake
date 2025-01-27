@@ -446,6 +446,7 @@ echo 'MASTER BINARY IS '$CUSTOM_MASTER
 echo 'PGD BINARY IS '$CUSTOM_PGD
 echo 'CLIMAKEWORKDIR IS '$CLIMAKEWORKDIR
 echo 'PGDHACK IS '$PGDHACK
+echo 'E923_UPDATE IS '$E923_UPDATE
 echo '==========================='
 echo '***************************'
 echo '                           '
@@ -471,6 +472,36 @@ fi
 [ ! -d $OUTPUTDIR'/log' ] && mkdir -p $OUTPUTDIR'/log'
 cp -f $CONFIGFILE $OUTPUTDIR/.
 
+# Create work directory
+[ -d $CLIMAKEWORKDIR ] && rm -r $CLIMAKEWORKDIR
+mkdir -p $CLIMAKEWORKDIR
+
+# If e923_update
+if [ "$E923_UPDATE" == "y" ]
+then
+## Create run script with variables from config file
+RUNTEMPLATE=${ROOT}/script/run.template
+mkdir -p ${CLIMAKEWORKDIR}/e923_update/script
+ID=$(basename ${CLIMAKEWORKDIR})
+
+sed -e "s|{root}|\"${CLIMAKEWORKDIR}/e923_update\"|g" \
+-e "s|{data}|\"${DATA}\"|g" \
+-e "s|{climake}|\"${PWD}\"|g" \
+-e "s|{conf}|\"${PWD}/${CONFIGFILE}\"|g" \
+-e "s|{climakeout}|\"${OUTPUTDIR}\"|g" \
+-e "s|{facz0}|\"${FACZ0}\"|g" \
+-e "s|{facz0_veg}|\"${FACZ0_VEG}\"|g" \
+-e "s|{xmul_h_tree}|\"${XMUL_H_TREE}\"|g" \
+-e "s|{nlissz}|\"${NLISSZ}\"|g" \
+-e "s|{nlissz_veg}|\"${NLISSZ_VEG}\"|g" \
+$RUNTEMPLATE > ${CLIMAKEWORKDIR}/e923_update/script/run.${ID}
+chmod +x ${CLIMAKEWORKDIR}/e923_update/script/run.${ID}
+
+# Copy template scripts to new root directory
+mkdir ${CLIMAKEWORKDIR}/e923_update/template
+cp $ROOT/template/* ${CLIMAKEWORKDIR}/e923_update/template
+
+fi
 
 # start job
-sbatch --output=$OUTPUTDIR/log/1climake.o --error=$OUTPUTDIR/log/1climake.e scripts/1_fetch_files $PGDGEO $CLIMGEO $CYCLE $PGDNAM $CLIMNAM $OROGRAPHY_TRUNCATION $OTHERFIELDS_TRUNCATION $CLIMAKEDIR $OUTPUTDIR $CUSTOM_MASTER $CUSTOM_PGD $SPECTRALS_PARAMS $CLIMAKEWORKDIR "$PGDHACK"
+sbatch --output=$OUTPUTDIR/log/1climake.o --error=$OUTPUTDIR/log/1climake.e scripts/1_fetch_files $PGDGEO $CLIMGEO $CYCLE $PGDNAM $CLIMNAM $OROGRAPHY_TRUNCATION $OTHERFIELDS_TRUNCATION $CLIMAKEDIR $OUTPUTDIR $CUSTOM_MASTER $CUSTOM_PGD $SPECTRALS_PARAMS $CLIMAKEWORKDIR $E923_UPDATE "$PGDHACK" 
