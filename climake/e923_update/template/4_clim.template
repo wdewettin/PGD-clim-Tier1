@@ -5,8 +5,8 @@
 #SBATCH --cpus-per-task=1    # Request 1 CPU core for the task
 #SBATCH --exclusive
 #SBATCH --job-name=__ID___4_clim
-#SBATCH --output=%x.out
-#SBATCH --error=%x.out
+#SBATCH --output=__ROOT__/log/4e923_update.o
+#SBATCH --error=__ROOT__/log/4e923_update.e
 #SBATCH --export=NONE
 #PBS -A 2022_205
 
@@ -62,6 +62,7 @@ if [[ ! -d $CLIM_O ]]; then
 fi
 
 # enter temporary directory
+TMPDIR=__ROOT__/tmp
 cd $TMPDIR
 
 # create namelist for fa_sfx2clim
@@ -92,7 +93,17 @@ for mm in 01 02 03 04 05 06 07 08 09 10 11 12; do
   # update e923 clim file
   mympirun -h 1 $fa_sfx2clim nam $pgd $sfx$mm $clim_o$mm
 
+  # Overwrite original clim file with updated clim file
+  cp $clim_o$mm $clim_i$mm
+
 done
 
 # write info
 echo "Climate files in directory $CLIM_O have been updated."
+
+# Move log files from e923-update to log directory of output directory
+cp __ROOT__/log/* $CLIM_I/log
+
+# Remove work directory
+CLIMAKEWORKDIR=__CLIMAKEWORKDIR__
+rm -rv $CLIMAKEWORKDIR

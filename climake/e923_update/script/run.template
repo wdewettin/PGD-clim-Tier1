@@ -16,10 +16,10 @@
 #####
 
 # username
-$user = $ENV{USER};
+# $user = $ENV{USER};
 
 # home directory
-$HOME = $ENV{HOME};
+# $HOME = $ENV{HOME};
 
 # identifier to be used in paths (name of this script must be run.<id>)
 $id =  $0;
@@ -49,6 +49,9 @@ $conf = {conf};
 
 # directory with climake outputs for desired domain
 $CLIMAKEOUT = {climakeout};
+
+# Work directory for making clim files
+$CLIMAKEWORKDIR = {climakeworkdir};
 
 #####
 
@@ -165,6 +168,7 @@ for $task (qw(1_lbc 2_initsfx 3_sfx 4_clim)) {
   $str =~ s/__ID__/$id/g;
   $str =~ s/__ROOT__/$ROOT/g;
   $str =~ s/__CLIMAKEOUT__/$CLIMAKEOUT/g;
+  $str =~ s/__CLIMAKEWORKDIR__/$CLIMAKEWORKDIR/g;
   $str =~ s/__NDLON__/$ndlon/g;
   $str =~ s/__NDGL__/$ndgl/g;
   $str =~ s/__NDLUX__/$ndlux/g;

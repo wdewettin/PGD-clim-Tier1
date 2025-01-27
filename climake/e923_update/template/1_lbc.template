@@ -3,8 +3,8 @@
 #SBATCH --nodes=1
 #SBATCH --exclusive
 #SBATCH --job-name=__ID___1_lbc
-#SBATCH --output=%x.out
-#SBATCH --error=%x.out
+#SBATCH --output=__ROOT__/log/1e923_update.o
+#SBATCH --error=__ROOT__/log/1e923_update.e
 #SBATCH --export=NONE
 #PBS -A 2022_205
 
@@ -47,7 +47,7 @@ lbc_o=$LBC_O/PF$exp$dom0+
 # ALADIN executable
 MASTER=/dodrio/scratch/users/vsc45263/wout/ALARO-SURFEX/pack/suborog2/bin/MASTERODB
 
-TMPDIR=/dodrio/scratch/users/vsc45263/wout/PGD-clim-Tier1/climake/e923_update/work___ID__
+TMPDIR=__ROOT__/tmp
 
 #####
 # environment

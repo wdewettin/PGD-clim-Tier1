@@ -5,11 +5,11 @@ library(Rfa)
 output_dir_1 <- "/dodrio/scratch/users/vsc45263/wout/DYDOCASE/runs/long/level03/clim"
 output_file_name_1 <- "Const.Clim."
 
-output_dir_2 <- "/dodrio/scratch/users/vsc45263/wout/PGD-clim-Tier1/climake/e923_update/data/clim/BE40a_l_z0sfx_0.53-1.5h_lis3-3.II" 
+output_dir_2 <- "/dodrio/scratch/users/vsc45263/wout/PGD-clim-Tier1/climake/outputFiles/test" 
 output_file_name_2 <- "Const.Clim."
 
 name_1 <- "l03_original"
-name_2 <- "l03_e923_update"
+name_2 <- "l03_test"
 
 pgd <- FALSE
 pgd_file_name_1 <- "PGD.fa"

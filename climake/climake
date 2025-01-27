@@ -482,6 +482,7 @@ then
 ## Create run script with variables from config file
 RUNTEMPLATE=${ROOT}/script/run.template
 mkdir -p ${CLIMAKEWORKDIR}/e923_update/script
+mkdir -p ${CLIMAKEWORKDIR}/e923_update/log
 ID=$(basename ${CLIMAKEWORKDIR})
 
 sed -e "s|{root}|\"${CLIMAKEWORKDIR}/e923_update\"|g" \
@@ -489,6 +490,7 @@ sed -e "s|{root}|\"${CLIMAKEWORKDIR}/e923_update\"|g" \
 -e "s|{climake}|\"${PWD}\"|g" \
 -e "s|{conf}|\"${PWD}/${CONFIGFILE}\"|g" \
 -e "s|{climakeout}|\"${OUTPUTDIR}\"|g" \
+-e "s|{climakeworkdir}|\"${CLIMAKEWORKDIR}\"|g" \
 -e "s|{facz0}|\"${FACZ0}\"|g" \
 -e "s|{facz0_veg}|\"${FACZ0_VEG}\"|g" \
 -e "s|{xmul_h_tree}|\"${XMUL_H_TREE}\"|g" \
