@@ -63,6 +63,15 @@ fi
 
 # enter temporary directory
 TMPDIR=__ROOT__/tmp
+
+if [[ ! -d $TMPDIR ]]
+then
+  mkdir -p $TMPDIR
+else
+  rm -rv $TMPDIR
+  mkdir -p $TMPDIR
+fi
+
 cd $TMPDIR
 
 # create namelist for fa_sfx2clim
