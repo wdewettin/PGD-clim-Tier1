@@ -447,6 +447,7 @@ echo 'PGD BINARY IS '$CUSTOM_PGD
 echo 'CLIMAKEWORKDIR IS '$CLIMAKEWORKDIR
 echo 'PGDHACK IS '$PGDHACK
 echo 'E923_UPDATE IS '$E923_UPDATE
+echo 'DATA_DIR IS '$DATA_DIR
 echo '==========================='
 echo '***************************'
 echo '                           '
@@ -486,7 +487,6 @@ mkdir -p ${CLIMAKEWORKDIR}/e923_update/log
 ID=$(basename ${CLIMAKEWORKDIR})
 
 sed -e "s|{root}|\"${CLIMAKEWORKDIR}/e923_update\"|g" \
--e "s|{data}|\"${DATA}\"|g" \
 -e "s|{climake}|\"${PWD}\"|g" \
 -e "s|{conf}|\"${PWD}/${CONFIGFILE}\"|g" \
 -e "s|{climakeout}|\"${OUTPUTDIR}\"|g" \
@@ -506,4 +506,4 @@ cp $ROOT/template/* ${CLIMAKEWORKDIR}/e923_update/template
 fi
 
 # start job
-sbatch --output=$OUTPUTDIR/log/1climake.o --error=$OUTPUTDIR/log/1climake.e scripts/1_fetch_files $PGDGEO $CLIMGEO $CYCLE $PGDNAM $CLIMNAM $OROGRAPHY_TRUNCATION $OTHERFIELDS_TRUNCATION $CLIMAKEDIR $OUTPUTDIR $CUSTOM_MASTER $CUSTOM_PGD $SPECTRALS_PARAMS $CLIMAKEWORKDIR $E923_UPDATE "$PGDHACK" 
+sbatch --output=$OUTPUTDIR/log/1climake.o --error=$OUTPUTDIR/log/1climake.e scripts/1_fetch_files $PGDGEO $CLIMGEO $CYCLE $PGDNAM $CLIMNAM $OROGRAPHY_TRUNCATION $OTHERFIELDS_TRUNCATION $CLIMAKEDIR $OUTPUTDIR $CUSTOM_MASTER $CUSTOM_PGD $SPECTRALS_PARAMS $CLIMAKEWORKDIR $E923_UPDATE $DATA_DIR "$PGDHACK" 

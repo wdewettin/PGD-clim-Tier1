@@ -38,9 +38,6 @@ else {
 # root directory for e923 update
 $ROOT = {root};
 
-# data directory on scratch file system
-$DATA = {data};
-
 # root directory for climake
 $CLIMAKE = {climake};
 
@@ -82,11 +79,6 @@ Entered directory:
 
 EOF
 
-# create symbolic link to data directory
-if ( ! -l "data" ) {
-  symlink($DATA, "data") or
-    die "Cannot create symbolic link data -> $DATA! ($!)";
-}
 
 #####
 # get geometry info
@@ -209,9 +201,7 @@ if ( $err ) {
 
 # write info
 print <<EOF;
-Job chain has been submitted. Updated clim files should appear in directory:
-
-  $ROOT/data/clim/$id
+Job chain has been submitted.
 
 EOF
 

@@ -39,6 +39,7 @@ CUSTOM_PGD=${11}
 SPECTRALS_PARAMS=${12}
 CLIMAKEWORKDIR=${13} 
 E923_UPDATE=${14}
+DATA_DIR=${15}
 
 
 
@@ -87,7 +88,7 @@ done
 #  DATABASES
 for i in ${NEEDED_INPUTS[@]}
 do
-    cp -rv /dodrio/scratch/users/vsc45263/wout/PGD-clim-Tier1/climake/data/${GENVDICT[$i]} .
+    cp -rv $DATA_DIR/${GENVDICT[$i]} .
     # cp -rv /dodrio/scratch/projects/2022_200/project_input/RMIB-UGent/vsc41138_michiel/climake/climake_data/${GENVDICT[$i]} .
 #   echo 'fake get'
 #   /home/mf/dp/marp/martinezs/public/bin/gget ${GENVDICT[$i]}

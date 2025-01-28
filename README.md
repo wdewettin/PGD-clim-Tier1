@@ -21,30 +21,50 @@ OTHERFIELDS_TRUNCATION=LINEAR
 AUTOTRUNC=a
 CUSTOM_PGD=/dodrio/scratch/users/vsc45263/wout/ALARO-SURFEX/pack/compile_SFX_execs/bin/PGD
 CUSTOM_MASTER=/dodrio/scratch/users/vsc45263/wout/ALARO-SURFEX/pack/suborog/bin/MASTERODB
+CUSTOM_OUT=test
+E923_UPDATE=y
+
+### e923_update settings
+# root directory for e923 update
+ROOT="/dodrio/scratch/users/vsc45263/wout/PGD-clim-Tier1/climake/e923_update"
+
+# data directory on scratch file system
+DATA="/dodrio/scratch/users/vsc45263/wout/PGD-clim-Tier1/climake/e923_update/data"
+
+#####
+
+# roughness configuration
+FACZ0='0.53'      # scaling factor for orographic roughness
+FACZ0_VEG='1.00'  # scaling factor for vegetation roughness
+XMUL_H_TREE='1.5' # scaling factor for tree height
+NLISSZ=3          # number of smoothings for orographic roughness
+NLISSZ_VEG=3      # number of smoothings for vegetation roughness
 ```
 
 These variables define the following aspects:
 - `PGDGEO`: Path to the domain-specific PGD-namelist. This namelist includes the `NAM_CONF_PROJ` and `NAM_CONF_PROJ_GRID` sections. If you don't want to create a PGD, you should put `"NOPGD"` here.
 - `CLIMGEO`: Path to the domain-specific clim-namelist. This namelist includes the `NAMDIM`, `NEMDIM` and `NEMGEO` sections.
 - `CYCLE`: Cycle of the model for which clim/PGD-files are created. Currently, we have only transferred information on `cy43t2_clim-op8.01`, so do not change this.
-- `PGDNAM`: Path to the namelist for PGD-creation. If you want to use the standard namelist, put `GCO` here. This standard namelist can be found here: **fill in, GCO is passed to 1_fetch_files**
-- `CLIMNAM`: Path to the namelist for clim-creation. If you want to use the standard namelist, put `GCO` here. This standard namelist can be found here: **fill in, GCO is passed to 1_fetch_files**
+- `PGDNAM`: Path to the namelist for PGD-creation. If you want to use the standard namelist, put `GCO` here. This standard namelist can be found here: PGD-clim-Tier1/climake/data/cy43t2_clim-bf.01.nam/arome/namel_buildpgd
+- `CLIMNAM`: Path to the namelist for clim-creation. If you want to use the standard namelist, put `GCO` here. This standard namelist can be found here: PGD-clim-Tier1/climake/data/cy43t2_clim-bf.01.nam/arome/namel_c923
 - `OROGRAPHY_TRUNCATION`: Truncation method for the orography field. Three values are possibles: `LINEAR`, `QUADRATIC` or `CUBIC`. Best to use `QUADRATIC`.
 - `OTHER_FIELDS_TRUNCATION`: Truncation method for the other fields. Three values are possibles: `LINEAR`, `QUADRATIC` or `CUBIC`. Best to use `LINEAR`.
 - `AUTOTRUNC`: Method for determining the spectral parameters. Can be `a` for automatic or `m` for manual. If manual then, `NSMAX` and `NMSMAX` will need to be inputted in the terminal. Furthermore if `OROGRAPHY_TRUNCATION` is different from `OTHER_FIELDS_TRUNCATION` then two pairs of spectral parameters will need to be provided.
-- `CUSTOM_PGD`: Path to a custom executable for **making the PGD ?**. If not defined, the `GENERIC` executable will be used. **Which is this?**
-- `CUSTOM_MASTER`: Path to a custom master for **running the model ?**. If not defined, the `GENERIC` executable will be used. **Which is this?**
+- `CUSTOM_PGD`: Path to a custom PGD executable. In our implementation this has to be defined!
+- `CUSTOM_MASTER`: Path to a custom master for running the model. In our implementation this has to be defined!
 - `CUSTOM_OUT`: Custom name for output directory. If not provided, a name will be constructed for all defined variables in the config file.
 - `PGD_HACK`: Lines of code to run just after copying the ECOCLIMAP data to the working directory. The main goal of these lines is to overwrite the default ECOCLIMAP files with files of your choosing. 
+- `E923_UPDATE`: Specifies whether the e923-update will be performed at the end to improve the roughness length fields in the clim files. This step is not necessary when running ALARO with SURFEX. To turn this step on, this variable has to be `y`.
+- `DATA_DIR`: Path to directory where databases are stored.
 
-**Add arguments for ecoclimap version and gmted version.**
+Below this line there are variables that specifiy the e923-update step.
+- `ROOT`: Path to root directory with all e923-update related information.
+- other variables: See README file in e923-update root directory.
 
 
 ### 1_fetch_files
 
 Normally this script determines the relevant variables based on the `CYCLE` argument from the config file. However, because this versioning is not (yet) implemented these variables have been hard-coded in a txt-file. This txt-file is then simply loaded in by this file. The file can be found in: `climake/scripts/variables_${CYCLE}.txt`
-
-**Move the variable file?**
 
 ### 2_make_pgd
 
@@ -55,10 +75,6 @@ It does so in the work directory defined by `$CLIMAKEWORKDIR`. There, it creates
 Next, the namelist is constructed. If `PGDNAM=GCO` then the standard namelist is used from `${GENVDICT[NAMELIST_AROME]}'/arome/namel_buildpgd'` with `GENVDICT[NAMELIST_AROME]="cy43t2_clim-bf.01.nam"`, located in the `data`-directory (but having been copied to the working directory). This namelist is stored as `OPTIONS.nam`. Next, this namelist is updated with variables from the domain-specific namelist `PGDGEO` from the config file. This editing is applied in-place to `OPTIONS.nam` with the tool `/stuff/xpnam`. Subsequently,  the PGD-exectubale is copied to the working directory. If `CUSTOM_PGD=GENERIC` a default binary is copied based on information in the `variables`-file. However, this (probably) does not work as no binary is located in the `data`-directory. Therefore, the custom PGD should be defined. After this step, the environment variables are loaded from the file `/stuff/environmentVariables`. 
 
 Before running the executable, we first overwrite the ECOCLIMAP I files with our own ECOCLIMAP II files. After this step, these new files can be overwritten again if `PGDHACK` is defined. Now, the PGD-executable is run. The PGD-file is copied to the output directory and the listing file to the main working directory. Finally, the following step is submitted as a job. 
-
-**Add arguments here for ECOCLIMAP and GMTED**
-**Add argument for data directory?**
-**Move data directory?**
 
 ### 3_climake
 
@@ -76,10 +92,8 @@ Each of these steps are performed in a different subdirectory. At the end of eac
 
 After all these steps, the monthly clim files are copied to the output directory. The final step, `4_replace_orography`, is submitted.
 
-**Expand explanation?**
-
 ### 4_replace_orography
 
 This script replaces the orography field (SFX.ZS) in the PGD file with the (modified) geopotential from the clim file(s). This is performed in the output directory. 
 
-**Add a step 5 with e927_update?**
+If enabled with the variable `E923_UPDATE`, this script will launch the e923-update step. 

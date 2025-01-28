@@ -35,7 +35,8 @@ CUSTOM_PGD=${11}
 SPECTRALS_PARAMS=${12}
 CLIMAKEWORKDIR=${13}
 E923_UPDATE=${14}
-PGDHACK="${15}"
+DATA_DIR=${15}
+PGDHACK="${16}"
 
 cd $CLIMAKEWORKDIR
 [ ! -d 0_build_pgd ] && mkdir 0_build_pgd 
@@ -74,7 +75,7 @@ echo '                           '
 for i in ${NEEDED_INPUTS[@]}
 do
   # /home/mf/dp/marp/martinezs/public/bin/gget ${GENVDICT[$i]}
-  cp -rv /dodrio/scratch/users/vsc45263/wout/PGD-clim-Tier1/climake/data/${GENVDICT[$i]} .
+  cp -rv ${DATA_DIR}/${GENVDICT[$i]} .
   # cp -rv /dodrio/scratch/projects/2022_200/project_input/RMIB-UGent/vsc41138_michiel/climake/climake_data/${GENVDICT[$i]} .
   if [ "${GENVDICT[$i]: -2}" == "gz" ] ; then
        echo "untaring..."
@@ -150,6 +151,6 @@ cp PGD.fa $PGDFA
 
 cd $CLIMAKEDIR
 
-sbatch --output=$OUTPUTDIR/log/3climake.o --error=$OUTPUTDIR/log/3climake.e scripts/3_job_923 $PGDGEO $CLIMGEO $CYCLE $PGDNAM $CLIMNAM $OROGRAPHY_TRUNCATION $OTHERFIELDS_TRUNCATION $CLIMAKEDIR $OUTPUTDIR $CUSTOM_MASTER $CUSTOM_PGD $SPECTRALS_PARAMS $CLIMAKEWORKDIR $E923_UPDATE
+sbatch --output=$OUTPUTDIR/log/3climake.o --error=$OUTPUTDIR/log/3climake.e scripts/3_job_923 $PGDGEO $CLIMGEO $CYCLE $PGDNAM $CLIMNAM $OROGRAPHY_TRUNCATION $OTHERFIELDS_TRUNCATION $CLIMAKEDIR $OUTPUTDIR $CUSTOM_MASTER $CUSTOM_PGD $SPECTRALS_PARAMS $CLIMAKEWORKDIR $E923_UPDATE $DATA_DIR
 
 
