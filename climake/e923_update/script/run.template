@@ -38,6 +38,9 @@ else {
 # root directory for e923 update
 $ROOT = {root};
 
+# data directory for e923 update
+$DATA = {data};
+
 # root directory for climake
 $CLIMAKE = {climake};
 
@@ -159,6 +162,7 @@ for $task (qw(1_lbc 2_initsfx 3_sfx 4_clim)) {
   # substitute variables
   $str =~ s/__ID__/$id/g;
   $str =~ s/__ROOT__/$ROOT/g;
+  $str =~ s/__DATA__/$DATA/g;
   $str =~ s/__CLIMAKEOUT__/$CLIMAKEOUT/g;
   $str =~ s/__CLIMAKEWORKDIR__/$CLIMAKEWORKDIR/g;
   $str =~ s/__NDLON__/$ndlon/g;

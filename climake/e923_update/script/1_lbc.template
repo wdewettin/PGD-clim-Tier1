@@ -29,11 +29,11 @@ exp=ABOF
 ROOT=__ROOT__
 
 # paths to climate files
-CLIM_I=/dodrio/scratch/users/vsc45263/wout/PGD-clim-Tier1/climake/e923_update/m3d/clim/EUCO
+CLIM_I=__DATA__/clim/EUCO
 CLIM_O=__CLIMAKEOUT__
 
 # directories for input/output LBC files
-LBC_I=/dodrio/scratch/users/vsc45263/wout/PGD-clim-Tier1/climake/e923_update/m3d/lbc/euco/e923_update
+LBC_I=__DATA__/lbc/euco/e923_update
 LBC_O=$ROOT/data/lbc/$id
 
 # basenames of input/output clim files
