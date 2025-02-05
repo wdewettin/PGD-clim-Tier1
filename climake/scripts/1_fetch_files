@@ -39,7 +39,7 @@ DATA_DIR=${15}
 PGDHACK="${16}"
 #get genv variables
 # VARIABLES=$(/home/mf/dp/marp/martinezs/public/bin/genv $CYCLE)
-VARIABLES=$(cat ${CLIMAKEDIR}/scripts/variables_${CYCLE}.txt)
+VARIABLES=$(cat ${CLIMAKEDIR}/variables/variables_${CYCLE}.txt)
 
 set -e
 #check if $CYCLE is a proper GENV CYCLE

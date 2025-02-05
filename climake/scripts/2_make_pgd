@@ -49,7 +49,7 @@ cd 0_build_pgd
 NEEDED_INPUTS=(HWSD_CLAY HWSD_SAND ECOCLIMAP_I_SURFACE_TYPE GMTED2010_OROGRAPHY_30S0 ECOCLIMAP_COVERS_PARAM MASTER_PGD NAMELIST_AROME)
 # variables in gget
 # VARIABLES=$(/home/mf/dp/marp/martinezs/public/bin/genv $CYCLE)
-VARIABLES=$(cat ${CLIMAKEDIR}/scripts/variables_${CYCLE}.txt)
+VARIABLES=$(cat ${CLIMAKEDIR}/variables/variables_${CYCLE}.txt)
 
 # construct GENVDICT dictionnary
 declare -A GENVDICT
