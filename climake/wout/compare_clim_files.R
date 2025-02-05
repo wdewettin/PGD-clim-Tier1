@@ -11,7 +11,7 @@ output_file_name_2 <- "Const.Clim."
 name_1 <- "l03_original"
 name_2 <- "l03_test"
 
-pgd <- FALSE
+pgd <- TRUE
 pgd_file_name_1 <- "PGD.fa"
 pgd_file_name_2 <- "PGD.fa"
 

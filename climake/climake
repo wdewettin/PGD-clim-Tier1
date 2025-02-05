@@ -501,8 +501,8 @@ $RUNTEMPLATE > ${CLIMAKEWORKDIR}/e923_update/script/run.${ID}
 chmod +x ${CLIMAKEWORKDIR}/e923_update/script/run.${ID}
 
 # Copy template scripts to new root directory
-mkdir ${CLIMAKEWORKDIR}/e923_update/template
-cp $ROOT/template/* ${CLIMAKEWORKDIR}/e923_update/template
+mkdir -p ${CLIMAKEWORKDIR}/e923_update/template
+cp $ROOT/script/* ${CLIMAKEWORKDIR}/e923_update/template
 
 fi
 

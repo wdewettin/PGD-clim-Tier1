@@ -150,7 +150,7 @@ EOF
 for $task (qw(1_lbc 2_initsfx 3_sfx 4_clim)) {
 
   # read template
-  $file = "$ROOT/script/$task.template";
+  $file = "$ROOT/template/$task.template";
   $size = -s $file;
   open(FILE, $file) or
     die "Cannot open file $file! ($!)";

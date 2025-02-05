@@ -1,10 +1,18 @@
 # CLIMAKE on VSC Tier-1
 
-## 1. How to run
+## How to run
 
-## 2. Where to find output/log files?
+- Go to the `climake`-directory. 
+- Run the `climake`-script with the following command, where *<path_to_config_file>* needs to be filled in with a path to a config file (see below).
 
-## 3. Detailed information
+```
+./climake -c <path_to_config_file>
+``` 
+- This script will then launch a series of subsequent jobs to make the clim/PGD files. You will find the output and log files in a directory under `outputFiles`. The directory name consists of the chosen parameters, unless specified otherwise. 
+
+## More information
+
+More README-files and other documentation can be found in the `doc` directory.
 
 ### Configuration file
 
@@ -22,14 +30,16 @@ AUTOTRUNC=a
 CUSTOM_PGD=/dodrio/scratch/users/vsc45263/wout/ALARO-SURFEX/pack/compile_SFX_execs/bin/PGD
 CUSTOM_MASTER=/dodrio/scratch/users/vsc45263/wout/ALARO-SURFEX/pack/suborog/bin/MASTERODB
 CUSTOM_OUT=test
+PGDHACK=/dodrio/scratch/users/vsc45263/wout/PGD-clim-Tier1/climake/hack/overwriteEcoclimap.sh
 E923_UPDATE=y
+DATA_DIR=/dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/PGD-clim-data/data
 
 ### e923_update settings
 # root directory for e923 update
 ROOT="/dodrio/scratch/users/vsc45263/wout/PGD-clim-Tier1/climake/e923_update"
 
 # data directory on scratch file system
-DATA="/dodrio/scratch/users/vsc45263/wout/PGD-clim-Tier1/climake/e923_update/data"
+DATA="/dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/PGD-clim-data/e923_update/m3d"
 
 #####
 
@@ -53,18 +63,18 @@ These variables define the following aspects:
 - `CUSTOM_PGD`: Path to a custom PGD executable. In our implementation this has to be defined!
 - `CUSTOM_MASTER`: Path to a custom master for running the model. In our implementation this has to be defined!
 - `CUSTOM_OUT`: Custom name for output directory. If not provided, a name will be constructed for all defined variables in the config file.
-- `PGD_HACK`: Lines of code to run just after copying the ECOCLIMAP data to the working directory. The main goal of these lines is to overwrite the default ECOCLIMAP files with files of your choosing. 
+- `PGDHACK`: Path of a small script to run just after copying the ECOCLIMAP data to the working directory. The main goal of this script is to overwrite the default ECOCLIMAP files with files of your choosing. 
 - `E923_UPDATE`: Specifies whether the e923-update will be performed at the end to improve the roughness length fields in the clim files. This step is not necessary when running ALARO with SURFEX. To turn this step on, this variable has to be `y`.
 - `DATA_DIR`: Path to directory where databases are stored.
 
 Below this line there are variables that specifiy the e923-update step.
 - `ROOT`: Path to root directory with all e923-update related information.
-- other variables: See README file in e923-update root directory.
+- `DATA`: Path to directory with e923-update related model files. 
 
 
 ### 1_fetch_files
 
-Normally this script determines the relevant variables based on the `CYCLE` argument from the config file. However, because this versioning is not (yet) implemented these variables have been hard-coded in a txt-file. This txt-file is then simply loaded in by this file. The file can be found in: `climake/scripts/variables_${CYCLE}.txt`
+Normally, this script determines the relevant variables based on the `CYCLE` argument from the config file. However, because this versioning is not (yet) implemented these variables have been hard-coded in a txt-file. This txt-file is then simply loaded in by this file. The file can be found in: `climake/variables/variables_${CYCLE}.txt`
 
 ### 2_make_pgd
 
