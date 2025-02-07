@@ -26,7 +26,7 @@ exp=ABOF
 ROOT=__ROOT__
 
 # path to ECOCLIMAP files
-ECLI=/dodrio/scratch/users/vsc45263/wout/PGD-clim-Tier1/climake/data/ecoclimap.covers.param.05
+ECLI=__ECLI__/ecoclimap.covers.param.05
 
 # directory with PGD files
 PGD=__CLIMAKEOUT__
@@ -48,7 +48,7 @@ init_sfx=${lbc}0000.sfx.m
 pgd=$PGD/PGD.fa
 
 # ALADIN executable
-MASTER=/dodrio/scratch/users/vsc45263/wout/ALARO-SURFEX/pack/suborog2/bin/MASTERODB
+MASTER=__MASTER__
 
 TMPDIR=__ROOT__/tmp
 

@@ -488,10 +488,13 @@ ID=$(basename ${CLIMAKEWORKDIR})
 
 sed -e "s|{root}|\"${CLIMAKEWORKDIR}/e923_update\"|g" \
 -e "s|{data}|\"${DATA}\"|g" \
+-e "s|{ecli}|\"${DATA_DIR}\"|g" \
+-e "s|{fa_sfx2clim}|\"${FA_SFX2CLIM}\"|g" \
 -e "s|{climake}|\"${PWD}\"|g" \
 -e "s|{conf}|\"${PWD}/${CONFIGFILE}\"|g" \
 -e "s|{climakeout}|\"${OUTPUTDIR}\"|g" \
 -e "s|{climakeworkdir}|\"${CLIMAKEWORKDIR}\"|g" \
+-e "s|{master}|\"${CUSTOM_MASTER}\"|g" \
 -e "s|{facz0}|\"${FACZ0}\"|g" \
 -e "s|{facz0_veg}|\"${FACZ0_VEG}\"|g" \
 -e "s|{xmul_h_tree}|\"${XMUL_H_TREE}\"|g" \

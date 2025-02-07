@@ -29,7 +29,7 @@ exp=ABOF
 ROOT=__ROOT__
 
 # path to ECOCLIMAP files
-ECLI=/dodrio/scratch/users/vsc45263/wout/PGD-clim-Tier1/climake/data/ecoclimap.covers.param.05
+ECLI=__ECLI__/ecoclimap.covers.param.05
 
 # paths to climate files
 CLIM_I=__DATA__/clim/EUCO
@@ -48,7 +48,7 @@ lbc_i=$LBC_I/COUPL
 lbc_o=$LBC_O/PF$exp$dom0+
 
 # ALADIN executable
-MASTER=/dodrio/scratch/users/vsc45263/wout/ALARO-SURFEX/pack/suborog2/bin/MASTERODB
+MASTER=__MASTER__
 
 TMPDIR=__ROOT__/tmp
 

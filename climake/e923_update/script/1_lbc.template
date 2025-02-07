@@ -45,7 +45,7 @@ lbc_i=$LBC_I/COUPL
 lbc_o=$LBC_O/PF$exp$dom0+
 
 # ALADIN executable
-MASTER=/dodrio/scratch/users/vsc45263/wout/ALARO-SURFEX/pack/suborog2/bin/MASTERODB
+MASTER=__MASTER__
 
 TMPDIR=__ROOT__/tmp
 
@@ -81,6 +81,7 @@ export MPL_MBX_SIZE=2048000000
 export I_MPI_ADJUST_GATHERV=3
 export EC_PROFILE_HEAP=0
 export EC_MPI_ATEXIT=0
+export SLURM_OVERLAP=true
 
 NPROMA=-128
 

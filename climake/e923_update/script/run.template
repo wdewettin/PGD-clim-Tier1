@@ -41,6 +41,12 @@ $ROOT = {root};
 # data directory for e923 update
 $DATA = {data};
 
+# directory with ecoclimap binaries
+$ECLI = {ecli};
+
+# path to fa_sfx2clim executable
+$FA_SFX2CLIM = {fa_sfx2clim};
+
 # root directory for climake
 $CLIMAKE = {climake};
 
@@ -52,6 +58,9 @@ $CLIMAKEOUT = {climakeout};
 
 # Work directory for making clim files
 $CLIMAKEWORKDIR = {climakeworkdir};
+
+# Path to master executable
+$MASTER = {master};
 
 #####
 
@@ -163,8 +172,11 @@ for $task (qw(1_lbc 2_initsfx 3_sfx 4_clim)) {
   $str =~ s/__ID__/$id/g;
   $str =~ s/__ROOT__/$ROOT/g;
   $str =~ s/__DATA__/$DATA/g;
+  $str =~ s/__ECLI__/$ECLI/g;
+  $str =~ s/__FA_SFX2CLIM__/$FA_SFX2CLIM/g;
   $str =~ s/__CLIMAKEOUT__/$CLIMAKEOUT/g;
   $str =~ s/__CLIMAKEWORKDIR__/$CLIMAKEWORKDIR/g;
+  $str =~ s/__MASTER__/$MASTER/g;
   $str =~ s/__NDLON__/$ndlon/g;
   $str =~ s/__NDGL__/$ndgl/g;
   $str =~ s/__NDLUX__/$ndlux/g;

@@ -1,5 +1,9 @@
 # CLIMAKE on VSC Tier-1
 
+## First to do
+
+In the directory `climake/e923_update/fa_sfx2clim` you should first compile the fa_sfx2clim executable by following the instructions in the README-file (located in the same directory).
+
 ## How to run
 
 - Go to the `climake`-directory. 
@@ -9,6 +13,10 @@
 ./climake -c <path_to_config_file>
 ``` 
 - This script will then launch a series of subsequent jobs to make the clim/PGD files. You will find the output and log files in a directory under `outputFiles`. The directory name consists of the chosen parameters, unless specified otherwise. 
+
+## Common errors
+
+- Oftentimes the 1st and 4th e923-update scripts fail for unexplained reasons. Resubmitting them usually solves the issue. For that you should go into the work directory: `$WORK_DIR/e923_update/script`. Submit the script by running `sbatch $ID_1_lbc` or `$ID_4_clim`, where `$ID` will be filled in with the name of your config file. You can check which script failed by looking at the log files in `$WORK_DIR/e923_update/log`
 
 ## More information
 
