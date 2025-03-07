@@ -1,6 +1,6 @@
 # CLIMAKE on VSC Tier-1
 
-## First to do
+## First to do (if you are not runnning on the VSC Tier-1 machine)
 
 In the directory `climake/e923_update/fa_sfx2clim` you should first compile the fa_sfx2clim executable by following the instructions in the README-file (located in the same directory).
 
