@@ -25,22 +25,14 @@
 
 set -ex 
 
-PGDGEO=$1
-CLIMGEO=$2
-CYCLE=$3
-PGDNAM=$4
-CLIMNAM=$5
-OROGRAPHY_TRUNCATION=$6
-OTHERFIELDS_TRUNCATION=$7
-CLIMAKEDIR=$8
-OUTPUTDIR=$9
-CUSTOM_MASTER=${10}
-CUSTOM_PGD=${11}
-SPECTRALS_PARAMS=${12}
-CLIMAKEWORKDIR=${13} 
-E923_UPDATE=${14}
-DATA_DIR=${15}
 
+if [[ -z "$NSMAX_ORO" && -z "$NMSMAX_ORO" ]]; then
+    SPECTRALS_PARAMS=$NSMAX","$NMSMAX  
+elif [ -z "$NSMAX_ORO" ] || [ -z "$NMSMAX_ORO" ]; then
+  echo "something went wrong, one of two variables is empty. NSMAX_ORO=$NSMAX_ORO and NMSMAX_ORO=$NMSMAX_ORO"
+else
+    SPECTRALS_PARAMS=$NSMAX","$NMSMAX"@"$NSMAX_ORO","$NMSMAX_ORO           
+fi
 
 
 #~~~~~~~~~~~~~~~~~~~~~~~PRELIMINARY CALCULATIONS~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -376,7 +368,12 @@ echo 'Job 3_job_923 ended correctly!'
 cd $CLIMAKEDIR
 
 if [ "$PGDGEO" != "NOPGD" ]; then
-sbatch --output=$OUTPUTDIR/log/4climake.o --error=$OUTPUTDIR/log/4climake.e scripts/4_replace_orography $OUTPUTDIR $CLIMAKEDIR $CLIMAKEWORKDIR $E923_UPDATE
+
+qsub -o $OUTPUTDIR/log/4climake.o \
+     -e $OUTPUTDIR/log/4climake.e \
+     	-v OUTPUTDIR=$OUTPUTDIR,CLIMAKEDIR=$CLIMAKEDIR,CLIMAKEWOEKDIR=$CLIMAKEWORKDIR,E923_UPDATE=$E923_UPDATE \
+      scripts/4_replace_orography
+#sbatch --output=$OUTPUTDIR/log/4climake.o --error=$OUTPUTDIR/log/4climake.e scripts/4_replace_orography $OUTPUTDIR $CLIMAKEDIR $CLIMAKEWORKDIR $E923_UPDATE
 fi
 
 exit $?
