@@ -345,7 +345,7 @@ elif [ "$AUTOTRUNC" == "a" ];then
 		        MESSAGE="This setting is strange but may be valid. There will be two orography step in 923.\n"
 		        MESSAGE=$MESSAGE"The first one in QUADRATIC resolution. NSMAX="$NSMAX_ORO" , NMSMAX="$NMSMAX_ORO"\n"   	        
 		        MESSAGE=$MESSAGE"Then for all others steps NSMAX="$NSMAX" , NMSMAX="$NMSMAX"\n"	 
-		        SPECTRALS_PARAMS=$NSMAX","$NMSMAX"@"$NSMAX_ORO","$NMSMAX_ORO       
+		        SPECTRALS_PARAMS="$NSMAX","$NMSMAX"@"$NSMAX_ORO","$NMSMAX_ORO"   
 		    fi      
 	    fi
 	    
@@ -399,7 +399,8 @@ else
       echo 'Aborting...'
       exit 1
    else
-      chmod +x "$CUSTOM_MASTER"
+	  something=1
+      # chmod +x "$CUSTOM_MASTER"
    fi  
 fi 
 if [[ -z "${CUSTOM_PGD}" ]]; then
@@ -412,7 +413,8 @@ else
       echo 'Aborting...'
       exit 1
    else
-      chmod +x "$CUSTOM_PGD"
+	  something=1
+      # chmod +x "$CUSTOM_PGD"
    fi  
 fi 
 
@@ -510,4 +512,8 @@ cp $ROOT/script/* ${CLIMAKEWORKDIR}/e923_update/template
 fi
 
 # start job
-sbatch --output=$OUTPUTDIR/log/1climake.o --error=$OUTPUTDIR/log/1climake.e scripts/1_fetch_files $PGDGEO $CLIMGEO $CYCLE $PGDNAM $CLIMNAM $OROGRAPHY_TRUNCATION $OTHERFIELDS_TRUNCATION $CLIMAKEDIR $OUTPUTDIR $CUSTOM_MASTER $CUSTOM_PGD $SPECTRALS_PARAMS $CLIMAKEWORKDIR $E923_UPDATE $DATA_DIR $PGDHACK
+qsub -o $OUTPUTDIR/log/1climake.o \
+	 -e $OUTPUTDIR/log/1climake.e \
+	 -v  PGDGEO=$PGDGEO,CLIMGEO=$CLIMGEO,CYCLE=$CYCLE,PGDNAM=$PGDNAM,CLIMNAM=$CLIMNAM,OROGRAPHY_TRUNCATION=$OROGRAPHY_TRUNCATION,OTHERFIELDS_TRUNCATION=$OTHERFIELDS_TRUNCATION,CLIMAKEDIR=$CLIMAKEDIR,OUTPUTDIR=$OUTPUTDIR,CUSTOM_MASTER=$CUSTOM_MASTER,CUSTOM_PGD=$CUSTOM_PGD,CLIMAKEWORKDIR=$CLIMAKEWORKDIR,E923_UPDATE=$E923_UPDATE,DATA_DIR=$DATA_DIR,PGDHACK=$PGDHACK,NSMAX=$NSMAX,NMSMAX=$NMSMAX,NSMAX_ORO=$NSMAX_ORO,NMSMAX_ORO=$NMSMAX_ORO \
+	 scripts/1_fetch_files
+	 #sbatch --output=$OUTPUTDIR/log/1climake.o --error=$OUTPUTDIR/log/1climake.e scripts/1_fetch_files $PGDGEO $CLIMGEO $CYCLE $PGDNAM $CLIMNAM $OROGRAPHY_TRUNCATION $OTHERFIELDS_TRUNCATION $CLIMAKEDIR $OUTPUTDIR $CUSTOM_MASTER $CUSTOM_PGD $SPECTRALS_PARAMS $CLIMAKEWORKDIR $E923_UPDATE $DATA_DIR $PGDHACK

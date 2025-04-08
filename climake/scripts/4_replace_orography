@@ -15,10 +15,7 @@
 
 set -ex 
 
-OUTPUTDIR=$1
-CLIMAKEDIR=$2
-CLIMAKEWORKDIR=$3
-E923_UPDATE=$4
+
 
 cd $OUTPUTDIR
 echo '&namelist_vars
@@ -42,5 +39,9 @@ if [ "$E923_UPDATE" == "y" ]; then
 cd $CLIMAKEWORKDIR/e923_update/script
 ID=$(basename ${CLIMAKEWORKDIR})
 ./run.${ID}
+else
+    # Remove work directory
+    rm -rv $CLIMAKEWORKDIR
 fi
+
 
