@@ -175,7 +175,7 @@ declare -A DRIVER2OROSTEP
 
 STEPS_1A="orography;PGD@Neworog,PGD@Newsuborog,GTOPO30_URBANISATION@Urbanisation,GTOPO30_WATER_PERCENTAGE@Water_Percentage,GTOPO30_MISC_OROGRAPHY@orography.gtopo30_misc.01.tgz,MASTER_AROME@MASTER"
 STEPS_1B="finalize_orography;../Const.Clim.step_1@Neworog,PGD@Newsuborog,GTOPO30_URBANISATION@Urbanisation,GTOPO30_WATER_PERCENTAGE@Water_Percentage,GTOPO30_MISC_OROGRAPHY@orography.gtopo30_misc.01.tgz,MASTER_AROME@MASTER"
-STEPS_1="orography_singlestep;PGD@Neworog,GTOPO30_URBANISATION@Urbanisation,GTOPO30_WATER_PERCENTAGE@Water_Percentage,GTOPO30_MISC_OROGRAPHY@orography.gtopo30_misc.01.tgz,MASTER_AROME@MASTER"
+STEPS_1="orography_singlestep;PGD@Neworog,PGD@Newsuborog,GTOPO30_URBANISATION@Urbanisation,GTOPO30_WATER_PERCENTAGE@Water_Percentage,GTOPO30_MISC_OROGRAPHY@orography.gtopo30_misc.01.tgz,MASTER_AROME@MASTER"
 STEPS_2="const_physiography;../Const.Clim.step_1@Const.Clim,GIARDBAZILE2000_SOIL_AND_VEG@giardbazile2000.soil_and_veg.01.tgz,MASTER_AROME@MASTER"
 STEPS_3="monthly_tqs;USNAVY_SOIL_CLIM@N108_GL,../Const.Clim.step_2@Const.Clim,MASTER_AROME@MASTER"
 STEPS_4="loop_soilNveg_LR;MONTH_GIARDBAZILE2000_VEGETATION@veg_GL,MONTH_GIARDBAZILE2000_LAI@lai_GL,GIARDBAZILE2000_SOIL_AND_VEG@giardbazile2000.soil_and_veg.01.tgz,MASTER_AROME@MASTER"
