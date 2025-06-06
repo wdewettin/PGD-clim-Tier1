@@ -398,9 +398,6 @@ else
 	  echo 'was checking:'$CUSTOM_MASTER
       echo 'Aborting...'
       exit 1
-   else
-	  something=1
-      # chmod +x "$CUSTOM_MASTER"
    fi  
 fi 
 if [[ -z "${CUSTOM_PGD}" ]]; then
@@ -412,9 +409,6 @@ else
 	  echo 'was checking:'$CUSTOM_PGD
       echo 'Aborting...'
       exit 1
-   else
-	  something=1
-      # chmod +x "$CUSTOM_PGD"
    fi  
 fi 
 
