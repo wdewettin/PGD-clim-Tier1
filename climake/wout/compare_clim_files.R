@@ -2,16 +2,16 @@ library(Rfa)
 
 # File locations
 
-output_dir_1 <- "/dodrio/scratch/users/vsc45263/wout/DYDOCASE/runs/long/level03/clim"
-output_file_name_1 <- "Const.Clim."
+output_dir_1 <- "/dodrio/scratch/users/vsc45263/wout/TEMPUR/clim_old"
+output_file_name_1 <- "be70c_g1_" #"Const.Clim."
 
-output_dir_2 <- "/dodrio/scratch/users/vsc45263/wout/PGD-clim-Tier1/climake/outputFiles/test" 
+output_dir_2 <- "/dodrio/scratch/users/vsc45263/wout/PGD-clim-Tier1/climake/outputFiles/pgddomain-be70c_g1.nam__climdomain-be70c_g1.nam__cycle-cy43t2_clim-op8.01__v-1.37" 
 output_file_name_2 <- "Const.Clim."
 
-name_1 <- "l03_original"
-name_2 <- "l03_test"
+name_1 <- "Rafiq"
+name_2 <- "new"
 
-pgd <- TRUE
+pgd <- FALSE
 pgd_file_name_1 <- "PGD.fa"
 pgd_file_name_2 <- "PGD.fa"
 

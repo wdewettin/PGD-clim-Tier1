@@ -2,7 +2,7 @@ library(Rfa)
 
 mstart <- 1
 mend <- 12
-climfilename_base <- "/dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc45263_wout/DYDOCASE/long/level02/clim/Const.Clim."
+climfilename_base <- "/dodrio/scratch/users/vsc45263/wout/PGD-clim-Tier1/climake/outputFiles/pgddomain-be70c_g1.nam__climdomain-be70c_g1.nam__cycle-cy43t2_clim-op8.01__v-1.37/Const.Clim."
 
 for (m in mstart:mend) {
     if (m < 10) {
