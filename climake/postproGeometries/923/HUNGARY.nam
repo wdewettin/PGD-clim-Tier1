@@ -1,0 +1,20 @@
+ &NAMCT0
+   LRPLANE=.FALSE.,
+ /
+ &NAMDIM
+   NDGUXG=185,
+   NDGLG=185,
+   NDLUXG=401,
+   NDLON=401,
+ /
+ &NEMGEO
+   ELAT0=0.,
+   ELON0=0.,
+   ELONC=19.3,
+   ELATC=47.2,
+   EDELX=0.025,
+   EDELY=0.025,
+ /
+ &NEMDIM
+ /
+
