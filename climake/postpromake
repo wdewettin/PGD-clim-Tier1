@@ -1,0 +1,280 @@
+#!/bin/bash
+CLIMAKE_VERSION=1.37
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#   
+#   POSTPROMAKE MAIN JOB  #1
+#  ('clone' of climake script aimed to produce postprocessing lat/lon grid clim files 
+#   Calling step by step inside 'scripts' directory
+#     1_fetch_files
+#     2_make_pgd
+#     3_job_923
+#     4_finalize
+#
+#   Each one are 'self documented'
+#   
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+set -e
+
+Usage() {
+echo "please use either  \"postpromake -c config_file\" (with config file mode)  or \"postpromake -a\" (interactive automatic mode with automatic geometry calculation with epygram) or
+\"postpromake -f\" (file mode: without epygram calculation. Geometry files must be given)"
+exit 1
+}
+if [ $# -eq 0 ]
+then
+	Usage
+fi
+LAST_VERSION=$(head -n 2 ~suzat/SAVE/CLIMAKE/climake | grep CLIMAKE_VERSION | cut -d "=" -f2)
+if [ "$CLIMAKE_VERSION" != "$LAST_VERSION" ]; then
+  echo "warning: You are not using the last CLIMAKE VERSION!"
+  echo "last version is: "$LAST_VERSION
+  echo "your version is: "$CLIMAKE_VERSION
+  echo "do you want to continue (y/n)? (not recommended)"
+  read wrongversion
+  if [ "$wrongversion" != "y" ];then
+	   echo "Please call '~suzat/SAVE/cloneClimake' "
+	   exit 1
+  fi  
+fi
+
+CLIMAKEDIR=$PWD
+function automatic(){
+	echo "GCO GENV cycle?"
+	read CYCLE
+	echo "RESOLUTION in degree? (for ex. 0.025)"
+	read RESOLUTION
+	echo "Geometry domain box: minimum longitude ( ELON1 )"
+        read ELON1
+	echo "Geometry domain box: maximum longitude ( ELON2 )"
+        read ELON2
+	echo "Geometry domain box: minimum latitude  ( ELAT1 )"
+        read ELAT1
+	echo "Geometry domain box: maximum latitude  ( ELAT2 )"
+        read ELAT2
+        echo "Choose a workdir(default is TMPDIR)"
+        read CLIMAKEWORKDIR
+}
+function filemode(){
+	echo "GCO GENV cycle?"
+	read CYCLE
+	echo "PGD geometry namelist relative path? (must be inside CLIMAKE FOLDER: example "
+	read PGDGEO
+	echo "923 geometry namelist absolute path?"
+        read CLIMGEO
+}
+
+if [ "$1" == "-c" ]; then
+    echo "config file mode";
+    CONFIGFILE=$2;
+
+    if [ "$CONFIGFILE" == "" ]; then
+	    echo "No config file provided, aborting...";
+	    exit 1;
+    fi
+    if [ ! -f $2 ]; then
+        echo "CONFIGFILE not found!";
+        exit 1;
+
+    else
+        . $CONFIGFILE;
+    fi    
+elif [ "$1" == "-a" ]; then
+    echo "automatic interactive mode";
+    automatic
+elif [ "$1" == "-f" ]; then
+    echo "file mode";
+    filemode
+else
+    Usage;
+    exit 1;
+
+fi
+
+if [ -z $CYCLE ]; then
+  echo "GENV Cycle must be passed by argument. Show README for more details. Aborting"
+  exit 1
+fi
+
+if [ -z $CLIMGEO ]; then
+	AUTO="y";
+else
+	AUTO="n";
+fi
+
+
+if [ "$AUTO" == "y" ]; then
+        re='^[+-]?[0-9]+([.][0-9]+)?$'
+	if [ -z $RESOLUTION ]; then
+	  echo "RESOLUTION must be passed by argument. Show README for more details. Aborting"
+	  exit 1
+	else
+	    if ! [[ $RESOLUTION =~ $re ]] ; then
+		echo "error: RESOLUTION given is not a number"
+		exit 1
+	    fi
+	fi
+	if [ -z $ELON1 ]; then
+		echo "minimum longitude (ELON1) must be passed by argument. Show README for more details. Aborting"
+	  exit 1
+	else
+	    if ! [[ $ELON1 =~ $re ]] ; then
+		    echo "error: minimum longitude (ELON1) given is not a number"
+		exit 1
+	    fi
+	fi
+	if [ -z $ELON2 ]; then
+		echo "maximum longitude (ELON2) must be passed by argument. Show README for more details. Aborting"
+	  exit 1
+	else
+	    if ! [[ $ELON2 =~ $re ]] ; then
+		echo "error: maximum longitude (ELON2) given is not a number"
+		exit 1
+	    fi
+
+	    if (( $(echo "$ELON1 > $ELON2" |bc -l) )); then
+		echo "error: ELON1 must be lesser than ELON2"
+		exit 1
+	    fi
+	fi
+	if [ -z $ELAT1 ]; then
+		echo "minimum latitude (ELAT1) must be passed by argument. Show README for more details. Aborting"
+	  exit 1
+	else
+	    if ! [[ $ELAT1 =~ $re ]] ; then
+		    echo "error: minimum latitude (ELAT1) given is not a number"
+		exit 1
+	    fi
+	fi
+	if [ -z $ELAT2 ]; then
+		echo "maximum latitude (ELAT2) must be passed by argument. Show README for more details. Aborting"
+	  exit 1
+	else
+	    if ! [[ $ELAT2 =~ $re ]] ; then
+		    echo "error: maximum latitude (ELAT2) given is not a number"
+		exit 1
+	    fi
+	    if (( $(echo "$ELAT1 > $ELAT2" |bc -l) )); then
+		echo "error: ELAT1 must be lesser than ELAT2"
+		exit 1
+	    fi
+	fi
+elif [ "$AUTO" == "n" ]; then
+  if [ ! -f "$CLIMAKEDIR"/"$PGDGEO" ]; then
+    echo 'PGD GEOMETRY file not found! This is mandatory in file mode'
+    echo 'path given was '$PGDGEO
+    echo 'Aborting'
+    exit 1
+  fi
+  if [ ! -f "$CLIMAKEDIR"/"$CLIMGEO" ]; then
+    echo '923 GEOMETRY file not found! This is mandatory in file mode'
+    echo 'path given was '$CLIMGEO
+    echo 'Aborting'
+    exit 1
+  fi
+
+fi
+
+
+#check if there is custom PGD or custom MASTER
+if [[ -z "${CUSTOM_MASTER}" ]]; then
+    CUSTOM_MASTER='GENERIC' 
+else
+   #test if it exists and if it is executable
+   if [ ! -f $CUSTOM_MASTER ]; then
+	  echo 'CUSTOM_MASTER environment variable is defined but the file is not there...'
+	  echo 'was checking:'$CUSTOM_MASTER
+      echo 'Aborting...'
+      exit 1
+   else
+      chmod +x "$CUSTOM_MASTER"
+   fi  
+fi 
+if [[ -z "${CUSTOM_PGD}" ]]; then
+    CUSTOM_PGD='GENERIC' 
+else
+   #test if it exists and if it is executable
+   if [ ! -f $CUSTOM_PGD ]; then
+	  echo 'CUSTOM_PGD environment variable is defined but the file is not there...'
+	  echo 'was checking:'$CUSTOM_PGD
+      echo 'Aborting...'
+      exit 1
+   else
+      chmod +x "$CUSTOM_PGD"
+   fi  
+fi 
+#---------------------------
+#check if workdir is defined
+
+if [[ -z "${CLIMAKEWORKDIR}" ]]; then
+    CLIMAKEWORKDIR=$(mktemp -d)
+fi
+
+CLIMGEO=$(realpath $CLIMGEO)
+PGDGEO=$(realpath $PGDGEO)
+#clearing screen
+clear
+
+echo "-------*****-------" 
+echo "WELCOME TO POSTPROMAKE, CLIMAKE VERSION :"$CLIMAKE_VERSION 
+echo "-------*****-------" 
+
+if [ "$AUTO" == "y" ]; then
+	echo "You are in automatic mode: Epygram will generate for you the geometry"
+	OUTPUTDIR=$CLIMAKEDIR'/outputFiles/postpromake__resol-'$RESOLUTION'__ELON1-'$ELON1'__ELON2-'$ELON2'__ELAT1-'$ELAT1'__ELAT2-'$ELAT2'__v-'$CLIMAKE_VERSION'---------------------------'
+	echo '==========================='
+	echo '******LAUCHING POSTPROMAKE*****'
+	echo 'AUTO mode '$AUTO
+	echo 'GENV CYCLE IS '$CYCLE
+	echo 'RESOLUTION IS '$RESOLUTION
+	echo 'ELON1 IS '$ELON1
+	echo 'ELON2 IS '$ELON2
+	echo 'ELAT1 IS '$ELAT1
+	echo 'ELAT2 IS '$ELAT2
+	echo 'CLIMAKEDIR IS '$CLIMAKEDIR
+	echo 'OUTPUT DIR IS '$OUTPUTDIR
+	echo 'MASTER BINARY IS '$CUSTOM_MASTER
+	echo 'PGD BINARY IS '$CUSTOM_PGD
+	echo '==========================='
+	echo '---------------------------'
+else
+	echo "You are in file mode: Epygram will NOT generate for you the geometry, you need to have provided valid files"
+	PGDGEOSHORT=(${PGDGEO//\// })
+	PGDGEOSHORT=${PGDGEOSHORT[@]: -1}
+	CLIMGEOSHORT=(${CLIMGEO//\// })
+	CLIMGEOSHORT=${CLIMGEOSHORT[@]: -1}
+
+	OUTPUTDIR=$CLIMAKEDIR'/outputFiles/postpromake__pgdnam-'$PGDGEOSHORT'__923nam-'$CLIMGEOSHORT'__v-'$CLIMAKE_VERSION
+	echo '---------------------------'
+	echo '==========================='
+	echo '******LAUCHING POSTPROMAKE*****'
+	echo 'AUTO mode '$AUTO
+	echo 'GENV CYCLE IS '$CYCLE
+	echo 'PGDGEO IS '$PGDGEO
+	echo 'CLIMGEO IS '$CLIMGEO
+	echo 'CLIMAKEDIR IS '$CLIMAKEDIR
+	echo 'OUTPUT DIR IS '$OUTPUTDIR
+	echo 'MASTER BINARY IS '$CUSTOM_MASTER
+	echo 'PGD BINARY IS '$CUSTOM_PGD
+        echo 'CLIMAKEWORKDIR IS '$CLIMAKEWORKDIR
+	echo '==========================='
+	echo '---------------------------'
+fi
+
+echo 'Do you confirm? (y/n)'
+read answer
+if [ "$answer" != "y" ];then
+   echo 'Job canceled'
+   exit 1
+fi
+
+
+[ ! -d $OUTPUTDIR ] && mkdir -p $OUTPUTDIR
+[ ! -d $OUTPUTDIR'/listings' ] && mkdir $OUTPUTDIR'/listings'
+
+# start job
+if [ "$AUTO" == "y" ]; then
+	sbatch scripts/1_postpro_makegeo $AUTO $CYCLE $RESOLUTION $ELON1 $ELON2 $ELAT1 $ELAT2 $CLIMAKEDIR $OUTPUTDIR $CUSTOM_MASTER $CUSTOM_PGD $CLIMAKEWORKDIR 
+else
+	sbatch scripts/1_postpro_makegeo $AUTO $CYCLE $PGDGEO $CLIMGEO $CLIMAKEDIR $OUTPUTDIR $CUSTOM_MASTER $CUSTOM_PGD $CLIMAKEWORKDIR
+fi
