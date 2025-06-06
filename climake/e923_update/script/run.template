@@ -210,7 +210,7 @@ for $task (qw(1_lbc 2_initsfx 3_sfx 4_clim)) {
 #####
 
 # start the job chain
-$err = system("sbatch ${id}_1_lbc");
+$err = system("qsub ${id}_1_lbc");
 if ( $err ) {
       die "Submission of job chain failed!\n";
 }

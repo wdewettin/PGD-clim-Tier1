@@ -688,5 +688,5 @@ done
 # submit next job in the chain
 cd $ROOT/script
 rm -rv $TMPDIR
-sbatch __ID___2_initsfx
+qsub __ID___2_initsfx
 

@@ -1120,4 +1120,4 @@ done
 # submit next job in the chain
 cd $ROOT/script
 rm -rv $TMPDIR
-sbatch __ID___4_clim
+qsub __ID___4_clim
