@@ -1,14 +1,10 @@
 #!/bin/bash
-#SBATCH --verbose
-#SBATCH --job-name=1postproclimake
-#SBATCH --time=01:30:00
-#SBATCH --mem=62000
-#SBATCH --nodes=1
-#SBATCH --ntasks=1
-#SBATCH --cpus-per-task=1
-#SBATCH --partition=transfert
-#SBATCH --export=NONE
-#SBATCH --no-requeue
+#PBS -V
+#PBS -N 1climake
+#PBS -l walltime=00:05:00
+#PBS -l mem=62GB
+#PBS -l nodes=1:ppn=1
+#PBS -A 2022_205
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #   
@@ -22,80 +18,34 @@
 #   
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-set -x
-AUTO=$1
-CYCLE=$2
-if [ "$AUTO" == "y" ]; then
-	RESOLUTION=$3
-	ELON1=$4
-	ELON2=$5
-	ELAT1=$6
-	ELAT2=$7
-	CLIMAKEDIR=$8
-	OUTPUTDIR=$9
-	CUSTOM_MASTER=${10}
-	CUSTOM_PGD=${11}
-	CLIMAKEWORKDIR=${12}
-else
-	PGDGEO=$3
-	CLIMGEO=$4
-	CLIMAKEDIR=$5
-	OUTPUTDIR=$6
-	CUSTOM_MASTER=$7
-	CUSTOM_PGD=$8
-	CLIMAKEWORKDIR=$9
-fi
+set -ex
 #get genv variables
-VARIABLES=$(/home/mf/dp/marp/martinezs/public/bin/genv $CYCLE)
+# VARIABLES=$(/home/mf/dp/marp/martinezs/public/bin/genv $CYCLE)
+VARIABLES=$(cat ${CLIMAKEDIR}/variables/variables_${CYCLE}.txt)
+
+set -e
 #check if $CYCLE is a proper GENV CYCLE
-if [ "${VARIABLES[0]}" = "CYCLE_NAME=\"not found\"" ]; then
-  echo 'GENV Cycle seem wrong: you gave '$CYCLE
-  echo '/home/mf/dp/marp/martinezs/public/bin/gget '$CYCLE' must return key/value list. Aborting'
-  exit $?
-fi
+# if [ "${VARIABLES[0]}" = "CYCLE_NAME=\"not found\"" ]; then
+#   echo 'GENV Cycle seem wrong: you gave '$CYCLE
+#   echo '/home/mf/dp/marp/martinezs/public/bin/gget '$CYCLE' must return key/value list. Aborting'
+#   exit $?
+# fi
 
 #looping on key/values and prefetch files (see above for the reason why we do that)
-for i in $VARIABLES
-do
-  if [ "$(echo $i | cut -d "=" -f1)" = "CYCLE_NAME" ]; then
-    continue
-  fi
-  j=$(echo $i | cut -d "\"" -f2)
-  echo 'calling gget on '$j
-  /home/mf/dp/marp/martinezs/public/bin/gget path --verbose $j
-done
+# for i in $VARIABLES
+# do
+#   if [ "$(echo $i | cut -d "=" -f1)" = "CYCLE_NAME" ]; then
+#    continue
+#   fi
+#   j=$(echo $i | cut -d "\"" -f2)
+#   echo 'calling gget on '$j
+#   /home/mf/dp/marp/martinezs/public/bin/gget path --verbose $j || :
+# done
 
 
 
-echo 'Job fetch_files ended correctly!'
+echo 'Job 1_fetch_files ended correctly!'
 
-if [ "$AUTO" == "y" ]; then
-	echo 'Computing geometry namdelta with Epygram:'
-
-	EPY_MAKEGEOMETRY=$CLIMAKEDIR/scripts/epy_makegeometry.py
-        module load python/3.7.6
-	export PYTHONPATH=""
-	GEOMETRYDIR=$OUTPUTDIR/geometry
-	mkdir -p $GEOMETRYDIR
-	cd $GEOMETRYDIR
-	#future name of the files that will be created
-	PGDGEO=$GEOMETRYDIR"/customll.namel_buildpgd.geoblocks" 
-	CLIMGEO=$GEOMETRYDIR"/customll.namel_c923.geoblocks"
-	#rm this files if they exists
-	rm -f $PGDGEO
-	rm -f $CLIMGEO
-	#launch python script with propers arguments 
-	$(python3.7 $EPY_MAKEGEOMETRY -r $RESOLUTION -elon1 $ELON1 -elon2 $ELON2 -elat1 $ELAT1 -elat2 $ELAT2)
-
-	#append to file this block is needed
-	echo -e " &NEMDIM\n /\n" >> $CLIMGEO
-
-	#relative path (just to use the same scripts than climake)
-	PGDGEO=${PGDGEO#"$CLIMAKEDIR"}
-	CLIMGEO=${CLIMGEO#"$CLIMAKEDIR"}
-	PGDGEO=${PGDGEO%"/"}
-	CLIMGEO=${CLIMGEO%"/"}
-fi
 #idem -> one orography step
 OROGRAPHY_TRUNCATION="QUADRATIC"
 OTHERFIELDS_TRUNCATION="QUADRATIC"
@@ -110,11 +60,12 @@ CLIMNAM="GCO_POSTPRO"
 
 cd $CLIMAKEDIR
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-echo "sbatch scripts/2_make_pgd" $PGDGEO $CLIMGEO $CYCLE $PGDNAM $CLIMNAM $OROGRAPHY_TRUNCATION $OTHERFIELDS_TRUNCATION $CLIMAKEDIR $OUTPUTDIR $CUSTOM_MASTER $CUSTOM_PGD $SPECTRALS_PARAMS $CLIMAKEWORKDIR
 
 
-sbatch scripts/2_make_pgd $PGDGEO $CLIMGEO $CYCLE $PGDNAM $CLIMNAM $OROGRAPHY_TRUNCATION $OTHERFIELDS_TRUNCATION $CLIMAKEDIR $OUTPUTDIR $CUSTOM_MASTER $CUSTOM_PGD $SPECTRALS_PARAMS $CLIMAKEWORKDIR
+echo "RUN WITH PGD"
+qsub -o $OUTPUTDIR/log/2climake.o \
+	-e $OUTPUTDIR/log/2climake.e \
+	-v  PGDGEO=$PGDGEO,CLIMGEO=$CLIMGEO,CYCLE=$CYCLE,PGDNAM=$PGDNAM,CLIMNAM=$CLIMNAM,OROGRAPHY_TRUNCATION=$OROGRAPHY_TRUNCATION,OTHERFIELDS_TRUNCATION=$OTHERFIELDS_TRUNCATION,CLIMAKEDIR=$CLIMAKEDIR,OUTPUTDIR=$OUTPUTDIR,CUSTOM_MASTER=$CUSTOM_MASTER,CUSTOM_PGD=$CUSTOM_PGD,CLIMAKEWORKDIR=$CLIMAKEWORKDIR,E923_UPDATE=$E923_UPDATE,DATA_DIR=$DATA_DIR,PGDHACK=$PGDHACK,NSMAX=$NSMAX,NMSMAX=$NMSMAX,NSMAX_ORO=$NSMAX_ORO,NMSMAX_ORO=$NMSMAX_ORO \
+	scripts/2_make_pgd  #sbatch --output=$OUTPUTDIR/log/2climake.o --error=$OUTPUTDIR/log/2climake.e scripts/2_make_pgd $PGDGEO $CLIMGEO $CYCLE $PGDNAM $CLIMNAM $OROGRAPHY_TRUNCATION $OTHERFIELDS_TRUNCATION $CLIMAKEDIR $OUTPUTDIR $CUSTOM_MASTER $CUSTOM_PGD $SPECTRALS_PARAMS $CLIMAKEWORKDIR $E923_UPDATE $DATA_DIR $PGDHACK
 
 exit $?
-
- 
