@@ -98,7 +98,7 @@ else
 fi  
 
 echo '  ------------EXPORTING ENV VARIABLES  ------------ '
-source $CLIMAKEDIR'/stuff/environmentVariables'
+source $CLIMAKEDIR'/stuff/environmentVariables_rhel9' # Update this file so it works for rhel9
 echo '  ------------------------------------------------- '
 
 

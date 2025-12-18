@@ -1,0 +1,26 @@
+# Copy of the file environmentVariables, but with changes so it works for rhel9 (12/2025))
+
+export OMP_NUM_THREADS=1
+NPROC=$((PBS_NP/OMP_NUM_THREADS))
+
+module purge
+module swap cluster/dodrio/cpu_milan_rhel9 # Change this to rhel9
+# module load iimpi/2022a imkl/2022.1.0 vsc-mympirun
+module load iimpi/2023a imkl/2023.1.0 vsc-mympirun # Change this to new version
+export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc45302_kwinten/software/iimpi2023a/lib64 # Change this to correct location
+ulimit -s unlimited
+ulimit -c unlimited
+export OMP_STACKSIZE="$((4/OMP_NUM_THREADS))G"
+export KMP_STACKSIZE="$((4/OMP_NUM_THREADS))G"
+# export KMP_MONITOR_STACKSIZE=1G
+export DR_HOOK=0
+export DR_HOOK_IGNORE_SIGNALS=-1
+export DR_HOOK_SILENT=1
+export DR_HOOK_OPT=prof
+export MPL_MBX_SIZE=2048000000
+export I_MPI_ADJUST_GATHERV=3
+export EC_PROFILE_HEAP=0
+export EC_MPI_ATEXIT=0
+# export OMPI_MCA_btl='^uct,ofi'
+# export OMPI_MCA_pml='ucx'
+# export OMPI_MCA_mtl='^ofi'
