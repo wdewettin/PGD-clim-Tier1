@@ -4,7 +4,8 @@ export OMP_NUM_THREADS=1
 NPROC=$((PBS_NP/OMP_NUM_THREADS))
 
 module purge
-module swap cluster/dodrio/cpu_milan_rhel9 # Change this to rhel9
+# Run on the debug cluster (you cannot change clusters in a job)
+# module swap cluster/dodrio/cpu_milan_rhel9
 # module load iimpi/2022a imkl/2022.1.0 vsc-mympirun
 module load iimpi/2023a imkl/2023.1.0 vsc-mympirun # Change this to new version
 export LD_LIBRARY_PATH=${LD_LIBRARY_PATH}:/dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc45302_kwinten/software/iimpi2023a/lib64 # Change this to correct location

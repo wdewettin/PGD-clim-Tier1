@@ -111,7 +111,7 @@ echo '  ------------------------------------------------- '
 # Run PGDHACK
 if [ "$PGDHACK" != "NOPGDHACK" ]; then
     chmod +x "$PGDHACK"
-    "$PGDHACK"
+    bash "$PGDHACK"
 fi
 
 

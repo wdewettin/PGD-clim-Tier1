@@ -58,7 +58,7 @@ echo '***************************'
 echo '                           '
 
 echo '  ------------EXPORTING ENV VARIABLES  ------------ '
-source $CLIMAKEDIR'/stuff/environmentVariables'
+source $CLIMAKEDIR'/stuff/environmentVariables_rhel9'
 echo '  ------------------------------------------------- '
 
 
