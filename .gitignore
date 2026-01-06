@@ -1,4 +1,5 @@
 climake/outputFiles/**
+climake/work_configFiles/**
 climake/work/**
 climake/data/**
 climake/*.e
