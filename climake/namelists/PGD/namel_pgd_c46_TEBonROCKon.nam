@@ -23,7 +23,6 @@
    CGRID = 'CONF PROJ',
  /
  &NAM_PGD_SCHEMES
-   CTOWN = 'NONE',
    LGARDEN=.T.,
  /
  &NAM_ZS
