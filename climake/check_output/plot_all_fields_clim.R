@@ -1,9 +1,18 @@
 library(Rfa)
 
+# Define the name of the output folder for which you want to make pdf of the clims
+args = commandArgs(trailingOnly=TRUE)
+if (length(args)==0) {
+  args[1] = "BE13b_zoom_c46_URB"
+}
+
 mstart <- 1
 mend <- 12
-climfilename_base <- "/dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc46613_amber/Project_CitiesandPrecipitation/climate_simulations/runs/code_to_run_model/PGD-clim-Tier1/climake/outputFiles/BE13b_zoom_c46_URB/Const.Clim."
-pdffilename_base <- "BE13b_zoom_c46_URB_Const.Clim."
+
+climfilename_dir <- "/dodrio/scratch/projects/2022_200/project_output/RMIB-UGent/vsc46613_amber/Project_CitiesandPrecipitation/climate_simulations/runs/code_to_run_model/PGD-clim-Tier1/climake/outputFiles"
+climfilename_base<- paste(climfilename_dir, args[1], "Const.Clim.", sep="/")
+pdffilename_base <- paste(args[1], "_Const.Clim.", sep="")
+
 
 for (m in mstart:mend) {
     if (m < 10) {
