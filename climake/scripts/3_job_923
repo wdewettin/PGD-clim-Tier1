@@ -5,6 +5,7 @@
 #PBS -l mem=62GB
 #PBS -l nodes=1:ppn=1
 #PBS -A 2022_205
+#PBS -m a
 
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -58,7 +59,7 @@ echo '***************************'
 echo '                           '
 
 echo '  ------------EXPORTING ENV VARIABLES  ------------ '
-source $CLIMAKEDIR'/stuff/environmentVariables'
+source $CLIMAKEDIR'/stuff/environmentVariables_rhel9'
 echo '  ------------------------------------------------- '
 
 
@@ -371,7 +372,7 @@ if [ "$PGDGEO" != "NOPGD" ]; then
 
 qsub -o $OUTPUTDIR/log/4climake.o \
      -e $OUTPUTDIR/log/4climake.e \
-     	-v OUTPUTDIR=$OUTPUTDIR,CLIMAKEDIR=$CLIMAKEDIR,CLIMAKEWOEKDIR=$CLIMAKEWORKDIR,E923_UPDATE=$E923_UPDATE \
+     	-v OUTPUTDIR=$OUTPUTDIR,CLIMAKEDIR=$CLIMAKEDIR,CLIMAKEWORKDIR=$CLIMAKEWORKDIR,E923_UPDATE=$E923_UPDATE \
       scripts/4_replace_orography
 #sbatch --output=$OUTPUTDIR/log/4climake.o --error=$OUTPUTDIR/log/4climake.e scripts/4_replace_orography $OUTPUTDIR $CLIMAKEDIR $CLIMAKEWORKDIR $E923_UPDATE
 fi

@@ -5,6 +5,7 @@
 #PBS -l mem=62GB
 #PBS -l nodes=1:ppn=1
 #PBS -A 2022_205
+#PBS -m a
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #   
@@ -98,7 +99,7 @@ else
 fi  
 
 echo '  ------------EXPORTING ENV VARIABLES  ------------ '
-source $CLIMAKEDIR'/stuff/environmentVariables'
+source $CLIMAKEDIR'/stuff/environmentVariables_rhel9' # Update this file so it works for rhel9
 echo '  ------------------------------------------------- '
 
 
@@ -111,7 +112,7 @@ echo '  ------------------------------------------------- '
 # Run PGDHACK
 if [ "$PGDHACK" != "NOPGDHACK" ]; then
     chmod +x "$PGDHACK"
-    "$PGDHACK"
+    bash "$PGDHACK"
 fi
 
 
