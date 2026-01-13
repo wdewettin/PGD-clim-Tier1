@@ -28,7 +28,6 @@ pdf(pdffilename, width = 8, height = 7)
 
 # Make list of fields with possible NaN
 fields_with_nan <- list( "SFX.SSO_STDEV   ", "SFX.SSO_ANIS    ","SFX.SSO_DIR     ","SFX.SSO_SLOPE   ","SFX.HO2IP       ","SFX.HO2JP       ","SFX.HO2IM       ","SFX.HO2JM       ","SFX.AOSIP       ","SFX.AOSJP       ","SFX.AOSIM       ","SFX.AOSJM       ","SFX.BATHY       ","SFX.CLAY        ","SFX.SAND        ","SFX.RUNOFFB     ","SFX.WDRAIN      ","SFX.GD_CLAY     ","SFX.GD_SAND     ","SFX.GD_RUNOFFB  ","SFX.GD_WDRAIN   ")
-print(fields_with_nan)
 
 for (idx in seq_along(varname_list["name"][[1]])) {
     varname <- varname_list["name"][[1]][[idx]]

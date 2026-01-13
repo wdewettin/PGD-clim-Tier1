@@ -229,8 +229,8 @@
  &NEMCT0
  /
  &NEMDIM
-   NBZONG=8,
-   NBZONL=8,
+   NBZONG=16,
+   NBZONL=16,
  /
  &NEMDYN
  /
