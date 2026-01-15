@@ -226,6 +226,13 @@ do
   #cd into dir
   cd $DIRNAME
   sed "s/N923=0/N923=${i:0:1}/" nam923 > fort.4
+
+  if [ "$i" == "6" ] ; then
+   sed \
+  -e "s/ LZ0THER=/ NDATX=360,NDATY=180,LZ0THER=/" \
+  -e "s/N923=0/N923=${i:0:1}/" \
+  nam923 > fort.4
+  fi
   
   #monthly input needed in some steps
   MONTHLYINPUTS=()
