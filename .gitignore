@@ -11,3 +11,4 @@ test_run/output
 climake/e923_update/m3d
 climake/e923_update/data
 climake_old
+climake/scripts/replace_orography/test*/
